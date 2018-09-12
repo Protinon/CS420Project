@@ -24,8 +24,8 @@ To select all files
 To select individual files
  git add file1.java file2.java
  
-To commit those files to a change
- git commit -m "Message describing what you changed"
+To commit those files to a change (Include a message in quotes)
+ git commit -m "Added a gui button"
  
 To push your new changes to the Github repository
  git push origin gui-button
