@@ -1,0 +1,31 @@
+GIT COMMANDS
+
+To get this on your local computer (only do this once)
+ git clone https://github.com/Protinon/CS420Project.git
+
+BEFORE YOU START CODING
+
+To do any more commands, make sure you're in the "CS420Project" folder
+Check the status anytime with
+ git status
+
+Update your computer to match the remote version (every time before you start coding)
+ git pull origin master
+ 
+Create a new branch so you dont modify the current code (called the "master" branch), makes a safe area for you to work
+For this example, the new branch will be called "gui-button"
+ git checkout -b gui-button
+ 
+Start coding!
+
+Once you're done adding a feature, point to files you want to commit
+To select all files
+ git add .
+To select individual files
+ git add file1.java file2.java
+ 
+To commit those files to a change
+ git commit -m "Message describing what you changed"
+ 
+To push your new changes to the Github repository
+ git push origin gui-button
