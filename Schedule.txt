@@ -1,0 +1,18 @@
+Iteration 1: Due mm/dd/yyyy
+Specification by wwww
+Design by xxxx
+Implementation by yyyy
+Testing by zzzz
+
+Iteration 2: Due mm/dd/yyyy
+Specification by wwww
+Design by xxxx
+Implementation by yyyy
+Testing by zzzz
+
+Iteration 3: Due mm/dd/yyyy
+Specification by wwww
+Design by xxxx
+Implementation by yyyy
+Testing by zzzz
+
