@@ -14,7 +14,6 @@ public class UMLView {
 
 public UMLView()
 {
-UMLController controller = new UMLController();
  
 JFrame frame = new JFrame("UMLEditor");
 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
