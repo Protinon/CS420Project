@@ -1,24 +1,10 @@
 package UML;
 
 import javax.swing.*;
-import java.awt.EventQueue;
-
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-
 import java.awt.Color;
 import java.awt.Dimension;
-
-
-
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.Line2D;
- 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 public class UMLView extends JFrame{
 
@@ -32,10 +18,20 @@ frame.setSize(800, 600);
 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //--------------------------------------------------------------------------------
 
-//PANEL INITIALIZATION------------------------------------------------------------
-JPanel panel = new JPanel();
-panel.setLayout(null);
-frame.add(panel);
+//SPLIT-PANE INITIALIZATION------------------------------------------------------------
+JPanel leftPane = new JPanel();
+Dimension d = new Dimension(75,600);
+leftPane.setSize(d);
+leftPane.setLayout(null);
+
+Color eggShell = new Color(248,248,255);
+JPanel rightPane = new JPanel();
+rightPane.setBackground(eggShell);
+
+JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPane, rightPane);
+splitPane.setResizeWeight(.103);
+splitPane.setDividerSize(3);
+frame.add(splitPane);
 //--------------------------------------------------------------------------------
 
 //MENU BAR INITIALIZATION---------------------------------------------------------
@@ -154,16 +150,20 @@ frame.setJMenuBar(menuBar);
 //BUTTON INITIALIZATION-----------------------------------------------------------
 	//POINT BUTTON
 	JButton pointButton = new JButton("Point");
-	pointButton.setBounds(0, 0, 75, 25);
-	panel.add(pointButton);
+	pointButton.setBounds(0, 0, 80, 25);
+	leftPane.add(pointButton);
 	
 	//LINE BUTTON
 	JButton lineButton = new JButton("Line");
-	lineButton.setBounds(0, 25, 75, 25);
-	panel.add(lineButton);
+	lineButton.setBounds(0, 25, 80, 25);
+	leftPane.add(lineButton);
+	
+	//CLASS BUTTON
+	JButton classButton = new JButton("Class");
+	classButton.setBounds(0, 50, 80, 25);
+	leftPane.add(classButton);
+	
+	
 //--------------------------------------------------------------------------------
 	}
-
-
-
 }
