@@ -8,13 +8,17 @@ package UML;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
-/**
- *
- * @author lukas
- */
+
 public class JPanelGraphics extends JPanel {
+
+    private Points m_points;
+    
+    public JPanelGraphics() {
+        super();
+        m_points = new Points();
+    }
     
     public void paint(Graphics g) {
-        g.drawLine(10, 10, 200, 300);
+        m_points.drawPoints(g);
     }
 }
