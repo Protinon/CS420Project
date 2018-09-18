@@ -11,14 +11,19 @@ import javax.swing.JPanel;
 
 public class JPanelGraphics extends JPanel {
 
-    private Points m_points;
+    private final Points m_points;
     
     public JPanelGraphics() {
+        // Initilize JPanel
         super();
+        // Do our initilization of JPanelGraphics
         m_points = new Points();
     }
     
     public void paint(Graphics g) {
+        // Necessary if we were drawing other components, like buttons
+        super.paint(g);
+        // Draw our graphics
         m_points.drawPoints(g);
     }
 }
