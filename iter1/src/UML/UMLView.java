@@ -19,7 +19,7 @@ import javax.swing.*;
 
 public class UMLView extends JFrame implements ActionListener {
 	public JFrame frame = new JFrame("UMLEditor");
-	public JPanel rightPane = new JPanel();
+	public JPanel rightPane = new JPanelGraphics();
 	public JPanel leftPane = new JPanel();
 	JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPane, rightPane);
 
