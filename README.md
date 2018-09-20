@@ -1,2 +1,0 @@
-## Team Coredump Project
-
