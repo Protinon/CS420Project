@@ -20,10 +20,10 @@ public class JPanelGraphics extends JPanel {
         m_points = new Points();
     }
     
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
         // Necessary if we were drawing other components, like buttons
-        super.paint(g);
+        super.paintComponent(g);
         // Draw our graphics
-        m_points.drawPoints(g);
+//        m_points.drawPoints(g);
     }
 }
