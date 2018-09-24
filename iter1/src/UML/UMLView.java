@@ -159,7 +159,8 @@ public class UMLView extends JFrame implements ActionListener {
 //--------------------------------------------------------------------------------
 //GRAPHICS INITIALIZATION
                 
-        UMLClass cl = new UMLClass(0, 0, 80, 25);
+        UMLClass cl = new UMLClass(50, 50);
+        cl.setInfo("Test", "+ move(p : Point), + resize(s : Scale), + display(), #invalidateRegion(), #suspend(), #flush(), #thread(), #eventqueue()");
         rightPane.add(cl);
 
 //--------------------------------------------------------------------------------
