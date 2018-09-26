@@ -75,7 +75,27 @@ public class UMLView extends JFrame implements ActionListener {
 	filePrint = new JMenuItem("Print...");
 	filePrint.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 
-	filePrint.addActionListener(this);
+	filePrint.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+            PrinterJob pjob = PrinterJob.getPrinterJob();
+            PageFormat preformat = pjob.defaultPage();
+            preformat.setOrientation(PageFormat.LANDSCAPE);
+            PageFormat postformat = pjob.pageDialog(preformat);
+		
+            if (preformat != postformat) {
+		pjob.setPrintable(new Printer(splitPane), postformat);
+		if (pjob.printDialog()) {
+                    try {
+                        pjob.print();
+                    } 
+                    catch (PrinterException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                }
+            }
+	}
+        });
 
 	JMenuItem fileClose;
 	fileClose = new JMenuItem("Close");
@@ -155,6 +175,75 @@ public class UMLView extends JFrame implements ActionListener {
 	JButton classButton = new JButton("Class");
 	classButton.setBounds(0, 50, 80, 25);
 	leftPane.add(classButton);
+	    
+	   // COMPOSITION BUTTON-----------------------------------------------
+
+		JButton compositionButton = new JButton("Composition");
+		classButton.setBounds(0, 75, 150, 25);
+		leftPane.add(compositionButton);
+		
+		compositionButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+
+		// AGGREGATION BUTTON-----------------------------------------------
+		JButton aggregationButton = new JButton("Aggregation");
+		aggregationButton.setBounds(0, 100, 150, 25);
+		leftPane.add(aggregationButton);
+
+		aggregationButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
+		// DEPENDENCY BUTTON-----------------------------------------------
+		JButton dependencyButton = new JButton("Dependency");
+		dependencyButton.setBounds(0, 125, 150, 25);
+		leftPane.add(dependencyButton);
+
+		dependencyButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
+		// GENERALIZATION BUTTON-----------------------------------------------
+		JButton generalizationButton = new JButton("Generalization");
+		generalizationButton.setBounds(0, 150, 150, 25);
+		leftPane.add(generalizationButton);
+
+		generalizationButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+
+		// ASSOCIATION BUTTON-----------------------------------------------
+		JButton associationButton = new JButton("Association");
+		associationButton.setBounds(0, 175, 150, 25);
+		leftPane.add(associationButton);
+
+		associationButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
+		// COMMENT CUTTON-----------------------------------------------
+		JButton commentButton = new JButton("Comment");
+		commentButton.setBounds(0, 50, 150, 25);
+		leftPane.add(commentButton);
+	
+		commentButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				
+			}
+		});
+	}
                 
 //--------------------------------------------------------------------------------
 //GRAPHICS INITIALIZATION
@@ -165,25 +254,4 @@ public class UMLView extends JFrame implements ActionListener {
 
 //--------------------------------------------------------------------------------
 	}
-
-	public void actionPerformed(ActionEvent e) 
-	{
-            PrinterJob pjob = PrinterJob.getPrinterJob();
-            PageFormat preformat = pjob.defaultPage();
-            preformat.setOrientation(PageFormat.LANDSCAPE);
-            PageFormat postformat = pjob.pageDialog(preformat);
-		
-            if (preformat != postformat) {
-		pjob.setPrintable(new Printer(splitPane), postformat);
-		if (pjob.printDialog()) {
-                    try {
-                        pjob.print();
-                    } 
-                    catch (PrinterException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        }
 }
