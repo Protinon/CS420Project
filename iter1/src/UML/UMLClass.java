@@ -5,9 +5,12 @@
 package UML;
 
 import java.awt.Color;
+import java.awt.event.*;
+import javax.swing.BorderFactory; 
 import javax.swing.JComponent;
 import java.awt.Graphics;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Dimension;
@@ -15,9 +18,11 @@ import java.awt.RenderingHints;
 
 public class UMLClass extends JComponent{
     
-    private Rectangle rect;
+    // Space between text and class edge
     private int Border;
+    // Space between consecutive lines
     private int lineHeight;
+    // Displayed text
     private String name;
     private String atts;
     private Font font;
@@ -35,20 +40,26 @@ public class UMLClass extends JComponent{
         // Font stays static
         // Font dimensions is not calculated at run-time, must be set here
         // For ease of use, font should be monospaced
-        font = new Font("Monospaced", Font.PLAIN, 12);
-        fontSize = new Dimension(7, 13);
+        this.font = new Font("Monospaced", Font.PLAIN, 12);
+        this.fontSize = new Dimension(7, 13);
         
         this.Border = border;
         this.lineHeight = lineHeight;
-        rect = new Rectangle(x, y, border * 2, border * 2);
-    }
-    
-    // Won't paint unless getPreferredSize() returns something
-    // Not sure why
-    // Currently set to fit entire window, will have to update if window resizes
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(800, 800);
+        
+        // Previously used a Rectangle to store this node's position and dimensions
+        // Now uses JComponent's built-in coordinate managment
+        // Update height and width with setBounds()
+        // Update location with setLocation()
+        // Get respective values with getX(), getY(), getWidth(), getHeight()
+        super.setBounds(new Rectangle(x, y, border * 2, border * 2));
+        super.setLocation(x, y);
+        
+        super.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.black));
+        
+        // Allows for node to be dragged with mouse
+        UMLMouseListener listener = new UMLMouseListener();
+        super.addMouseListener(listener);
+        super.addMouseMotionListener(listener);
     }
     
     // "Paint" the UMLClass - draw it on the screen
@@ -62,28 +73,26 @@ public class UMLClass extends JComponent{
         
         // Keep y position so we know where to draw next
         // Increment as you draw
-        int drawPosY = rect.y + fontSize.height + Border;
+        int drawPosY = fontSize.height + Border;
         
         // Draw Rectangle
-        g2.setColor(Color.BLACK);
-        g2.fillRect(rect.x, rect.y, rect.width, rect.height);
         g2.setColor(Color.WHITE);
-        g2.fillRect(rect.x + 2, rect.y + 2, rect.width - 4, rect.height - 4);
+        g2.fillRect(0, 0, getWidth(), getHeight());
         
         // Draw Title
         g2.setColor(Color.BLUE); 
-        int offset = rect.width / 2 - (name.length() * fontSize.width) / 2;
-        g2.drawString(this.name, rect.x + offset, drawPosY);
+        int offset = getWidth() / 2 - (name.length() * fontSize.width) / 2;
+        g2.drawString(name, offset, drawPosY);
         
         // Draw Divider
         drawPosY += lineHeight;
         // Line overextends by 1 pixel for some reason...
-        g2.drawLine(rect.x, drawPosY, rect.x + rect.width - 1, drawPosY);
+        g2.drawLine(0, drawPosY, getWidth() - 1, drawPosY);
         
         // Draw Attributes
         drawPosY += fontSize.height + lineHeight;
-        for (String att : this.atts.split(", ")) {
-            g.drawString(att, rect.x + Border, drawPosY);
+        for (String att : atts.split(", ")) {
+            g.drawString(att, Border, drawPosY);
             drawPosY += fontSize.height + lineHeight;
         }
     }
@@ -121,7 +130,6 @@ public class UMLClass extends JComponent{
         this.name = name;
         this.atts = atts;
         Dimension size = fitStrs();
-        rect.height = size.height;
-        rect.width = size.width;
+        setBounds(new Rectangle(getX(), getY(), size.width, size.height));
     }
 }

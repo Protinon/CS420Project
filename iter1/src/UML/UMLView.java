@@ -13,7 +13,7 @@ import java.awt.*;
  
  public class UMLView extends JFrame {
      public JFrame frame = new JFrame("UMLEditor");
-     public JPanel rightPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
+     public JPanel rightPane = new JPanel();
      public JPanel leftPane = new JPanel();
      JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPane, rightPane);
  
@@ -33,6 +33,7 @@ import java.awt.*;
  
  	Color eggShell = new Color(248, 248, 255);
  	rightPane.setBackground(eggShell);
+        rightPane.setLayout(null);
  
  	splitPane.setResizeWeight(.103);
  	splitPane.setDividerSize(3);
