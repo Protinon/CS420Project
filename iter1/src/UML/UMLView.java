@@ -11,13 +11,13 @@ import java.awt.*;
  import java.awt.event.*;
  import javax.swing.*;
  
- public class UMLVIE extends JFrame {
+ public class UMLView extends JFrame {
      public JFrame frame = new JFrame("UMLEditor");
      public JPanel rightPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
      public JPanel leftPane = new JPanel();
      JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPane, rightPane);
  
-     public UMLVIE() {
+     public UMLView() {
  //FRAME INITIALIZATION------------------------------------------------------------
  
  	frame.pack();
@@ -234,7 +234,6 @@ import java.awt.*;
 				
 			}
 		});
-	}
                 
 //-------------------------------------------------------------------------------
 //GRAPHICS INITIALIZATION
@@ -245,4 +244,4 @@ import java.awt.*;
 
 //--------------------------------------------------------------------------------
 	}
-}
+    }
