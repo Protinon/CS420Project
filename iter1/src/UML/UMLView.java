@@ -18,7 +18,7 @@ import javax.swing.KeyStroke;
 
 public class UMLView extends JFrame {
 	JFrame frame = new JFrame("UMLEditor");
-	JPanel rightPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	JPanel rightPane = new JPanel();
 	JPanel leftPane = new JPanel();
 	JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPane, rightPane);
 
@@ -66,6 +66,7 @@ public class UMLView extends JFrame {
 
 		Color eggShell = new Color(248, 248, 255);
 		rightPane.setBackground(eggShell);
+                rightPane.setLayout(null);
 
 		splitPane.setResizeWeight(.197);
 		splitPane.setDividerSize(3);
