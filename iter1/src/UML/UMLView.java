@@ -186,7 +186,7 @@ public class UMLView extends JFrame {
 
 //COMMENT CUTTON------------------------------------------------------------------
 		commentButton = new JButton("Comment");
-		commentButton.setBounds(0, 200, 150, 25);
+		commentButton.setBounds(0, 50, 150, 25);
 
 		leftPane.add(pointButton);
 		leftPane.add(lineButton);
