@@ -9,7 +9,7 @@ public static void main(String[] args) {
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                UMLView view = new UMLView();
+                UMLController c = new UMLController();
             }
         });
 }
