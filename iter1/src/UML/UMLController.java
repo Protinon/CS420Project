@@ -205,7 +205,8 @@ public class UMLController {
 		
 		view.associationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				UMLAssociation a = new UMLAssociation(200,200);
+				view.rightPane.add(a);
 			}
 		});
 	}
