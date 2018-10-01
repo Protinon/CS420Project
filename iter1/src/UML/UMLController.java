@@ -1,7 +1,6 @@
 package UML;
 
 import java.awt.Desktop;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PageFormat;
@@ -155,60 +154,64 @@ public class UMLController {
 	public void viewActionListeners(UMLView view) {
 
 	}
-	
+
 	public void buttonActionListeners(UMLView view) {
 		view.pointButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UMLPoint p = new UMLPoint(200,200);
-			     view.rightPane.add(p);
-			}});
-		
-		view.lineButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				UMLLine l = new UMLLine (200, 200);
-				view.rightPane.add(l);
+				UMLPoint p = new UMLPoint(200, 200);
+				view.rightPane.add(p);
 			}
 		});
-		
+
 		view.classButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UMLClass c = new UMLClass(200,200);
-				 c.setInfo("Test", "+ move(p : Point), + resize(s : Scale), + display(), #invalidateRegion(), #suspend(), #flush(), #thread(), #eventqueue()");
-			     view.rightPane.add(c);
-			}
-		});
-		
-		view.commentButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				UMLComment c = new UMLComment(200,200);
+				UMLClass c = new UMLClass(200, 200);
+				c.setInfo("Test",
+						"+ move(p : Point), + resize(s : Scale), + display(), #invalidateRegion(), #suspend(), #flush(), #thread(), #eventqueue()");
 				view.rightPane.add(c);
 			}
 		});
-		
+
+		view.commentButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UMLComment c = new UMLComment(200, 200);
+				view.rightPane.add(c);
+			}
+		});
+
 		view.aggregationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UMLAggregation a = new UMLAggregation(200,200);
+				UMLAggregation a = new UMLAggregation(200, 200);
 				view.rightPane.add(a);
 			}
 		});
-		
+
 		view.generalizationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				UMLGeneralization g = new UMLGeneralization(200, 200);
+				view.rightPane.add(g);
 
 			}
 		});
-		
+
 		view.dependencyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			UMLDependency d = new UMLDependency(200,200);
+				UMLDependency d = new UMLDependency(200, 200);
 				view.rightPane.add(d);
 			}
 		});
-		
+
 		view.associationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UMLAssociation a = new UMLAssociation(200,200);
+				UMLAssociation a = new UMLAssociation(200, 200);
 				view.rightPane.add(a);
+			}
+		});
+
+		view.compositionButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UMLComposition c = new UMLComposition(200, 200);
+				view.rightPane.add(c);
 			}
 		});
 	}
