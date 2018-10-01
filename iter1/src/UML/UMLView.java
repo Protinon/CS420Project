@@ -57,6 +57,7 @@ public class UMLView extends JFrame {
 //FRAME INITIALIZATION-------------------------------------------------------------
 		frame.setVisible(true);
 		frame.setSize(800, 600);
+		frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 //--------------------------------------------------------------------------------- 
 
 //SPLIT-PANE INITIALIZATION--------------------------------------------------------
