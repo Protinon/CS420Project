@@ -165,7 +165,8 @@ public class UMLController {
 		
 		view.lineButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				UMLLine l = new UMLLine (200, 200);
+				view.rightPane.add(l);
 			}
 		});
 		
