@@ -1,8 +1,6 @@
 package UML;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -15,7 +13,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
-import javax.swing.WindowConstants;
 
 public class UMLView extends JFrame {
 	JFrame frame = new JFrame("UMLEditor");
@@ -43,7 +40,6 @@ public class UMLView extends JFrame {
 	JMenu view;
 
 	JButton pointButton;
-	JButton lineButton;
 	JButton commentButton;
 	JButton classButton;
 	JButton aggregationButton;
@@ -66,8 +62,8 @@ public class UMLView extends JFrame {
 
 		Color eggShell = new Color(248, 248, 255);
 		rightPane.setBackground(eggShell);
-        rightPane.setLayout(null);
-                
+		rightPane.setLayout(null);
+
 		splitPane.setResizeWeight(.197);
 		splitPane.setDividerSize(3);
 		frame.add(splitPane);
@@ -156,47 +152,44 @@ public class UMLView extends JFrame {
 
 		pointButton = new JButton("Point");
 		pointButton.setBounds(0, 0, 150, 25);
-		
-//LINE BUTTON---------------------------------------------------------------------
-		lineButton = new JButton("Line");
-		lineButton.setBounds(0, 25, 150, 25);
 
 //CLASS BUTTON--------------------------------------------------------------------
 		classButton = new JButton("Class");
-		classButton.setBounds(0, 50, 150, 25);
-
-//COMPOSITION BUTTON--------------------------------------------------------------
-		compositionButton = new JButton("Composition");
-		classButton.setBounds(0, 75, 150, 25);
-
-//AGGREGATION BUTTON--------------------------------------------------------------
-		aggregationButton = new JButton("Aggregation");
-		aggregationButton.setBounds(0, 100, 150, 25);
-
-//DEPENDENCY BUTTON---------------------------------------------------------------
-		dependencyButton = new JButton("Dependency");
-		dependencyButton.setBounds(0, 125, 150, 25);
-
-//GENERALIZATION BUTTON-----------------------------------------------------------
-		generalizationButton = new JButton("Generalization");
-		generalizationButton.setBounds(0, 150, 150, 25);
+		classButton.setBounds(0, 25, 150, 25);
 
 //ASSOCIATION BUTTON--------------------------------------------------------------
 		associationButton = new JButton("Association");
-		associationButton.setBounds(0, 175, 150, 25);
+		associationButton.setBounds(0, 50, 150, 25);
+
+//GENERALIZATION BUTTON-----------------------------------------------------------
+		generalizationButton = new JButton("Generalization");
+		generalizationButton.setBounds(0, 75, 150, 25);
+
+//DEPENDENCY BUTTON---------------------------------------------------------------
+		dependencyButton = new JButton("Dependency");
+		dependencyButton.setBounds(0, 100, 150, 25);
+
+//AGGREGATION BUTTON--------------------------------------------------------------
+		aggregationButton = new JButton("Aggregation");
+		aggregationButton.setBounds(0, 125, 150, 25);
+
+//COMPOSITION BUTTON--------------------------------------------------------------
+		compositionButton = new JButton("Composition");
+		compositionButton.setBounds(0, 150, 150, 25);
 
 //COMMENT BUTTON------------------------------------------------------------------
 		commentButton = new JButton("Comment");
-		commentButton.setBounds(0, 50, 150, 25);
+		commentButton.setBounds(0, 175, 150, 25);
 
 		leftPane.add(pointButton);
-		leftPane.add(lineButton);
-		leftPane.add(commentButton);
 		leftPane.add(classButton);
-		leftPane.add(aggregationButton);
-		leftPane.add(dependencyButton);
-		leftPane.add(generalizationButton);
 		leftPane.add(associationButton);
+		leftPane.add(generalizationButton);
+		leftPane.add(dependencyButton);
+		leftPane.add(aggregationButton);
+		leftPane.add(compositionButton);
+		leftPane.add(commentButton);
+
 //--------------------------------------------------------------------------------
 	}
 }
