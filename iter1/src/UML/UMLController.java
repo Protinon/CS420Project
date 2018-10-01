@@ -187,7 +187,8 @@ public class UMLController {
 		
 		view.aggregationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				UMLAggregation a = new UMLAggregation(200,200);
+				view.rightPane.add(a);
 			}
 		});
 		
