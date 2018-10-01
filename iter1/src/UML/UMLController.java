@@ -1,6 +1,7 @@
-package UML;
+ackage UML;
 
 import java.awt.Desktop;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PageFormat;
@@ -20,6 +21,7 @@ public class UMLController {
 		fileActionListeners(view);
 		editActionListeners(view);
 		viewActionListeners(view);
+		buttonActionListeners(view);
 	}
 
 	public void fileActionListeners(UMLView view) {
@@ -65,7 +67,6 @@ public class UMLController {
 					}
 					try {
 						textArea.write(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
-						Desktop.getDesktop().open(file);
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
@@ -154,4 +155,57 @@ public class UMLController {
 	public void viewActionListeners(UMLView view) {
 
 	}
+	
+	public void buttonActionListeners(UMLView view) {
+		view.pointButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UMLPoint p = new UMLPoint(200,200);
+			     view.rightPane.add(p);
+			}});
+		
+		view.lineButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
+		view.classButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UMLClass c = new UMLClass(200,200);
+				 c.setInfo("Test", "+ move(p : Point), + resize(s : Scale), + display(), #invalidateRegion(), #suspend(), #flush(), #thread(), #eventqueue()");
+			     view.rightPane.add(c);
+			}
+		});
+		
+		view.commentButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		
+		view.aggregationButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		
+		view.generalizationButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		
+		view.dependencyButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		
+		view.associationButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+	}
 }
+
