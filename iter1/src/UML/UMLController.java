@@ -180,7 +180,8 @@ public class UMLController {
 		
 		view.commentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				UMLComment c = new UMLComment(200,200);
+				view.rightPane.add(c);
 			}
 		});
 		
