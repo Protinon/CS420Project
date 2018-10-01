@@ -10,7 +10,7 @@ import javax.swing.JComponent;
 public class UMLAggregation extends JComponent {
 
 	public UMLAggregation(int x, int y) {
-		super.setBounds(new Rectangle(x, y, 500, 500));
+		super.setBounds(new Rectangle(x, y, 115, 15));
 		super.setLocation(x, y);
 
 		UMLMouseListener listener = new UMLMouseListener();
