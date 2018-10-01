@@ -15,6 +15,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
+import javax.swing.WindowConstants;
 
 public class UMLView extends JFrame {
 	JFrame frame = new JFrame("UMLEditor");
@@ -61,14 +62,12 @@ public class UMLView extends JFrame {
 //--------------------------------------------------------------------------------- 
 
 //SPLIT-PANE INITIALIZATION--------------------------------------------------------
-		Dimension d = new Dimension(0, 600);
-		leftPane.setSize(d);
 		leftPane.setLayout(null);
 
 		Color eggShell = new Color(248, 248, 255);
 		rightPane.setBackground(eggShell);
-                rightPane.setLayout(null);
-
+        rightPane.setLayout(null);
+                
 		splitPane.setResizeWeight(.197);
 		splitPane.setDividerSize(3);
 		frame.add(splitPane);
@@ -186,7 +185,7 @@ public class UMLView extends JFrame {
 		associationButton = new JButton("Association");
 		associationButton.setBounds(0, 175, 150, 25);
 
-//COMMENT CUTTON------------------------------------------------------------------
+//COMMENT BUTTON------------------------------------------------------------------
 		commentButton = new JButton("Comment");
 		commentButton.setBounds(0, 50, 150, 25);
 
@@ -199,12 +198,5 @@ public class UMLView extends JFrame {
 		leftPane.add(generalizationButton);
 		leftPane.add(associationButton);
 //--------------------------------------------------------------------------------
-//GRAPHICS INITIALIZATION
-                
-        UMLClass cl = new UMLClass(50, 50);
-        cl.setInfo("Test", "+ move(p : Point), + resize(s : Scale), + display(), #invalidateRegion(), #suspend(), #flush(), #thread(), #eventqueue()");
-        rightPane.add(cl);
-
-//--------------------------------------------------------------------------------
 	}
-    }
+}
