@@ -1,4 +1,4 @@
-ackage UML;
+package UML;
 
 import java.awt.Desktop;
 import java.awt.Graphics;
@@ -200,7 +200,8 @@ public class UMLController {
 		
 		view.dependencyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+			UMLDependency d = new UMLDependency(200,200);
+				view.rightPane.add(d);
 			}
 		});
 		
