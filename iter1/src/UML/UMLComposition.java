@@ -10,7 +10,7 @@ import javax.swing.JComponent;
 public class UMLComposition extends JComponent {
 
 	public UMLComposition(int x, int y) {
-		super.setBounds(new Rectangle(x, y, 500, 500));
+		super.setBounds(new Rectangle(x, y, 115, 15));
 		super.setLocation(x, y);
 
 		UMLMouseListener listener = new UMLMouseListener();
@@ -25,9 +25,9 @@ public class UMLComposition extends JComponent {
 
 		g2.setColor(Color.BLACK);
 		g2.drawLine(5, 5, 100, 5);
-		
-		int[] arg0 = {100, 105, 110, 105};
-		int[] arg1 = {5, 0, 5, 10};
+
+		int[] arg0 = { 100, 105, 110, 105 };
+		int[] arg1 = { 5, 0, 5, 10 };
 		g2.drawPolygon(arg0, arg1, 4);
 		g2.fillPolygon(arg0, arg1, 4);
 	}
