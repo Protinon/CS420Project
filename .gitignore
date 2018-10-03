@@ -5,3 +5,4 @@ bin/
 /iter1/build/
 build.xml
 manifest.mf
+dist/
