@@ -14,7 +14,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
 
 public class UMLController {
-    
+
 	public UMLController() {
 		UMLView view = new UMLView();
 		fileActionListeners(view);
@@ -26,7 +26,11 @@ public class UMLController {
 	public void fileActionListeners(UMLView view) {
 		view.fileNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UMLView x = new UMLView();
+				javax.swing.SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						UMLController c = new UMLController();
+					}
+				});
 			}
 		});
 
@@ -102,7 +106,7 @@ public class UMLController {
 
 		view.fileClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				view.frame.dispose();
 			}
 		});
 	}
@@ -160,7 +164,7 @@ public class UMLController {
 			public void actionPerformed(ActionEvent e) {
 				UMLPoint p = new UMLPoint(200, 200);
 				view.rightPane.add(p);
-                                view.rightPane.repaint();
+				view.rightPane.repaint();
 			}
 		});
 
@@ -170,7 +174,7 @@ public class UMLController {
 				c.setInfo("Test",
 						"+ move(p : Point), + resize(s : Scale), + display(), #invalidateRegion(), #suspend(), #flush(), #thread(), #eventqueue()");
 				view.rightPane.add(c);
-                                view.rightPane.repaint();
+				view.rightPane.repaint();
 			}
 		});
 
@@ -178,7 +182,7 @@ public class UMLController {
 			public void actionPerformed(ActionEvent e) {
 				UMLComment c = new UMLComment(200, 200);
 				view.rightPane.add(c);
-                                view.rightPane.repaint();
+				view.rightPane.repaint();
 			}
 		});
 
@@ -186,7 +190,7 @@ public class UMLController {
 			public void actionPerformed(ActionEvent e) {
 				UMLAggregation a = new UMLAggregation(200, 200);
 				view.rightPane.add(a);
-                                view.rightPane.repaint();
+				view.rightPane.repaint();
 			}
 		});
 
@@ -194,7 +198,7 @@ public class UMLController {
 			public void actionPerformed(ActionEvent e) {
 				UMLGeneralization g = new UMLGeneralization(200, 200);
 				view.rightPane.add(g);
-                                view.rightPane.repaint();
+				view.rightPane.repaint();
 
 			}
 		});
@@ -203,7 +207,7 @@ public class UMLController {
 			public void actionPerformed(ActionEvent e) {
 				UMLDependency d = new UMLDependency(200, 200);
 				view.rightPane.add(d);
-                                view.rightPane.repaint();
+				view.rightPane.repaint();
 			}
 		});
 
@@ -211,7 +215,7 @@ public class UMLController {
 			public void actionPerformed(ActionEvent e) {
 				UMLAssociation a = new UMLAssociation(200, 200);
 				view.rightPane.add(a);
-                                view.rightPane.repaint();
+				view.rightPane.repaint();
 			}
 		});
 
@@ -219,10 +223,11 @@ public class UMLController {
 			public void actionPerformed(ActionEvent e) {
 				UMLComposition c = new UMLComposition(200, 200);
 				view.rightPane.add(c);
-                                view.rightPane.repaint();
+				view.rightPane.repaint();
 			}
 		});
 	}
+
 }
 
 
