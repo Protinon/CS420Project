@@ -7,7 +7,7 @@ public class main {
 		// creating and showing this application's GUI.
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				UMLController c = new UMLController();
+				view c = new view();
 			}
 		});
 	}

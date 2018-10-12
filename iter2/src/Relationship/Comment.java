@@ -1,22 +1,14 @@
-package UML;
+package Relationship;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 
-import javax.swing.JComponent;
-
-public class UMLComment extends JComponent {
-
-	public UMLComment(int x, int y) {
-		super.setBounds(new Rectangle(x, y, 500, 500));
-		super.setLocation(x, y);
-
-		UMLMouseListener listener = new UMLMouseListener();
-		super.addMouseListener(listener);
-		super.addMouseMotionListener(listener);
+public class Comment extends Relationship {
+	
+	public Comment(int x, int y, int width, int height) {
+		super(x, y, width, height);
 	}
 
 	@Override

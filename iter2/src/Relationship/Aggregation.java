@@ -1,21 +1,13 @@
-package UML;
+package Relationship;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 
-import javax.swing.JComponent;
-
-public class UMLAggregation extends JComponent {
-
-	public UMLAggregation(int x, int y) {
-		super.setBounds(new Rectangle(x, y, 115, 15));
-		super.setLocation(x, y);
-
-		UMLMouseListener listener = new UMLMouseListener();
-		super.addMouseListener(listener);
-		super.addMouseMotionListener(listener);
+public class Aggregation extends Relationship {
+	
+	public Aggregation(int x, int y, int width, int height) {
+		super(x, y, width, height);
 	}
 
 	@Override

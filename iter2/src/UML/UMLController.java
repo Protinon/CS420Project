@@ -1,5 +1,6 @@
 package UML;
 
+
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,13 @@ import java.io.OutputStreamWriter;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
+
+import Relationship.Aggregation;
+import Relationship.Association;
+import Relationship.Composition;
+import Relationship.Dependency;
+import Relationship.Generalization;
+import Relationship.Comment;
 
 public class UMLController {
 
@@ -180,7 +188,7 @@ public class UMLController {
 
 		view.commentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UMLComment c = new UMLComment(200, 200);
+				Comment c = new Comment(200, 200, 200, 200);
 				view.rightPane.add(c);
 				view.rightPane.repaint();
 			}
@@ -188,7 +196,7 @@ public class UMLController {
 
 		view.aggregationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UMLAggregation a = new UMLAggregation(200, 200);
+				Aggregation a = new Aggregation(200, 200, 110, 10);
 				view.rightPane.add(a);
 				view.rightPane.repaint();
 			}
@@ -196,7 +204,7 @@ public class UMLController {
 
 		view.generalizationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UMLGeneralization g = new UMLGeneralization(200, 200);
+				Generalization g = new Generalization(200, 200, 105, 10);
 				view.rightPane.add(g);
 				view.rightPane.repaint();
 
@@ -205,7 +213,7 @@ public class UMLController {
 
 		view.dependencyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UMLDependency d = new UMLDependency(200, 200);
+				Dependency d = new Dependency(200, 200, 105, 10);
 				view.rightPane.add(d);
 				view.rightPane.repaint();
 			}
@@ -213,7 +221,7 @@ public class UMLController {
 
 		view.associationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UMLAssociation a = new UMLAssociation(200, 200);
+				Association a = new Association(200, 200, 100, 5);
 				view.rightPane.add(a);
 				view.rightPane.repaint();
 			}
@@ -221,7 +229,7 @@ public class UMLController {
 
 		view.compositionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UMLComposition c = new UMLComposition(200, 200);
+				Composition c = new Composition(200, 200, 110, 10);
 				view.rightPane.add(c);
 				view.rightPane.repaint();
 			}
