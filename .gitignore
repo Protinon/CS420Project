@@ -1,8 +1,9 @@
 .classpath
 .project
+.settings/
 bin/
-/iter1/nbproject/
-/iter1/build/
+nbproject/
+build/
 build.xml
 manifest.mf
 dist/
