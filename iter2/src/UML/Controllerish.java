@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 
 public class Controllerish extends JPanel {
 	private static final long serialVersionUID = 1L;
+	
+	MouseAdapter currentListener = null;
 
 	JButton selectButton = new JButton("Select");
 	JButton pointButton = new JButton("Point");
@@ -44,21 +46,7 @@ public class Controllerish extends JPanel {
 	ArrayList<Rectangle> compositedPoints;
 	ArrayList<Rectangle> compositedClasses;
 
-	boolean aSelectedShape = false;
-	boolean selected = false;
-	boolean pointed = false;
-	boolean deletePressed = false;
-	boolean classed = false;
-	boolean commented = false;
-	boolean aggregated = false;
-	boolean depended = false;
-	boolean associated = false;
-	boolean composited = false;
-	boolean generalized = false;
-
-	Point p1;
-
-	Rectangle selectedShape;
+//	Point p1;
 
 	int pointLimit = 50;
 	int classBoxLimit = 20;
@@ -107,411 +95,359 @@ public class Controllerish extends JPanel {
 
 		selectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
+				
+				/*
+				MouseAdapter listener = new MouseAdapter() {
+					
+					Rectangle selectedShape;
+					
+					@Override
+					public void mousePressed(MouseEvent e) {
+						System.out.println("Pressed");
+						Point p1 = new Point(e.getX(), e.getY());
+						
+						for (Rectangle p : pointRects) 
+						{
+							if (p.contains(p1)) 
+							{
+								selectedShape = p;
+							}
+						}
+						for (Rectangle r : classBoxes) 
+						{
+							if (r.contains(p1)) 
+							{
+								selectedShape = r;
+							}
+						}
 
-				pointed = false;
-				deletePressed = false;
-				classed = false;
-				commented = false;
-				aggregated = false;
-				depended = false;
-				associated = false;
-				composited = false;
-				generalized = false;
-				selected = true;
+						for (Rectangle p : commentBoxes) 
+						{
+							if (p.contains(p1.x, p1.y)) 
+							{
+								selectedShape = p;
+							}
+						}
+					}
+					
+					@Override
+					public void mouseDragged(MouseEvent e) {
+						if (selectedShape.contains(e.getX(), e.getY())) {
+							System.out.println("dragged");
+							int dx = e.getX() - p1.x;
+							int dy = e.getY() - p1.y;
+							selectedShape.setLocation(selectedShape.x + dx, selectedShape.y + dy);
+							p1 = e.getPoint();
+							repaint();
+						}
+					}
+				};
 
+				
+				//removeMouseMotionListener(currentMotionListener);
+				removeMouseListener(currentListener);
+				//addMouseMotionListener(motionListener);
+				addMouseListener(listener);
+				//currentMotionListener = motionListener;
+				currentListener = listener;
+				*/
 			}
 		});
 
 		pointButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
-
-				pointed = true;
-				deletePressed = false;
-				classed = false;
-				commented = false;
-				aggregated = false;
-				depended = false;
-				associated = false;
-				composited = false;
-				generalized = false;
-				selected = false;
-
+				MouseAdapter listener = new MouseAdapter() {
+					
+					@Override
+					public void mousePressed(MouseEvent e) {
+						Point p1 = new Point(e.getX(), e.getY());
+						
+						if (pointRects.size() < pointLimit) 
+						{
+							pointRects.add(new Rectangle(p1.x, p1.y, 5, 5));
+							repaint();
+						}
+					}
+				};
+				removeMouseListener(currentListener);
+				addMouseListener(listener);
+				currentListener = listener;
 			}
 		});
 
 		classButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				pointed = false;
-				deletePressed = false;
-				classed = true;
-				commented = false;
-				aggregated = false;
-				depended = false;
-				associated = false;
-				composited = false;
-				generalized = false;
-				selected = false;
-
+				MouseAdapter listener = new MouseAdapter() {
+					
+					@Override
+					public void mousePressed(MouseEvent e) {
+						Point p1 = new Point(e.getX(), e.getY());
+						
+						if (pointRects.size() < pointLimit) 
+						{
+							if (classBoxes.size() < classBoxLimit) 
+							{
+								classBoxes.add(new Rectangle(p1.x, p1.y, 200, 200));
+								repaint();
+							}
+						}
+					}
+				};
+				removeMouseListener(currentListener);
+				addMouseListener(listener);
+				currentListener = listener;
 			}
 		});
 
 		commentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				pointed = false;
-				deletePressed = false;
-				classed = false;
-				commented = true;
-				aggregated = false;
-				depended = false;
-				associated = false;
-				composited = false;
-				generalized = false;
-				selected = false;
-
+				MouseAdapter listener = new MouseAdapter() {
+					
+					@Override
+					public void mousePressed(MouseEvent e) {
+						Point p1 = new Point(e.getX(), e.getY());
+						
+						if (commentBoxes.size() < commentBoxLimit) 
+						{
+							commentBoxes.add(new Rectangle(p1.x, p1.y, 125, 50));
+							repaint();
+						}
+					}
+				};
+				removeMouseListener(currentListener);
+				addMouseListener(listener);
+				currentListener = listener;
 			}
 		});
 
 		aggregationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				pointed = false;
-				deletePressed = false;
-				classed = false;
-				commented = false;
-				aggregated = true;
-				depended = false;
-				associated = false;
-				composited = false;
-				generalized = false;
-				selected = false;
-
+				MouseAdapter listener = new MouseAdapter() {
+					
+					@Override
+					public void mousePressed(MouseEvent e) {
+						Point p1 = new Point(e.getX(), e.getY());
+						
+						for (Rectangle p2 : pointRects) 
+						{
+							if (p2.contains(p1)) 
+							{
+								aggregatedPoints.add(p2);
+								repaint();
+							}
+						}
+					}
+				};
+				removeMouseListener(currentListener);
+				addMouseListener(listener);
+				currentListener = listener;
 			}
 		});
 
 		generalizationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				pointed = false;
-				deletePressed = false;
-				classed = false;
-				commented = false;
-				aggregated = false;
-				depended = false;
-				associated = false;
-				composited = false;
-				generalized = true;
-				selected = false;
-
+				MouseAdapter listener = new MouseAdapter() {
+					
+					@Override
+					public void mousePressed(MouseEvent e) {
+						Point p1 = new Point(e.getX(), e.getY());
+						
+						for (Rectangle p2 : pointRects) 
+						{
+							if (p2.contains(p1.x, p1.y)) 
+							{
+								associatedPoints.add(p2);
+								repaint();
+							}
+						}
+						
+						for (Rectangle p3 : classBoxes) 
+						{
+							if (p3.contains(p1.x, p1.y)) 
+							{
+								generalizedClasses.add(p3);
+								repaint();
+							}
+						}
+					}
+				};
+				removeMouseListener(currentListener);
+				addMouseListener(listener);
+				currentListener = listener;
 			}
 		});
 
 		dependencyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				pointed = false;
-				deletePressed = false;
-				classed = false;
-				commented = false;
-				aggregated = false;
-				depended = true;
-				associated = false;
-				composited = false;
-				generalized = false;
-				selected = false;
-
+				MouseAdapter listener = new MouseAdapter() {
+					
+					@Override
+					public void mousePressed(MouseEvent e) {
+						Point p1 = new Point(e.getX(), e.getY());
+						
+						for (Rectangle p2 : pointRects) 
+						{
+							if (p2.contains(p1)) 
+							{
+								dependedPoints.add(p2);
+								repaint();
+							}
+						}
+					}
+				};
+				removeMouseListener(currentListener);
+				addMouseListener(listener);
+				currentListener = listener;
 			}
 		});
 
 		associationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				pointed = false;
-				deletePressed = false;
-				classed = false;
-				commented = false;
-				aggregated = false;
-				depended = false;
-				associated = true;
-				composited = false;
-				generalized = false;
-				selected = false;
-
+				MouseAdapter listener = new MouseAdapter() {
+					
+					@Override
+					public void mousePressed(MouseEvent e) {
+						Point p1 = new Point(e.getX(), e.getY());
+						
+						for (Rectangle p2 : pointRects) 
+						{
+							if (p2.contains(p1.x, p1.y)) 
+							{
+								associatedPoints.add(p2);
+								repaint();
+							}
+						}
+						for (Rectangle p3 : classBoxes) 
+						{
+							if (p3.contains(p1.x, p1.y)) 
+							{
+								associatedClasses.add(p3);
+								repaint();
+							}
+						}
+					}
+				};
+				removeMouseListener(currentListener);
+				addMouseListener(listener);
+				currentListener = listener;
 			}
 		});
 
 		compositionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				pointed = false;
-				deletePressed = false;
-				classed = false;
-				commented = false;
-				aggregated = false;
-				depended = false;
-				associated = false;
-				composited = true;
-				generalized = false;
-				selected = false;
-
+				MouseAdapter listener = new MouseAdapter() {
+					
+					@Override
+					public void mousePressed(MouseEvent e) {
+						Point p1 = new Point(e.getX(), e.getY());
+						
+						for (Rectangle p2 : pointRects) 
+						{
+							if (p2.contains(p1)) 
+							{
+								compositedPoints.add(p2);
+								repaint();
+							}
+						}
+					}
+				};
+				removeMouseListener(currentListener);
+				addMouseListener(listener);
+				currentListener = listener;
 			}
 		});
 
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
-
-				pointed = false;
-				deletePressed = true;
-				classed = false;
-				commented = false;
-				aggregated = false;
-				depended = false;
-				associated = false;
-				composited = false;
-				generalized = false;
-				selected = false;
-
-			}
-		});
-		this.addMouseMotionListener(new MouseMotionAdapter() {
-
-			@Override
-			public void mouseDragged(MouseEvent e) {
-
-				if (aSelectedShape == true) {
-					if (selectedShape.contains(e.getX(), e.getY())) {
-						int dx = e.getX() - p1.x;
-						int dy = e.getY() - p1.y;
-						selectedShape.setLocation(selectedShape.x + dx, selectedShape.y + dy);
-						p1 = e.getPoint();
-						repaint();
-					}
-				}
-
-			}
-		});
-
-		this.addMouseListener(new MouseAdapter() {
-
-			Rectangle remover;
-			Rectangle remover2;
-			Rectangle remover3;
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-
-				p1 = new Point(e.getX(), e.getY());
-
-				if (pointed == true) 
-				{
-					if (pointRects.size() < pointLimit) 
-					{
-						pointRects.add(new Rectangle(p1.x, p1.y, 5, 5));
-						repaint();
-					}
-				}
-				
-				if (deletePressed == true) 
-				{
-					for (Rectangle r : pointRects) 
-					{
-						if (r.contains(p1.x, p1.y)) 
+				MouseAdapter listener = new MouseAdapter() {
+					
+					@Override
+					public void mousePressed(MouseEvent e) {
+						
+						Rectangle remover = null;
+						Rectangle remover2 = null;
+						Rectangle remover3 = null;
+						
+						Point p1 = new Point(e.getX(), e.getY());
+						
+						for (Rectangle r : pointRects) 
 						{
-							remover = r;
-						}
-					}
-
-					for (int i = associatedPoints.size() - 1; i >= 0; --i) 
-					{
-						if (associatedPoints.size() % 2 != 0) 
-						{
-							associatedPoints.remove(associatedPoints.size() - 1);
-						}
-
-						if (associatedPoints.get(i).contains(p1.x, p1.y)) 
-						{
-							if (i % 2 == 0) 
+							if (r.contains(p1.x, p1.y)) 
 							{
-								associatedPoints.remove(i + 1);
-								associatedPoints.remove(i);
-							} else 
-							{
-								associatedPoints.remove(i);
-								associatedPoints.remove(i - 1);
-								i--;
+								remover = r;
 							}
 						}
-					}
 
-					for (Rectangle r : classBoxes) 
-					{
-						if (r.contains(p1.x, p1.y)) 
+						for (int i = associatedPoints.size() - 1; i >= 0; --i) 
 						{
-							remover2 = r;
-						}
-					}
+							if (associatedPoints.size() % 2 != 0) 
+							{
+								associatedPoints.remove(associatedPoints.size() - 1);
+							}
 
-					for (int i = associatedClasses.size() - 1; i >= 0; --i) 
-					{
-						if (associatedClasses.size() % 2 != 0) 
-						{
-							associatedClasses.remove(associatedClasses.size() - 1);
-						}
-						if (associatedClasses.get(i).contains(p1.x, p1.y))
-						{
-							if (i % 2 == 0) 
+							if (associatedPoints.get(i).contains(p1.x, p1.y)) 
 							{
-								associatedClasses.remove(i + 1);
-								associatedClasses.remove(i);
-							} else 
-							{
-								associatedClasses.remove(i);
-								associatedClasses.remove(i - 1);
-								i--;
+								if (i % 2 == 0) 
+								{
+									associatedPoints.remove(i + 1);
+									associatedPoints.remove(i);
+								} else 
+								{
+									associatedPoints.remove(i);
+									associatedPoints.remove(i - 1);
+									i--;
+								}
 							}
 						}
-					}
 
-					for (Rectangle r : commentBoxes) {
-						if (r.contains(p1.x, p1.y)) {
-							remover3 = r;
+						for (Rectangle r : classBoxes) 
+						{
+							if (r.contains(p1.x, p1.y)) 
+							{
+								remover2 = r;
+							}
 						}
-					}
-					
-					pointRects.remove(remover);
-					classBoxes.remove(remover2);
-					commentBoxes.remove(remover3);
-					repaint();
-				}
 
-				if (classed == true) 
-				{
-					if (classBoxes.size() < classBoxLimit) 
-					{
-						classBoxes.add(new Rectangle(p1.x, p1.y, 200, 200));
+						for (int i = associatedClasses.size() - 1; i >= 0; --i) 
+						{
+							if (associatedClasses.size() % 2 != 0) 
+							{
+								associatedClasses.remove(associatedClasses.size() - 1);
+							}
+							if (associatedClasses.get(i).contains(p1.x, p1.y))
+							{
+								if (i % 2 == 0) 
+								{
+									associatedClasses.remove(i + 1);
+									associatedClasses.remove(i);
+								} else 
+								{
+									associatedClasses.remove(i);
+									associatedClasses.remove(i - 1);
+									i--;
+								}
+							}
+						}
+
+						for (Rectangle r : commentBoxes) {
+							if (r.contains(p1.x, p1.y)) {
+								remover3 = r;
+							}
+						}
+						
+						pointRects.remove(remover);
+						classBoxes.remove(remover2);
+						commentBoxes.remove(remover3);
 						repaint();
 					}
-				}
-
-				if (commented == true) 
-				{
-					if (commentBoxes.size() < commentBoxLimit) 
-					{
-						commentBoxes.add(new Rectangle(p1.x, p1.y, 125, 50));
-						repaint();
-					}
-				}
-
-				if (associated == true) 
-				{
-					for (Rectangle p2 : pointRects) 
-					{
-						if (p2.contains(p1.x, p1.y)) 
-						{
-							associatedPoints.add(p2);
-							repaint();
-						}
-					}
-					for (Rectangle p3 : classBoxes) 
-					{
-						if (p3.contains(p1.x, p1.y)) 
-						{
-							associatedClasses.add(p3);
-							repaint();
-						}
-					}
-				}
-
-				if (generalized == true) 
-				{
-					for (Rectangle p2 : pointRects) 
-					{
-						if (p2.contains(p1.x, p1.y)) 
-						{
-							associatedPoints.add(p2);
-							repaint();
-						}
-					}
-					
-					for (Rectangle p3 : classBoxes) 
-					{
-						if (p3.contains(p1.x, p1.y)) 
-						{
-							generalizedClasses.add(p3);
-							repaint();
-						}
-					}
-				}
-
-				if (depended == true) 
-				{
-					for (Rectangle p2 : pointRects) 
-					{
-						if (p2.contains(p1)) 
-						{
-							dependedPoints.add(p2);
-							repaint();
-						}
-					}
-				}
-
-				if (aggregated == true) 
-				{
-					for (Rectangle p2 : pointRects) 
-					{
-						if (p2.contains(p1)) 
-						{
-							aggregatedPoints.add(p2);
-							repaint();
-						}
-					}
-				}
-
-				if (composited == true) 
-				{
-					for (Rectangle p2 : pointRects) 
-					{
-						if (p2.contains(p1)) 
-						{
-							compositedPoints.add(p2);
-							repaint();
-						}
-					}
-				}
-
-				if (selected == true) 
-				{
-					for (Rectangle p : pointRects) 
-					{
-						if (p.contains(p1)) 
-						{
-							selectedShape = p;
-							aSelectedShape = true;
-						}
-					}
-					for (Rectangle r : classBoxes) 
-					{
-						if (r.contains(p1)) 
-						{
-							selectedShape = r;
-							aSelectedShape = true;
-						}
-					}
-
-					for (Rectangle p : commentBoxes) 
-					{
-						if (p.contains(p1.x, p1.y)) 
-						{
-							selectedShape = p;
-							aSelectedShape = true;
-						}
-					}
-				}
+				};
+				removeMouseListener(currentListener);
+				addMouseListener(listener);
+				currentListener = listener;
 			}
 		});
 	}
-
+	
 	@Override
 	public void paintComponent(Graphics g) {
 
