@@ -58,8 +58,8 @@ public class UMLClass extends JComponent{
         
         // Allows for node to be dragged with mouse
         UMLMouseListener listener = new UMLMouseListener();
-        super.addMouseListener(listener);
-        super.addMouseMotionListener(listener);
+        //super.addMouseListener(listener);
+        //super.addMouseMotionListener(listener);
     }
     
     // "Paint" the UMLClass - draw it on the screen

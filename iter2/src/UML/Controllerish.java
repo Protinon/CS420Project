@@ -11,10 +11,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+//import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import Relationship.Relationship;
+import Relationship.Generalization;
 
 public class Controllerish extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -31,6 +34,9 @@ public class Controllerish extends JPanel {
 	JButton generalizationButton = new JButton("Generalization");
 	JButton associationButton = new JButton("Association");
 	JButton compositionButton = new JButton("Composition");
+	
+	ArrayList<UMLClass> uClasses;
+	ArrayList<Relationship> relations;
 
 	ArrayList<Rectangle> pointRects;
 	ArrayList<Rectangle> classBoxes;
@@ -46,13 +52,14 @@ public class Controllerish extends JPanel {
 	ArrayList<Rectangle> compositedPoints;
 	ArrayList<Rectangle> compositedClasses;
 
-//	Point p1;
-
 	int pointLimit = 50;
 	int classBoxLimit = 20;
 	int commentBoxLimit = 20;
 
 	public Controllerish(JPanel left) {
+		
+		uClasses = new ArrayList<UMLClass>();
+		relations = new ArrayList<Relationship>();
 
 		generalizedClasses = new ArrayList<Rectangle>();
 		classBoxes = new ArrayList<Rectangle>();
@@ -92,9 +99,21 @@ public class Controllerish extends JPanel {
 		left.add(commentButton);
 		left.add(deleteButton);
 		left.add(selectButton);
+		
+		addMouseMotionListener(new MouseAdapter() {
+			
+			@Override
+		    public void mouseDragged(MouseEvent e) {
+		        repaint();
+		    }
+		});
 
 		selectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
+				
+				UMLMouseListener listener = new UMLMouseListener();
+				uClasses.get(0).addMouseListener(listener);
+				uClasses.get(0).addMouseMotionListener(listener);
 				
 				/*
 				MouseAdapter listener = new MouseAdapter() {
@@ -187,7 +206,13 @@ public class Controllerish extends JPanel {
 						{
 							if (classBoxes.size() < classBoxLimit) 
 							{
-								classBoxes.add(new Rectangle(p1.x, p1.y, 200, 200));
+								//classBoxes.add(new Rectangle(p1.x, p1.y, 200, 200));
+								System.out.println(p1);
+								UMLClass c = new UMLClass(p1.x, p1.y);
+								c.setInfo("Test",
+										"+ move(p : Point), + resize(s : Scale), + display(), #invalidateRegion(), #suspend(), #flush(), #thread(), #eventqueue()");
+								uClasses.add(c);
+								Controllerish.this.add(c);
 								repaint();
 							}
 						}
@@ -248,10 +273,30 @@ public class Controllerish extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				MouseAdapter listener = new MouseAdapter() {
 					
+					UMLClass c1 = null;
+					
 					@Override
 					public void mousePressed(MouseEvent e) {
 						Point p1 = new Point(e.getX(), e.getY());
 						
+						for (UMLClass c : uClasses) 
+						{
+							if (c.getBounds().contains(p1.x, p1.y)) 
+							{
+								if (c1 == null) {
+									c1 = c;
+								}
+								else {
+									Generalization gen = new Generalization(c1, c);
+									relations.add(gen);
+									Controllerish.this.add(gen);
+									c1 = null;
+								}
+								repaint();
+							}
+						}
+						
+						/*
 						for (Rectangle p2 : pointRects) 
 						{
 							if (p2.contains(p1.x, p1.y)) 
@@ -269,6 +314,7 @@ public class Controllerish extends JPanel {
 								repaint();
 							}
 						}
+						*/
 					}
 				};
 				removeMouseListener(currentListener);
@@ -455,7 +501,17 @@ public class Controllerish extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(Color.BLACK);
-
+		
+		//for (UMLClass x : uClasses) {
+		//	x.paintComponent(g);
+		//}
+		
+		//for (Relationship x : relations) {
+		//	Generalization y = (Generalization)x;
+		//	y.paintComponent(g);
+		//}
+		
+/*
 		if (associatedClasses.size() > 1) 
 		{
 			for (int i = 0; i < associatedClasses.size() - 1; i += 2) 
@@ -568,6 +624,6 @@ public class Controllerish extends JPanel {
 			g2.drawLine(point.x + 125, point.y + 25, point.x + 100, point.y + 25);
 
 		}
-
+	*/
 	}
 }
