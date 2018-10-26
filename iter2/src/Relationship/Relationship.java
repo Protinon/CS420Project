@@ -72,7 +72,7 @@ public class Relationship extends JComponent{
 		int y = updatedClass.getY();
 		int y1 = evaluate(center, corner1, updatedClass.getLocation());
 		int y2 = evaluate(center, corner2, updatedClass.getLocation());
-
+		
 		// Based on the evaluated y position, 
 		// Figure out which quadrant the moved class is in 
 		Point direction;
@@ -129,8 +129,7 @@ public class Relationship extends JComponent{
 	// Use that to evaluate at point p
 	protected int evaluate(Point center, Point corner, Point p) {
 		float slope = ((float)corner.y - (float)center.y) / ((float)corner.x - (float)center.x);
-		//System.out.println("Slope: " + slope);
-		float diff =  (float)corner.y - ((float)corner.x - (float)p.x) * slope;
-		return p.y - (int)diff;
+		float yInt = ((float)center.y + slope * (float)center.x);
+		return (int)((float)p.x * -1 * slope + yInt);
 	}
 }

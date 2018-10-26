@@ -207,7 +207,6 @@ public class Controllerish extends JPanel {
 							if (classBoxes.size() < classBoxLimit) 
 							{
 								//classBoxes.add(new Rectangle(p1.x, p1.y, 200, 200));
-								System.out.println(p1);
 								UMLClass c = new UMLClass(p1.x, p1.y);
 								c.setInfo("Test",
 										"+ move(p : Point), + resize(s : Scale), + display(), #invalidateRegion(), #suspend(), #flush(), #thread(), #eventqueue()");
