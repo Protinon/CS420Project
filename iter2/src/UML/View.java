@@ -2,16 +2,30 @@ package UML;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 
-public class view {
-	public view() {
+public class View {
+	
+	JButton selectButton = new JButton("Select");
+	JButton deleteButton = new JButton("Delete");
+	JButton commentButton = new JButton("Comment");
+	JButton classButton = new JButton("Class Box");
+	JButton aggregationButton = new JButton("Aggregation");
+	JButton dependencyButton = new JButton("Dependency");
+	JButton generalizationButton = new JButton("Generalization");
+	JButton associationButton = new JButton("Association");
+	JButton compositionButton = new JButton("Composition");
+	
+	public View() {
 		JFrame frame = new JFrame("UMLEditor");
 		JPanel leftPane = new JPanel();
 		JSplitPane splitPane;
@@ -37,7 +51,10 @@ public class view {
 		JMenuItem editSelectAll;
 		
 		JMenu view;
+		
+		JSeparator sep = new JSeparator();
 
+		
 // FRAME INITIALIZATION-------------------------------------------------------------
 		
 		frame.setVisible(true);
@@ -48,14 +65,40 @@ public class view {
 
 //SPLIT-PANE INITIALIZATION--------------------------------------------------------
 		
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPane, new Controllerish(leftPane));
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPane, new Controller(this));
+		splitPane.setEnabled(false);
+		splitPane.setDividerLocation(152);
 		leftPane.setLayout(null);
-		splitPane.setDividerSize(3);
-		splitPane.setResizeWeight(.197);
+		splitPane.setDividerSize(2);
 		frame.add(splitPane);
-		
+		selectButton.setBounds(0, 0, 150, 25);
+		leftPane.add(selectButton);
 //--------------------------------------------------------------------------------
-
+		
+//BUTTON INITIALIZATION-----------------------------------------------------------
+		selectButton.setBounds(0, 0, 150, 25);
+		deleteButton.setBounds(0, 25, 150, 25);
+		classButton.setBounds(0, 50, 150, 25);
+		commentButton.setBounds(0, 75, 150, 25);
+		associationButton.setBounds(0, 100, 150, 25);
+		generalizationButton.setBounds(0, 125, 150, 25);
+		dependencyButton.setBounds(0, 150, 150, 25);
+		aggregationButton.setBounds(0, 175, 150, 25);
+		compositionButton.setBounds(0, 200, 150, 25);
+		sep.setBounds(0,230, 152, 10);
+		
+		leftPane.add(classButton);
+		leftPane.add(associationButton);
+		leftPane.add(generalizationButton);
+		leftPane.add(dependencyButton);
+		leftPane.add(aggregationButton);
+		leftPane.add(compositionButton);
+		leftPane.add(commentButton);
+		leftPane.add(deleteButton);
+		leftPane.add(selectButton);
+		leftPane.add(sep);
+//--------------------------------------------------------------------------------
+		
 //MENU BAR INITIALIZATION---------------------------------------------------------
 		
 		menuBar = new JMenuBar();
@@ -143,3 +186,4 @@ public class view {
 // -------------------------------------------------------------------------------
 	}
 }
+
