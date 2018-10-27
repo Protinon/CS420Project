@@ -42,7 +42,7 @@ public class Controller extends JPanel {
 	int classBoxLimit = 20;
 	int commentBoxLimit = 20;
 
-	public Controller(view v) {
+	public Controller(View v) {
 
 		setBackground(Color.WHITE);
 
