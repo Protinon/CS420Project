@@ -26,6 +26,24 @@ public class UMLMouseListener extends MouseAdapter {
         cmpY = e.getComponent().getY();
     }
     
+   /*
+    // Experimenting with double-click mouse signals to 
+    //  properly click and edit class box text
+    public void mouseClicked(MouseEvent e) {
+    	
+    	if (e.getClickCount() == 2)
+    	{
+    	monitorX = e.getXOnScreen();
+        monitorY = e.getYOnScreen();
+
+        cmpX = e.getComponent().getX();
+        cmpY = e.getComponent().getY();
+    	} else {
+    		// Removed for testing purposes
+    	}
+    }
+    */
+    
     @Override
     public void mouseDragged(MouseEvent e) {
         int deltaX = e.getXOnScreen() - monitorX;
