@@ -15,13 +15,13 @@ import javax.swing.JPanel;
 public class Controller extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	ArrayList<UMLClass> generalizedClasses = new ArrayList<UMLClass>();
-	ArrayList<UMLClass> classBoxes = new ArrayList<UMLClass>();
+	ArrayList<Class> generalizedClasses = new ArrayList<Class>();
+	ArrayList<Class> classBoxes = new ArrayList<Class>();
 	ArrayList<Comment> commentBoxes = new ArrayList<Comment>();
-	ArrayList<UMLClass> associatedClasses = new ArrayList<UMLClass>();
-	ArrayList<UMLClass> dependedClasses = new ArrayList<UMLClass>();
-	ArrayList<UMLClass> aggregatedClasses = new ArrayList<UMLClass>();
-	ArrayList<UMLClass> compositedClasses = new ArrayList<UMLClass>();
+	ArrayList<Class> associatedClasses = new ArrayList<Class>();
+	ArrayList<Class> dependedClasses = new ArrayList<Class>();
+	ArrayList<Class> aggregatedClasses = new ArrayList<Class>();
+	ArrayList<Class> compositedClasses = new ArrayList<Class>();
 
 	boolean aClassIsSelected = false;
 	boolean aCommentIsSelected = false;
@@ -36,7 +36,7 @@ public class Controller extends JPanel {
 	boolean generalizationMode = false;
 
 	Point p1;
-	UMLClass selectedClass;
+	Class selectedClass;
 	Comment selectedComment;
 
 	int classBoxLimit = 20;
@@ -273,7 +273,7 @@ public class Controller extends JPanel {
 
 		this.addMouseListener(new MouseAdapter() {
 
-			UMLClass classToRemove;
+			Class classToRemove;
 			Comment commentToRemove;
 
 			@Override
@@ -284,7 +284,7 @@ public class Controller extends JPanel {
 				if (deleteMode == true) {
 					// if user is in delete mode and the mouse clicked inside a class box,
 					// note that we are going to remove that class box
-					for (UMLClass classBox : classBoxes) {
+					for (Class classBox : classBoxes) {
 						if (classBox.contains(p1.x, p1.y)) {
 							classToRemove = classBox;
 						}
@@ -324,7 +324,7 @@ public class Controller extends JPanel {
 					// if user is in class mode and there are less than 20 class boxes on
 					// the screen, then create a new class box at the user's mouse's coordinates
 					if (classBoxes.size() < classBoxLimit) {
-						classBoxes.add(new UMLClass(p1.x, p1.y));
+						classBoxes.add(new Class(p1.x, p1.y));
 						repaint();
 					}
 				}
@@ -344,7 +344,7 @@ public class Controller extends JPanel {
 					// association drawn(association will be drawn between first and second
 					// class boxes clicked (if an odd number of boxes clicked, the last box will
 					// not have a relationship until an even number completes it)
-					for (UMLClass classBox : classBoxes) {
+					for (Class classBox : classBoxes) {
 						if (classBox.contains(p1.x, p1.y)) {
 							associatedClasses.add(classBox);
 							repaint();
@@ -358,7 +358,7 @@ public class Controller extends JPanel {
 				// class boxes clicked (if an odd number of boxes clicked, the last box will
 				// not have a relationship until an even number completes it)
 				if (generalizationMode == true) {
-					for (UMLClass classBox : classBoxes) {
+					for (Class classBox : classBoxes) {
 						if (classBox.contains(p1.x, p1.y)) {
 							generalizedClasses.add(classBox);
 							repaint();
@@ -372,7 +372,7 @@ public class Controller extends JPanel {
 				// class boxes clicked (if an odd number of boxes clicked, the last box will
 				// not have a relationship until an even number completes it)
 				if (dependencyMode == true) {
-					for (UMLClass classBox : classBoxes) {
+					for (Class classBox : classBoxes) {
 						if (classBox.contains(p1.x, p1.y)) {
 							dependedClasses.add(classBox);
 							repaint();
@@ -387,7 +387,7 @@ public class Controller extends JPanel {
 				// class boxes clicked (if an odd number of boxes clicked, the last box will
 				// not have a relationship until an even number completes it)
 				if (aggregationMode == true) {
-					for (UMLClass classBox : classBoxes) {
+					for (Class classBox : classBoxes) {
 						if (classBox.contains(p1.x, p1.y)) {
 							aggregatedClasses.add(classBox);
 							repaint();
@@ -401,7 +401,7 @@ public class Controller extends JPanel {
 				// class boxes clicked (if an odd number of boxes clicked, the last box will
 				// not have a relationship until an even number completes it)
 				if (compositionMode == true) {
-					for (UMLClass classBox : classBoxes) {
+					for (Class classBox : classBoxes) {
 						if (classBox.contains(p1.x, p1.y)) {
 							compositedClasses.add(classBox);
 							repaint();
@@ -412,7 +412,7 @@ public class Controller extends JPanel {
 				if (selectMode == true) {
 					// if user is in select mode, and the mouse click's coordinates
 					// are contained within a class box, that box will be moveable by dragging
-					for (UMLClass classBox : classBoxes) {
+					for (Class classBox : classBoxes) {
 						if (classBox.contains(p1)) {
 							selectedClass = classBox;
 							aClassIsSelected = true;
@@ -440,7 +440,7 @@ public class Controller extends JPanel {
 		super.paintComponent(g);
 
 		// paint all classes user has created
-		for (UMLClass classBox : classBoxes) {
+		for (Class classBox : classBoxes) {
 			classBox.paintClass(g);
 		}
 
@@ -453,8 +453,8 @@ public class Controller extends JPanel {
 		// paint association between 1st and 2nd classes, 3rd and 4th etc
 		if (associatedClasses.size() > 1) {
 			for (int i = 0; i < associatedClasses.size() - 1; i += 2) {
-				UMLClass c1 = associatedClasses.get(i);
-				UMLClass c2 = associatedClasses.get(i + 1);
+				Class c1 = associatedClasses.get(i);
+				Class c2 = associatedClasses.get(i + 1);
 				Relationship ir = new Relationship("Association", c1, c2);
 				ir.paintRelationship(g);
 
@@ -465,8 +465,8 @@ public class Controller extends JPanel {
 		// paint generalization between 1st and 2nd classes, 3rd and 4th etc
 		if (generalizedClasses.size() > 1) {
 			for (int i = 0; i < generalizedClasses.size() - 1; i += 2) {
-				UMLClass c1 = generalizedClasses.get(i);
-				UMLClass c2 = generalizedClasses.get(i + 1);
+				Class c1 = generalizedClasses.get(i);
+				Class c2 = generalizedClasses.get(i + 1);
 			}
 		}
 
@@ -474,8 +474,8 @@ public class Controller extends JPanel {
 		// paint dependency between 1st and 2nd classes, 3rd and 4th etc
 		if (dependedClasses.size() > 1) {
 			for (int i = 0; i < dependedClasses.size() - 1; i += 2) {
-				UMLClass c1 = dependedClasses.get(i);
-				UMLClass c2 = dependedClasses.get(i + 1);
+				Class c1 = dependedClasses.get(i);
+				Class c2 = dependedClasses.get(i + 1);
 			}
 		}
 
@@ -483,8 +483,8 @@ public class Controller extends JPanel {
 		// paint aggregation between 1st and 2nd classes, 3rd and 4th etc
 		if (aggregatedClasses.size() > 1) {
 			for (int i = 0; i < aggregatedClasses.size() - 1; i += 2) {
-				UMLClass c1 = aggregatedClasses.get(i);
-				UMLClass c2 = aggregatedClasses.get(i + 1);
+				Class c1 = aggregatedClasses.get(i);
+				Class c2 = aggregatedClasses.get(i + 1);
 			}
 		}
 
@@ -492,8 +492,8 @@ public class Controller extends JPanel {
 		// paint composition between 1st and 2nd classes, 3rd and 4th etc
 		if (compositedClasses.size() > 1) {
 			for (int i = 0; i < compositedClasses.size() - 1; i += 2) {
-				UMLClass c1 = compositedClasses.get(i);
-				UMLClass c2 = compositedClasses.get(i + 1);
+				Class c1 = compositedClasses.get(i);
+				Class c2 = compositedClasses.get(i + 1);
 			}
 		}
 	}
