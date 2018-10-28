@@ -5,15 +5,24 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 public class View {
+	JLabel titleLabel = new JLabel("Enter Class Box Title: ");
+	JLabel attsLabel = new JLabel("Enter Class Attributes: ");
+	JLabel opsLabel = new JLabel("Enter Class Operations: ");
+
+	JTextField title = new JTextField();
+	JTextField atts = new JTextField();
+	JTextField ops = new JTextField();
 
 	JButton selectButton = new JButton("Select");
 	JButton deleteButton = new JButton("Delete");
@@ -24,6 +33,7 @@ public class View {
 	JButton generalizationButton = new JButton("Generalization");
 	JButton associationButton = new JButton("Association");
 	JButton compositionButton = new JButton("Composition");
+	JButton okayButton = new JButton("Okay");
 
 	public View() {
 		JFrame frame = new JFrame("UMLEditor");
@@ -84,7 +94,7 @@ public class View {
 		dependencyButton.setBounds(0, 150, 150, 25);
 		aggregationButton.setBounds(0, 175, 150, 25);
 		compositionButton.setBounds(0, 200, 150, 25);
-		sep.setBounds(0, 230, 152, 10);
+		sep.setBounds(0, 230, 152, 5);
 
 		leftPane.add(classButton);
 		leftPane.add(associationButton);
@@ -98,6 +108,30 @@ public class View {
 		leftPane.add(sep);
 //--------------------------------------------------------------------------------
 
+//INSPECTOR-LIKE FUNCTIONS INITIALIZATION-----------------------------------------
+		titleLabel.setBounds(2, 235, 150, 25);
+		title.setBounds(0, 260, 150, 25);
+		attsLabel.setBounds(2, 285, 150, 25);
+		atts.setBounds(0, 310, 150, 25);
+		opsLabel.setBounds(2, 335, 150, 25);
+		ops.setBounds(0, 360, 150, 25);
+		okayButton.setBounds(0, 395, 150, 25);
+
+		titleLabel.setVisible(false);
+		title.setVisible(false);
+		attsLabel.setVisible(false);
+		atts.setVisible(false);
+		opsLabel.setVisible(false);
+		ops.setVisible(false);
+		okayButton.setVisible(false);
+
+		leftPane.add(titleLabel);
+		leftPane.add(title);
+		leftPane.add(attsLabel);
+		leftPane.add(atts);
+		leftPane.add(opsLabel);
+		leftPane.add(ops);
+		leftPane.add(okayButton);
 //MENU BAR INITIALIZATION---------------------------------------------------------
 
 		menuBar = new JMenuBar();
@@ -185,3 +219,4 @@ public class View {
 // -------------------------------------------------------------------------------
 	}
 }
+
