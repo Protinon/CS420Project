@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 //import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Relationship.Relationship;
@@ -206,10 +207,10 @@ public class Controllerish extends JPanel {
 						{
 							if (classBoxes.size() < classBoxLimit) 
 							{
-								//classBoxes.add(new Rectangle(p1.x, p1.y, 200, 200));
 								UMLClass c = new UMLClass(p1.x, p1.y);
-								c.setInfo("Test",
-										"+ move(p : Point), + resize(s : Scale), + display(), #invalidateRegion(), #suspend(), #flush(), #thread(), #eventqueue()");
+								String title = JOptionPane.showInputDialog("Set title", "Title");
+						        String att = JOptionPane.showInputDialog("Set attributes", "Attributes");
+						        c.setInfo(title,  att);
 								uClasses.add(c);
 								Controllerish.this.add(c);
 								repaint();
