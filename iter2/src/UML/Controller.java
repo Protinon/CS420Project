@@ -51,18 +51,8 @@ public class Controller extends JPanel {
 		 * that the user can click and drag objects.
 		 */
 		v.selectButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ex) {
-
-				deleteMode = false;
-				classMode = false;
-				commentMode = false;
-				aggregationMode = false;
-				dependencyMode = false;
-				associationMode = false;
-				compositionMode = false;
-				generalizationMode = false;
-				selectMode = true;
-
+			public void actionPerformed(ActionEvent ex) {	
+				falsifyAllBut("selectMode");
 			}
 		});
 
@@ -73,17 +63,7 @@ public class Controller extends JPanel {
 		 */
 		v.classButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				deleteMode = false;
-				classMode = true;
-				commentMode = false;
-				aggregationMode = false;
-				dependencyMode = false;
-				associationMode = false;
-				compositionMode = false;
-				generalizationMode = false;
-				selectMode = false;
-
+				falsifyAllBut("classMode");
 			}
 		});
 
@@ -94,17 +74,7 @@ public class Controller extends JPanel {
 		 */
 		v.commentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				deleteMode = false;
-				classMode = false;
-				commentMode = true;
-				aggregationMode = false;
-				dependencyMode = false;
-				associationMode = false;
-				compositionMode = false;
-				generalizationMode = false;
-				selectMode = false;
-
+				falsifyAllBut("commentMode");
 			}
 		});
 
@@ -115,17 +85,7 @@ public class Controller extends JPanel {
 		 */
 		v.aggregationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				deleteMode = false;
-				classMode = false;
-				commentMode = false;
-				aggregationMode = true;
-				dependencyMode = false;
-				associationMode = false;
-				compositionMode = false;
-				generalizationMode = false;
-				selectMode = false;
-
+				falsifyAllBut("aggregationMode");
 			}
 		});
 
@@ -136,17 +96,7 @@ public class Controller extends JPanel {
 		 */
 		v.generalizationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				deleteMode = false;
-				classMode = false;
-				commentMode = false;
-				aggregationMode = false;
-				dependencyMode = false;
-				associationMode = false;
-				compositionMode = false;
-				generalizationMode = true;
-				selectMode = false;
-
+				falsifyAllBut("generalizationMode");
 			}
 		});
 
@@ -157,17 +107,7 @@ public class Controller extends JPanel {
 		 */
 		v.dependencyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				deleteMode = false;
-				classMode = false;
-				commentMode = false;
-				aggregationMode = false;
-				dependencyMode = true;
-				associationMode = false;
-				compositionMode = false;
-				generalizationMode = false;
-				selectMode = false;
-
+				falsifyAllBut("dependencyMode");
 			}
 		});
 
@@ -178,17 +118,7 @@ public class Controller extends JPanel {
 		 */
 		v.associationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				deleteMode = false;
-				classMode = false;
-				commentMode = false;
-				aggregationMode = false;
-				dependencyMode = false;
-				associationMode = true;
-				compositionMode = false;
-				generalizationMode = false;
-				selectMode = false;
-
+				falsifyAllBut("associationMode");
 			}
 		});
 
@@ -199,17 +129,7 @@ public class Controller extends JPanel {
 		 */
 		v.compositionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				deleteMode = false;
-				classMode = false;
-				commentMode = false;
-				aggregationMode = false;
-				dependencyMode = false;
-				associationMode = false;
-				compositionMode = true;
-				generalizationMode = false;
-				selectMode = false;
-
+				falsifyAllBut("compositionMode");
 			}
 		});
 
@@ -220,17 +140,22 @@ public class Controller extends JPanel {
 		 */
 		v.deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
-
-				deleteMode = true;
-				classMode = false;
-				commentMode = false;
-				aggregationMode = false;
-				dependencyMode = false;
-				associationMode = false;
-				compositionMode = false;
-				generalizationMode = false;
-				selectMode = false;
-
+				falsifyAllBut("deleteMode");
+			}
+		});
+		
+		/* if okay button is visible then the user has selected a class box
+		 * if a user clicks okay, the text in the 3 text fields above okay button 
+		 * will update class information
+		 * */
+		v.okayButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ex) {
+				if(selectedClass != null) {
+					selectedClass.setName(v.title.getText());
+					selectedClass.setAttributes(v.atts.getText());
+					selectedClass.setOperations(v.ops.getText());
+					repaint();
+				}
 			}
 		});
 
@@ -414,8 +339,31 @@ public class Controller extends JPanel {
 					// are contained within a class box, that box will be moveable by dragging
 					for (Class classBox : classBoxes) {
 						if (classBox.contains(p1)) {
+							//set the "inspector-like" functions to visible
 							selectedClass = classBox;
 							aClassIsSelected = true;
+							v.okayButton.setVisible(true);
+							v.titleLabel.setVisible(true);
+							v.title.setText(selectedClass.name);
+							v.title.setVisible(true);
+							v.attsLabel.setVisible(true);
+							v.atts.setText(selectedClass.attributes);
+							v.atts.setVisible(true);
+							v.opsLabel.setVisible(true);
+							v.ops.setText(selectedClass.operations);
+							v.ops.setVisible(true);
+							break;
+						} else {
+							//a class is not selected so make "inspector-like" function invisible
+							selectedClass = null;
+							aClassIsSelected = false;
+							v.okayButton.setVisible(false);
+							v.titleLabel.setVisible(false);
+							v.title.setVisible(false);
+							v.attsLabel.setVisible(false);
+							v.atts.setVisible(false);
+							v.opsLabel.setVisible(false);
+							v.ops.setVisible(false);
 						}
 					}
 
@@ -425,8 +373,12 @@ public class Controller extends JPanel {
 						if (commentBox.contains(p1.x, p1.y)) {
 							selectedComment = commentBox;
 							aCommentIsSelected = true;
+							break;
+						} else {
+							aCommentIsSelected = false;
 						}
 					}
+					
 
 				}
 			}
@@ -498,5 +450,19 @@ public class Controller extends JPanel {
 				Class c2 = compositedClasses.get(i + 1);
 			}
 		}
+	}
+	
+	public void falsifyAllBut(String mode) {
+		
+		boolean result = ("deleteMode" != mode) ? (deleteMode = false) : (deleteMode = true);	
+		result = ("classMode" != mode) ? (classMode = false) : (classMode = true);
+		result = ("commentMode" != mode) ? (commentMode = false) : (commentMode = true);
+		result = ("aggregationMode" != mode) ? (aggregationMode = false) : (aggregationMode = true);
+		result = ("dependencyMode" != mode) ? (dependencyMode = false) : (dependencyMode = true);
+		result = ("associationMode" != mode) ? (associationMode = false) : (associationMode = true);
+		result = ("compositionMode" != mode) ? (compositionMode = false) : (compositionMode = true);
+		result = ("generalizationMode" != mode) ? (generalizationMode = false) : (generalizationMode = true);
+		result = ("selectMode" != mode) ? (selectMode = false) : (selectMode = true);
+		
 	}
 }
