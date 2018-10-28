@@ -238,7 +238,7 @@ public class Controller extends JPanel {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				
+
 				if (aClassIsSelected == true) {
 					/*
 					 * if user has clicked on a class box, obtain its coordinates, update them from
@@ -455,7 +455,7 @@ public class Controller extends JPanel {
 			for (int i = 0; i < associatedClasses.size() - 1; i += 2) {
 				Class c1 = associatedClasses.get(i);
 				Class c2 = associatedClasses.get(i + 1);
-				Relationship ir = new Relationship("Association", c1, c2);
+				Relationship ir = new Relationship("association", c1, c2);
 				ir.paintRelationship(g);
 
 			}
@@ -467,6 +467,8 @@ public class Controller extends JPanel {
 			for (int i = 0; i < generalizedClasses.size() - 1; i += 2) {
 				Class c1 = generalizedClasses.get(i);
 				Class c2 = generalizedClasses.get(i + 1);
+				Relationship ir = new Relationship("generalization", c1, c2);
+				ir.paintRelationship(g);
 			}
 		}
 
