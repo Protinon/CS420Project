@@ -14,7 +14,7 @@ import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 
 public class View {
-	
+
 	JButton selectButton = new JButton("Select");
 	JButton deleteButton = new JButton("Delete");
 	JButton commentButton = new JButton("Comment");
@@ -24,14 +24,14 @@ public class View {
 	JButton generalizationButton = new JButton("Generalization");
 	JButton associationButton = new JButton("Association");
 	JButton compositionButton = new JButton("Composition");
-	
+
 	public View() {
 		JFrame frame = new JFrame("UMLEditor");
 		JPanel leftPane = new JPanel();
 		JSplitPane splitPane;
 
 		JMenuBar menuBar;
-		
+
 		JMenu file;
 		JMenuItem fileNew;
 		JMenuItem fileOpen;
@@ -40,7 +40,7 @@ public class View {
 		JMenuItem filePageSetup;
 		JMenuItem filePrint;
 		JMenuItem fileClose;
-		
+
 		JMenu edit;
 		JMenuItem editUndo;
 		JMenuItem editRedo;
@@ -49,22 +49,21 @@ public class View {
 		JMenuItem editPaste;
 		JMenuItem editDelete;
 		JMenuItem editSelectAll;
-		
+
 		JMenu view;
-		
+
 		JSeparator sep = new JSeparator();
 
-		
 // FRAME INITIALIZATION-------------------------------------------------------------
-		
+
 		frame.setVisible(true);
 		frame.setSize(800, 600);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+
 // ---------------------------------------------------------------------------------
 
 //SPLIT-PANE INITIALIZATION--------------------------------------------------------
-		
+
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPane, new Controller(this));
 		splitPane.setEnabled(false);
 		splitPane.setDividerLocation(152);
@@ -74,7 +73,7 @@ public class View {
 		selectButton.setBounds(0, 0, 150, 25);
 		leftPane.add(selectButton);
 //--------------------------------------------------------------------------------
-		
+
 //BUTTON INITIALIZATION-----------------------------------------------------------
 		selectButton.setBounds(0, 0, 150, 25);
 		deleteButton.setBounds(0, 25, 150, 25);
@@ -85,8 +84,8 @@ public class View {
 		dependencyButton.setBounds(0, 150, 150, 25);
 		aggregationButton.setBounds(0, 175, 150, 25);
 		compositionButton.setBounds(0, 200, 150, 25);
-		sep.setBounds(0,230, 152, 10);
-		
+		sep.setBounds(0, 230, 152, 10);
+
 		leftPane.add(classButton);
 		leftPane.add(associationButton);
 		leftPane.add(generalizationButton);
@@ -98,19 +97,19 @@ public class View {
 		leftPane.add(selectButton);
 		leftPane.add(sep);
 //--------------------------------------------------------------------------------
-		
+
 //MENU BAR INITIALIZATION---------------------------------------------------------
-		
+
 		menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 
 //TABS INITIALIZATION-------------------------------------------------------------
-		
+
 		file = new JMenu("File");
 		menuBar.add(file);
-		
+
 //FILE SUB-MENU-------------------------------------------------------------------
-		
+
 		fileNew = new JMenuItem("New");
 		fileNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
 
@@ -139,14 +138,14 @@ public class View {
 		file.add(filePrint);
 		file.addSeparator();
 		file.add(fileClose);
-		
+
 //--------------------------------------------------------------------------------
-		
+
 		edit = new JMenu("Edit");
 		menuBar.add(edit);
-		
+
 //EDIT SUB-MENU-------------------------------------------------------------------
-		
+
 		editUndo = new JMenuItem("Undo");
 		editUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
 
@@ -177,13 +176,12 @@ public class View {
 		edit.add(editDelete);
 		edit.addSeparator();
 		edit.add(editSelectAll);
-		
+
 // -------------------------------------------------------------------------------
-		
+
 		view = new JMenu("View");
 		menuBar.add(view);
 
 // -------------------------------------------------------------------------------
 	}
 }
-
