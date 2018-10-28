@@ -18,10 +18,11 @@ public class Relationship {
 		int x0, y0, x1, y1;
 
 		if (relationship != "association") {
-			difference = 20;
+			difference = 16;
 		} else {
 			difference = 0;
 		}
+
 		if ((c1.x < c2.x)) {
 			if (c1.x + c1.width > c2.x) {
 				if (c1.y > c2.y) {
@@ -66,6 +67,11 @@ public class Relationship {
 					y1 = c2.y;
 				}
 			}
+		}
+
+		if (relationship == "generalization") {
+			Generalization generalization = new Generalization(c1.x, c1.y, c2.x, c2.y, x0, y0, x1, y1);
+			generalization.paintGeneralization(g);
 		}
 	}
 }
