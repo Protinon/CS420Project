@@ -2,12 +2,8 @@ package UML;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -23,8 +19,6 @@ public class Controller extends JPanel {
 	ArrayList<Class> aggregatedClasses = new ArrayList<Class>();
 	ArrayList<Class> compositedClasses = new ArrayList<Class>();
 
-	boolean aClassIsSelected = false;
-	boolean aCommentIsSelected = false;
 	boolean selectMode = false;
 	boolean deleteMode = false;
 	boolean classMode = false;
@@ -35,15 +29,16 @@ public class Controller extends JPanel {
 	boolean compositionMode = false;
 	boolean generalizationMode = false;
 
-	Point p1;
 	Class selectedClass;
 	Comment selectedComment;
 
-	int classBoxLimit = 20;
-	int commentBoxLimit = 20;
+	View v;
 
-	public Controller(View v) {
-
+	public Controller(View v1) {
+		v = v1;
+		MouseListener m = new MouseListener(this);
+		this.addMouseListener(m);
+		this.addMouseMotionListener(m);
 		setBackground(Color.WHITE);
 
 		/*
@@ -51,7 +46,7 @@ public class Controller extends JPanel {
 		 * that the user can click and drag objects.
 		 */
 		v.selectButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ex) {	
+			public void actionPerformed(ActionEvent ex) {
 				falsifyAllBut("selectMode");
 			}
 		});
@@ -143,243 +138,19 @@ public class Controller extends JPanel {
 				falsifyAllBut("deleteMode");
 			}
 		});
-		
-		/* if okay button is visible then the user has selected a class box
-		 * if a user clicks okay, the text in the 3 text fields above okay button 
-		 * will update class information
-		 * */
+
+		/*
+		 * if okay button is visible then the user has selected a class box if a user
+		 * clicks okay, the text in the 3 text fields above okay button will update
+		 * class information
+		 */
 		v.okayButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
-				if(selectedClass != null) {
+				if (selectedClass != null) {
 					selectedClass.setName(v.title.getText());
 					selectedClass.setAttributes(v.atts.getText());
 					selectedClass.setOperations(v.ops.getText());
 					repaint();
-				}
-			}
-		});
-
-		this.addMouseMotionListener(new MouseMotionAdapter() {
-
-			@Override
-			public void mouseDragged(MouseEvent e) {
-
-				if (aClassIsSelected == true) {
-					/*
-					 * if user has clicked on a class box, obtain its coordinates, update them from
-					 * the user's mouse's position, and repaint
-					 */
-					if (selectedClass.contains(e.getX(), e.getY())) {
-						int dx = e.getX() - p1.x;
-						int dy = e.getY() - p1.y;
-						selectedClass.setLocation(selectedClass.x + dx, selectedClass.y + dy);
-						p1 = e.getPoint();
-						repaint();
-					}
-
-					/*
-					 * if user has clicked on a comment box, obtain its coordinates, update them
-					 * from the user's mouse's position, and repaint
-					 */
-					if (aCommentIsSelected == true) {
-						if (selectedComment.contains(e.getX(), e.getY())) {
-							int dx = e.getX() - p1.x;
-							int dy = e.getY() - p1.y;
-							selectedComment.setLocation(selectedComment.x + dx, selectedComment.y + dy);
-							p1 = e.getPoint();
-							repaint();
-						}
-
-					}
-				}
-
-			}
-		});
-
-		this.addMouseListener(new MouseAdapter() {
-
-			Class classToRemove;
-			Comment commentToRemove;
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// store coordinates of user's mouse click
-				p1 = new Point(e.getX(), e.getY());
-
-				if (deleteMode == true) {
-					// if user is in delete mode and the mouse clicked inside a class box,
-					// note that we are going to remove that class box
-					for (Class classBox : classBoxes) {
-						if (classBox.contains(p1.x, p1.y)) {
-							classToRemove = classBox;
-						}
-					}
-					// delete relationship associated with the class box we want to remove - this is
-					// buggy
-					for (int i = associatedClasses.size() - 1; i >= 0; --i) {
-						if (associatedClasses.size() % 2 != 0) {
-							associatedClasses.remove(associatedClasses.size() - 1);
-						}
-						if (associatedClasses.get(i).contains(p1.x, p1.y)) {
-							if (i % 2 == 0) {
-								associatedClasses.remove(i + 1);
-								associatedClasses.remove(i);
-							} else {
-								associatedClasses.remove(i);
-								associatedClasses.remove(i - 1);
-								i--;
-							}
-						}
-					}
-					// if user is in delete mode and the mouse clicked inside a comment box,
-					// note that we are going to remove that comment box
-					for (Comment commentBox : commentBoxes) {
-						if (commentBox.contains(p1.x, p1.y)) {
-							commentToRemove = commentBox;
-						}
-					}
-
-					// remove classes and comments that we have clicked on while in delete mode
-					classBoxes.remove(classToRemove);
-					commentBoxes.remove(commentToRemove);
-					repaint();
-				}
-
-				if (classMode == true) {
-					// if user is in class mode and there are less than 20 class boxes on
-					// the screen, then create a new class box at the user's mouse's coordinates
-					if (classBoxes.size() < classBoxLimit) {
-						classBoxes.add(new Class(p1.x, p1.y));
-						repaint();
-					}
-				}
-
-				if (commentMode == true) {
-					// if user is in comment mode and there are less than 20 comment boxes on
-					// the screen, then create a new comment box at the user's mouse's coordinates
-					if (commentBoxes.size() < commentBoxLimit) {
-						commentBoxes.add(new Comment(p1.x, p1.y));
-						repaint();
-					}
-				}
-
-				if (associationMode == true) {
-					// if user is in association mode, check if there is a class box
-					// at the coordinate of the mouse click and store that box to have an
-					// association drawn(association will be drawn between first and second
-					// class boxes clicked (if an odd number of boxes clicked, the last box will
-					// not have a relationship until an even number completes it)
-					for (Class classBox : classBoxes) {
-						if (classBox.contains(p1.x, p1.y)) {
-							associatedClasses.add(classBox);
-							repaint();
-						}
-					}
-				}
-
-				// if user is in generalization mode, check if there is a class box
-				// at the coordinate of the mouse click and store that box to have a
-				// generalization drawn(generalization will be drawn between first and second
-				// class boxes clicked (if an odd number of boxes clicked, the last box will
-				// not have a relationship until an even number completes it)
-				if (generalizationMode == true) {
-					for (Class classBox : classBoxes) {
-						if (classBox.contains(p1.x, p1.y)) {
-							generalizedClasses.add(classBox);
-							repaint();
-						}
-					}
-				}
-
-				// if user is in dependency mode, check if there is a class box
-				// at the coordinate of the mouse click and store that box to have a
-				// dependency drawn(dependency will be drawn between first and second
-				// class boxes clicked (if an odd number of boxes clicked, the last box will
-				// not have a relationship until an even number completes it)
-				if (dependencyMode == true) {
-					for (Class classBox : classBoxes) {
-						if (classBox.contains(p1.x, p1.y)) {
-							dependedClasses.add(classBox);
-							repaint();
-						}
-					}
-
-				}
-
-				// if user is in aggregation mode, check if there is a class box
-				// at the coordinate of the mouse click and store that box to have an
-				// aggregation drawn(aggregation will be drawn between first and second
-				// class boxes clicked (if an odd number of boxes clicked, the last box will
-				// not have a relationship until an even number completes it)
-				if (aggregationMode == true) {
-					for (Class classBox : classBoxes) {
-						if (classBox.contains(p1.x, p1.y)) {
-							aggregatedClasses.add(classBox);
-							repaint();
-						}
-					}
-				}
-
-				// if user is in composition mode, check if there is a class box
-				// at the coordinate of the mouse click and store that box to have a
-				// composition drawn(composition will be drawn between first and second
-				// class boxes clicked (if an odd number of boxes clicked, the last box will
-				// not have a relationship until an even number completes it)
-				if (compositionMode == true) {
-					for (Class classBox : classBoxes) {
-						if (classBox.contains(p1.x, p1.y)) {
-							compositedClasses.add(classBox);
-							repaint();
-						}
-					}
-				}
-
-				if (selectMode == true) {
-					// if user is in select mode, and the mouse click's coordinates
-					// are contained within a class box, that box will be moveable by dragging
-					for (Class classBox : classBoxes) {
-						if (classBox.contains(p1)) {
-							//set the "inspector-like" functions to visible
-							selectedClass = classBox;
-							aClassIsSelected = true;
-							v.okayButton.setVisible(true);
-							v.titleLabel.setVisible(true);
-							v.title.setText(selectedClass.name);
-							v.title.setVisible(true);
-							v.attsLabel.setVisible(true);
-							v.atts.setText(selectedClass.attributes);
-							v.atts.setVisible(true);
-							v.opsLabel.setVisible(true);
-							v.ops.setText(selectedClass.operations);
-							v.ops.setVisible(true);
-							break;
-						} else {
-							//a class is not selected so make "inspector-like" function invisible
-							selectedClass = null;
-							aClassIsSelected = false;
-							v.okayButton.setVisible(false);
-							v.titleLabel.setVisible(false);
-							v.title.setVisible(false);
-							v.attsLabel.setVisible(false);
-							v.atts.setVisible(false);
-							v.opsLabel.setVisible(false);
-							v.ops.setVisible(false);
-						}
-					}
-
-					// if user is in select mode, and the mouse click's coordinates
-					// are contained within a comment box, that box will be moveable by dragging
-					for (Comment commentBox : commentBoxes) {
-						if (commentBox.contains(p1.x, p1.y)) {
-							selectedComment = commentBox;
-							aCommentIsSelected = true;
-							break;
-						} else {
-							aCommentIsSelected = false;
-						}
-					}
-					
-
 				}
 			}
 		});
@@ -451,10 +222,10 @@ public class Controller extends JPanel {
 			}
 		}
 	}
-	
+
 	public void falsifyAllBut(String mode) {
-		
-		boolean result = ("deleteMode" != mode) ? (deleteMode = false) : (deleteMode = true);	
+
+		boolean result = ("deleteMode" != mode) ? (deleteMode = false) : (deleteMode = true);
 		result = ("classMode" != mode) ? (classMode = false) : (classMode = true);
 		result = ("commentMode" != mode) ? (commentMode = false) : (commentMode = true);
 		result = ("aggregationMode" != mode) ? (aggregationMode = false) : (aggregationMode = true);
@@ -463,6 +234,6 @@ public class Controller extends JPanel {
 		result = ("compositionMode" != mode) ? (compositionMode = false) : (compositionMode = true);
 		result = ("generalizationMode" != mode) ? (generalizationMode = false) : (generalizationMode = true);
 		result = ("selectMode" != mode) ? (selectMode = false) : (selectMode = true);
-		
+
 	}
 }
