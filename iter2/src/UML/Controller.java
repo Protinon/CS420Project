@@ -1,12 +1,20 @@
 package UML;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 public class Controller extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -36,11 +44,144 @@ public class Controller extends JPanel {
 
 	public Controller(View v1) {
 		v = v1;
+
 		MouseListener m = new MouseListener(this);
 		this.addMouseListener(m);
 		this.addMouseMotionListener(m);
+
 		setBackground(Color.WHITE);
 
+		fileActionListeners();
+		editActionListeners();
+		viewActionListeners();
+		buttonActionListeners();
+	}
+
+	public void fileActionListeners() {
+		v.fileNew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				javax.swing.SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						View v2 = new View();
+					}
+				});
+			}
+		});
+
+		v.fileOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser c = new JFileChooser();
+				int rVal = c.showOpenDialog(null);
+				if (rVal == JFileChooser.APPROVE_OPTION) {
+					File fileToOpen = c.getSelectedFile();
+					try {
+						Desktop.getDesktop().open(fileToOpen);
+					} catch (Exception ex) {
+					}
+				}
+			}
+		});
+
+		v.fileSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+
+		v.fileSaveAs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JTextArea textArea = new JTextArea(24, 80);
+				JFileChooser fileChooser = new JFileChooser();
+				int retval = fileChooser.showSaveDialog(v.fileSaveAs);
+				if (retval == JFileChooser.APPROVE_OPTION) {
+					File file = fileChooser.getSelectedFile();
+					if (file == null) {
+						return;
+					}
+					if (!file.getName().toLowerCase().endsWith(".uml")) {
+						file = new File(file.getParentFile(), file.getName() + ".uml");
+					}
+					try {
+						textArea.write(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+		});
+
+		v.filePageSetup.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+
+		v.filePrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PrinterJob pjob = PrinterJob.getPrinterJob();
+				PageFormat preformat = pjob.defaultPage();
+				preformat.setOrientation(PageFormat.LANDSCAPE);
+				PageFormat postformat = pjob.pageDialog(preformat);
+
+				if (preformat != postformat) {
+					pjob.setPrintable(new Printer(v.splitPane), postformat);
+					if (pjob.printDialog()) {
+						try {
+							pjob.print();
+						} catch (PrinterException e1) {
+							e1.printStackTrace();
+						}
+					}
+				}
+			}
+		});
+
+		v.fileClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				v.frame.dispose();
+			}
+		});
+	}
+
+	public void editActionListeners() {
+		v.editUndo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+
+		v.editRedo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+
+		v.editCut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+
+		v.editCopy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+
+		v.editPaste.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+
+		v.editDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+
+		v.editSelectAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+	}
+
+	public void viewActionListeners() {
+	}
+
+	public void buttonActionListeners() {
 		/*
 		 * if user clicks select button, all modes besides select are falsified, meaning
 		 * that the user can click and drag objects.
@@ -154,7 +295,6 @@ public class Controller extends JPanel {
 				}
 			}
 		});
-
 	}
 
 	@Override
@@ -180,7 +320,6 @@ public class Controller extends JPanel {
 				Class c2 = associatedClasses.get(i + 1);
 				Relationship ir = new Relationship("association", c1, c2);
 				ir.paintRelationship(g);
-
 			}
 		}
 
@@ -224,7 +363,6 @@ public class Controller extends JPanel {
 	}
 
 	public void falsifyAllBut(String mode) {
-
 		boolean result = ("deleteMode" != mode) ? (deleteMode = false) : (deleteMode = true);
 		result = ("classMode" != mode) ? (classMode = false) : (classMode = true);
 		result = ("commentMode" != mode) ? (commentMode = false) : (commentMode = true);
@@ -234,6 +372,5 @@ public class Controller extends JPanel {
 		result = ("compositionMode" != mode) ? (compositionMode = false) : (compositionMode = true);
 		result = ("generalizationMode" != mode) ? (generalizationMode = false) : (generalizationMode = true);
 		result = ("selectMode" != mode) ? (selectMode = false) : (selectMode = true);
-
 	}
 }
