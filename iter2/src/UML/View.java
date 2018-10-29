@@ -16,6 +16,31 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 public class View {
+	JFrame frame = new JFrame("UMLEditor");
+	JPanel leftPane = new JPanel();
+	JSplitPane splitPane;
+	
+	JMenu file = new JMenu("File");
+	JMenuItem fileNew = new JMenuItem("New");
+	JMenuItem fileOpen = new JMenuItem("Open");
+	JMenuItem fileSave = new JMenuItem("Save");
+	JMenuItem fileSaveAs = new JMenuItem("Save As...");
+	JMenuItem filePageSetup = new JMenuItem("Page Setup...");
+	JMenuItem filePrint = new JMenuItem("Print...");
+	JMenuItem fileClose = new JMenuItem("Close");
+
+	JMenu edit = new JMenu("Edit");
+
+	JMenuItem editUndo = new JMenuItem("Undo");
+	JMenuItem editRedo = new JMenuItem("Redo");
+	JMenuItem editCut = new JMenuItem("Cut");
+	JMenuItem editCopy = new JMenuItem("Copy");
+	JMenuItem editPaste = new JMenuItem("Paste");
+	JMenuItem editDelete = new JMenuItem("Delete");
+	JMenuItem editSelectAll = new JMenuItem("Select All");
+	
+	JMenu view = new JMenu("View");
+	
 	JLabel titleLabel = new JLabel("Enter Class Box Title: ");
 	JLabel attsLabel = new JLabel("Enter Class Attributes: ");
 	JLabel opsLabel = new JLabel("Enter Class Operations: ");
@@ -36,32 +61,8 @@ public class View {
 	JButton okayButton = new JButton("Okay");
 
 	public View() {
-		JFrame frame = new JFrame("UMLEditor");
-		JPanel leftPane = new JPanel();
-		JSplitPane splitPane;
 
 		JMenuBar menuBar;
-
-		JMenu file;
-		JMenuItem fileNew;
-		JMenuItem fileOpen;
-		JMenuItem fileSave;
-		JMenuItem fileSaveAs;
-		JMenuItem filePageSetup;
-		JMenuItem filePrint;
-		JMenuItem fileClose;
-
-		JMenu edit;
-		JMenuItem editUndo;
-		JMenuItem editRedo;
-		JMenuItem editCut;
-		JMenuItem editCopy;
-		JMenuItem editPaste;
-		JMenuItem editDelete;
-		JMenuItem editSelectAll;
-
-		JMenu view;
-
 		JSeparator sep = new JSeparator();
 
 // FRAME INITIALIZATION-------------------------------------------------------------
@@ -138,29 +139,20 @@ public class View {
 		frame.setJMenuBar(menuBar);
 
 //TABS INITIALIZATION-------------------------------------------------------------
-
-		file = new JMenu("File");
 		menuBar.add(file);
 
 //FILE SUB-MENU-------------------------------------------------------------------
 
-		fileNew = new JMenuItem("New");
+
 		fileNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
 
-		fileOpen = new JMenuItem("Open...");
 		fileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 
-		fileSave = new JMenuItem("Save");
 		fileSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 
-		fileSaveAs = new JMenuItem("Save As...");
-
-		filePageSetup = new JMenuItem("Page Setup...");
-
-		filePrint = new JMenuItem("Print...");
+		
 		filePrint.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 
-		fileClose = new JMenuItem("Close");
 		fileClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
 
 		file.add(fileNew);
@@ -174,31 +166,22 @@ public class View {
 		file.add(fileClose);
 
 //--------------------------------------------------------------------------------
-
-		edit = new JMenu("Edit");
 		menuBar.add(edit);
 
 //EDIT SUB-MENU-------------------------------------------------------------------
 
-		editUndo = new JMenuItem("Undo");
 		editUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
 
-		editRedo = new JMenuItem("Redo");
 		editRedo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
 
-		editCut = new JMenuItem("Cut");
 		editCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
 
-		editCopy = new JMenuItem("Copy");
 		editCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
 
-		editPaste = new JMenuItem("Paste");
 		editPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
 
-		editDelete = new JMenuItem("Delete");
 		editDelete.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK));
 
-		editSelectAll = new JMenuItem("Select All");
 		editSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
 
 		edit.add(editUndo);
@@ -212,11 +195,8 @@ public class View {
 		edit.add(editSelectAll);
 
 // -------------------------------------------------------------------------------
-
-		view = new JMenu("View");
 		menuBar.add(view);
 
 // -------------------------------------------------------------------------------
 	}
 }
-
