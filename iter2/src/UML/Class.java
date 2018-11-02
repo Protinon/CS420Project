@@ -1,28 +1,40 @@
-/*
- * This will become a class node in the UML design
- * Inheriting from JComponent gives extra useful features and better organization
-*/
 package UML;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-
 import javax.swing.JComponent;
 
 public class Class extends JComponent {
 	private static final long serialVersionUID = -16435718797097829L;
 
-	int x, y, width = 126, height = 72, boxSize = 24;
+	int x, y, width = 126, height = 72, boxSize = 24, stringMax = 25;
 	String name = "Title", attributes = "Attributes", operations = "Operations";
 
-	// set classes x/y coordinate with passed mouse click coordinate
+	/**
+	 * Initialize class box's left-hand corner x/y coordinates.
+	 * 
+	 * @author Bri Long
+	 * @param x1 will be used as this classbox's left hand corner x coordinate
+	 * @param y1 will be used as this class box's left hand corner y coordinate
+	 **/
 	public Class(int x1, int y1) {
 		x = x1;
 		y = y1;
 	}
 
-	// check to see if this object contains the passes coordinate
+	/**
+	 * Check to see if this object contains the (x,y) coordinate formed from
+	 * parameters.
+	 * 
+	 * @author Bri Long
+	 * @param x2 will be used as x in (x,y) coordinate to be checked if contained in
+	 *           this object
+	 * @param y2 will be used as y in (x,y) coordinate to be checked if contained in
+	 *           this object
+	 * @return boolean true if the (x,y) coordinate is contained within the bounds
+	 *         of this object, otherwise false
+	 **/
 	public boolean contains(int x2, int y2) {
 		Rectangle r = new Rectangle(x, y, width, height);
 		if (r.contains(x2, y2)) {
@@ -31,12 +43,29 @@ public class Class extends JComponent {
 		return false;
 	}
 
-	// update this object's location to passed coordinate
+	/**
+	 * Updates this class box's location so that the left-hand corner is now at the
+	 * (x,y) coordinate givem by parameters.
+	 * 
+	 * @author Bri Long
+	 * @param i will be used as x in (x,y) coordinate for object's left-hand corner
+	 *          to be moved too
+	 * @param j will be used as y in (x,y) coordinate for object's left hand corner
+	 *          to be moved too
+	 * @return void
+	 **/
 	public void setLocation(int i, int j) {
 		x = i;
 		y = j;
 	}
 
+	/**
+	 * Paint method for this class box, overwrites paintComponent.
+	 * 
+	 * @author Bri Long
+	 * @param g Graphics object
+	 * @return void
+	 **/
 	protected void paintClass(Graphics g) {
 		super.paintComponent(g);
 
@@ -63,25 +92,49 @@ public class Class extends JComponent {
 
 		// draw box around 3 subboxes ^^
 		g.drawRect(x, y, width, height);
-
 	}
 
-	// update classbox title
+	/**
+	 * Change this class box's name to a string of max length - 25.
+	 * @author Bri Long
+	 * @param newName will be class box's new name
+	 * @return void
+	 **/
 	public void setName(String newName) {
+		if (newName.length() > stringMax) {
+			newName = newName.substring(0, stringMax);
+		}
 		name = newName;
 		repaint();
 	}
 
-	// update classbox attributes
+	/**
+	 * Change this class box's attributes to a string of max length - 25.
+	 * 
+	 * @author Bri Long
+	 * @param newAtts will be class box's new attributes
+	 * @return void
+	 **/
 	public void setAttributes(String newAtts) {
+		if (newAtts.length() > stringMax) {
+			newAtts = newAtts.substring(0, stringMax);
+		}
 		attributes = newAtts;
 		repaint();
 	}
 
-	// update classbox operations
+	/**
+	 * Change this class box's operations to a string of max length - 25.
+	 * 
+	 * @author Bri Long
+	 * @param newOps will be class box's new operations
+	 * @return void
+	 **/
 	public void setOperations(String newOps) {
+		if (newOps.length() > stringMax) {
+			newOps = newOps.substring(0, stringMax);
+		}
 		operations = newOps;
 		repaint();
 	}
-
 }
