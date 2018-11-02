@@ -24,6 +24,84 @@ public class Class extends JComponent {
 	}
 
 	/**
+	 * Get this class box's name
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return this class box's name
+	 **/
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Get this class box's attributes
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return this class box's attributes
+	 **/
+	public String getAttributes() {
+		return attributes;
+	}
+
+	/**
+	 * Get this class box's operations
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return this class box's operations
+	 **/
+	public String getOperations() {
+		return operations;
+	}
+
+	/**
+	 * Change this class box's name to a string of max length - 25.
+	 * 
+	 * @author Bri Long
+	 * @param newName will be class box's new name
+	 * @return void
+	 **/
+	public void setName(String newName) {
+		if (newName.length() > stringMax) {
+			newName = newName.substring(0, stringMax);
+		}
+		name = newName;
+		repaint();
+	}
+
+	/**
+	 * Change this class box's attributes to a string of max length - 25.
+	 * 
+	 * @author Bri Long
+	 * @param newAtts will be class box's new attributes
+	 * @return void
+	 **/
+	public void setAttributes(String newAtts) {
+		if (newAtts.length() > stringMax) {
+			newAtts = newAtts.substring(0, stringMax);
+		}
+		attributes = newAtts;
+		repaint();
+	}
+
+	/**
+	 * Change this class box's operations to a string of max length - 25.
+	 * 
+	 * @author Bri Long
+	 * @param newOps will be class box's new operations
+	 * @return void
+	 **/
+	public void setOperations(String newOps) {
+		if (newOps.length() > stringMax) {
+			newOps = newOps.substring(0, stringMax);
+		}
+		operations = newOps;
+		repaint();
+	}
+
+	/**
 	 * Check to see if this object contains the (x,y) coordinate formed from
 	 * parameters.
 	 * 
@@ -92,49 +170,5 @@ public class Class extends JComponent {
 
 		// draw box around 3 subboxes ^^
 		g.drawRect(x, y, width, height);
-	}
-
-	/**
-	 * Change this class box's name to a string of max length - 25.
-	 * @author Bri Long
-	 * @param newName will be class box's new name
-	 * @return void
-	 **/
-	public void setName(String newName) {
-		if (newName.length() > stringMax) {
-			newName = newName.substring(0, stringMax);
-		}
-		name = newName;
-		repaint();
-	}
-
-	/**
-	 * Change this class box's attributes to a string of max length - 25.
-	 * 
-	 * @author Bri Long
-	 * @param newAtts will be class box's new attributes
-	 * @return void
-	 **/
-	public void setAttributes(String newAtts) {
-		if (newAtts.length() > stringMax) {
-			newAtts = newAtts.substring(0, stringMax);
-		}
-		attributes = newAtts;
-		repaint();
-	}
-
-	/**
-	 * Change this class box's operations to a string of max length - 25.
-	 * 
-	 * @author Bri Long
-	 * @param newOps will be class box's new operations
-	 * @return void
-	 **/
-	public void setOperations(String newOps) {
-		if (newOps.length() > stringMax) {
-			newOps = newOps.substring(0, stringMax);
-		}
-		operations = newOps;
-		repaint();
 	}
 }
