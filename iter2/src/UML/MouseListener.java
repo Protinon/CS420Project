@@ -14,10 +14,26 @@ public class MouseListener extends MouseAdapter {
 	int classBoxLimit = 20;
 	int commentBoxLimit = 20;
 
+	/**
+	 * Initializes this mouse listener to be associated with a controller.
+	 * 
+	 * @author Bri Long
+	 * @param c1 controller object associated with this mouse listener
+	 * @return void
+	 **/
 	public MouseListener(Controller c1) {
 		c = c1;
 	}
 
+	/**
+	 * Allows user to click a comment or class box and drag it across the right
+	 * panel.
+	 * 
+	 * @author Bri Long
+	 * @param e - MouseEvent - coordinate of cursor location as it is drug across
+	 *          the right panel.
+	 * @return void
+	 **/
 	@Override
 	public void mouseDragged(MouseEvent e) {
 
@@ -51,6 +67,15 @@ public class MouseListener extends MouseAdapter {
 
 	}
 
+	/**
+	 * Defines different functions for a user's mouse click depending on the mode
+	 * the editor is in.
+	 * 
+	 * @author Bri Long
+	 * @param e - MouseEvent - coordinate of cursor location when it clicks in right
+	 *          panel.
+	 * @return void
+	 **/
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// store coordinates of user's mouse click
@@ -64,23 +89,7 @@ public class MouseListener extends MouseAdapter {
 					classToRemove = classBox;
 				}
 			}
-			// delete relationship associated with the class box we want to remove - this is
-			// buggy
-			for (int i = c.associatedClasses.size() - 1; i >= 0; --i) {
-				if (c.associatedClasses.size() % 2 != 0) {
-					c.associatedClasses.remove(c.associatedClasses.size() - 1);
-				}
-				if (c.associatedClasses.get(i).contains(p1.x, p1.y)) {
-					if (i % 2 == 0) {
-						c.associatedClasses.remove(i + 1);
-						c.associatedClasses.remove(i);
-					} else {
-						c.associatedClasses.remove(i);
-						c.associatedClasses.remove(i - 1);
-						i--;
-					}
-				}
-			}
+
 			// if user is in delete mode and the mouse clicked inside a comment box,
 			// note that we are going to remove that comment box
 			for (Comment commentBox : c.commentBoxes) {
