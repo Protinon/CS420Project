@@ -6,13 +6,31 @@ import java.awt.Rectangle;
 public class Comment {
 	int x, y, width = 125, height = 50;
 
-	// set comment's x/y coordinate with passed mouse click coordinate
+	/**
+	 * Initialize this comment's left hand corner to the (x,y) coordinate formed by
+	 * parameters.
+	 * 
+	 * @author Bri Long
+	 * @param x1 will be used as x in (x,y) coordinate to initialize object
+	 * @param y1 will be used as y in (x,y) coordinate to initialize object
+	 **/
 	public Comment(int x1, int y1) {
 		x = x1;
 		y = y1;
 	}
 
-	// check to see if this object contains the passes coordinate
+	/**
+	 * Check to see if this object contains the (x,y) coordinate formed from
+	 * parameters.
+	 * 
+	 * @author Bri Long
+	 * @param x2 will be used as x in (x,y) coordinate to be checked if contained in
+	 *           this object
+	 * @param y2 will be used as y in (x,y) coordinate to be checked if contained in
+	 *           this object
+	 * @return boolean true if the (x,y) coordinate is contained within the bounds
+	 *         of this object, otherwise false
+	 **/
 	public boolean contains(int x2, int y2) {
 		Rectangle r = new Rectangle(x, y, 125, 50);
 		if (r.contains(x2, y2)) {
@@ -21,6 +39,13 @@ public class Comment {
 		return false;
 	}
 
+	/**
+	 * Paint method for this comment object, overwrites paintComponent.
+	 * 
+	 * @author Bri Long
+	 * @param g Graphics object
+	 * @return void
+	 **/
 	public void paintComment(Graphics g) {
 		g.drawLine(x, y, x, y + height);
 		g.drawLine(x, y, x + (width - (height - 25)), y);
@@ -31,7 +56,17 @@ public class Comment {
 		g.drawLine(x + width, y + (height - 25), x + (width - (height - 25)), y + (height - 25));
 	}
 
-	// update this object's location to passed coordinate
+	/**
+	 * Updates this class box's location so that the left-hand corner is now at the
+	 * (x,y) coordinate givem by parameters.
+	 * 
+	 * @author Bri Long
+	 * @param i will be used as x in (x,y) coordinate for object's left-hand corner
+	 *          to be moved too
+	 * @param j will be used as y in (x,y) coordinate for object's left hand corner
+	 *          to be moved too
+	 * @return void
+	 **/
 	public void setLocation(int i, int j) {
 		x = i;
 		y = j;
