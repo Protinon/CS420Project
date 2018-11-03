@@ -9,12 +9,10 @@ import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 public class Controller extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -40,11 +38,21 @@ public class Controller extends JPanel {
 	Class selectedClass;
 	Comment selectedComment;
 
+	PageFormat postformat;
+	PageFormat preformat;
 	View v;
+	Controller c;
 
+	/**
+	 * Constructor for this controller
+	 * 
+	 * @author Bri Long
+	 * @param v1 View object that will be the window that this controller interacts
+	 *           with
+	 **/
 	public Controller(View v1) {
 		v = v1;
-
+		c = this;
 		MouseListener m = new MouseListener(this);
 		this.addMouseListener(m);
 		this.addMouseMotionListener(m);
@@ -57,8 +65,22 @@ public class Controller extends JPanel {
 		buttonActionListeners();
 	}
 
+	/**
+	 * Action listeners for v's file tab's functions
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return void
+	 **/
 	public void fileActionListeners() {
 		v.fileNew.addActionListener(new ActionListener() {
+			/**
+			 * Creates a new instance of this UML Editor by creating a new View object.
+			 * 
+			 * @author Bri Long
+			 * @param e ActionEvent - fileNew menu item was clicked by user
+			 * @return void
+			 **/
 			public void actionPerformed(ActionEvent e) {
 				javax.swing.SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
@@ -68,6 +90,13 @@ public class Controller extends JPanel {
 			}
 		});
 
+		/**
+		 * Opens a file explorer dialog box to open files in their default editors.
+		 * 
+		 * @author Bri Long
+		 * @param e ActionEvent - fileOpen menu item was clicked by user
+		 * @return void
+		 **/
 		v.fileOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser c = new JFileChooser();
@@ -82,47 +111,57 @@ public class Controller extends JPanel {
 			}
 		});
 
+		/**
+		 * Skeleton for save functionality.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - fileSave menu item was clicked by user
+		 * @return void
+		 **/
 		v.fileSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 
+		/**
+		 * Skeleton for Save As functionality.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - fileSaveAs menu item was clicked by user
+		 * @return void
+		 **/
 		v.fileSaveAs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JTextArea textArea = new JTextArea(24, 80);
-				JFileChooser fileChooser = new JFileChooser();
-				int retval = fileChooser.showSaveDialog(v.fileSaveAs);
-				if (retval == JFileChooser.APPROVE_OPTION) {
-					File file = fileChooser.getSelectedFile();
-					if (file == null) {
-						return;
-					}
-					if (!file.getName().toLowerCase().endsWith(".uml")) {
-						file = new File(file.getParentFile(), file.getName() + ".uml");
-					}
-					try {
-						textArea.write(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-				}
 			}
 		});
 
+		/**
+		 * Creates a page setup dialog box to format printing.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - filePageSetup menu item was clicked by user
+		 * @return void
+		 **/
 		v.filePageSetup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				pageSetUp();
 			}
 		});
 
+		/**
+		 * Creates a page setup dialog box to format printing, and creates a print
+		 * dialog box with print functionality.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - filePrint menu item was clicked by user
+		 * @return void
+		 **/
 		v.filePrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PrinterJob pjob = PrinterJob.getPrinterJob();
-				PageFormat preformat = pjob.defaultPage();
-				preformat.setOrientation(PageFormat.LANDSCAPE);
-				PageFormat postformat = pjob.pageDialog(preformat);
+				PrinterJob pjob = pageSetUp();
 
 				if (preformat != postformat) {
-					pjob.setPrintable(new Printer(v.splitPane), postformat);
+					pjob.setPrintable(new Printer(c), postformat);
 					if (pjob.printDialog()) {
 						try {
 							pjob.print();
@@ -134,6 +173,13 @@ public class Controller extends JPanel {
 			}
 		});
 
+		/**
+		 * Closes the window from v.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - fileClose menu item was clicked by user
+		 * @return void
+		 **/
 		v.fileClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				v.frame.dispose();
@@ -141,150 +187,249 @@ public class Controller extends JPanel {
 		});
 	}
 
+	/**
+	 * Action listeners for v's edit tab's functions
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return void
+	 **/
 	public void editActionListeners() {
+		/**
+		 * Skeleton for undo functionality.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - editUndo menu item was clicked by user
+		 * @return void
+		 **/
 		v.editUndo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 
+		/**
+		 * Skeleton for redo functionality.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - editRedo menu item was clicked by user
+		 * @return void
+		 **/
 		v.editRedo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 
+		/**
+		 * Skeleton for cut functionality.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - editCut menu item was clicked by user
+		 * @return void
+		 **/
 		v.editCut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 
+		/**
+		 * Skeleton for copy functionality.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - editCopy menu item was clicked by user
+		 * @return void
+		 **/
 		v.editCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 
+		/**
+		 * Skeleton for paste functionality.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - editPaste menu item was clicked by user
+		 * @return void
+		 **/
 		v.editPaste.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 
+		/**
+		 * Skeleton for delete functionality.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - editDelete menu item was clicked by user
+		 * @return void
+		 **/
 		v.editDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 
+		/**
+		 * Skeleton for selectAll functionality.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - editSelectAll menu item was clicked by user
+		 * @return void
+		 **/
 		v.editSelectAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 	}
 
+	/**
+	 * Action listeners for v's view tab's functions
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return void
+	 **/
 	public void viewActionListeners() {
 	}
 
+	/**
+	 * Action listeners for v's left panel's button functions
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return void
+	 **/
 	public void buttonActionListeners() {
-		/*
-		 * if user clicks select button, all modes besides select are falsified, meaning
-		 * that the user can click and drag objects.
-		 */
+		/**
+		 * Sets the editor to be in select mode, so objects can be clicked and dragged.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - select button was clicked by user
+		 * @return void
+		 **/
 		v.selectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
 				falsifyAllBut("selectMode");
 			}
 		});
 
-		/*
-		 * if user clicks class button, all modes besides class are falsified, meaning
-		 * that the user can create class boxes by clicking the desired position in the
-		 * right pane.
-		 */
+		/**
+		 * Sets the editor to be in class mode, so class box's can be created and
+		 * painted.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - class box button was clicked by user
+		 * @return void
+		 **/
 		v.classButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				falsifyAllBut("classMode");
 			}
 		});
 
-		/*
-		 * if user clicks comment button, all modes besides comment are falsified,
-		 * meaning that the user can create comment boxes by clicking the desired
-		 * position in the right pane.
-		 */
+		/**
+		 * Sets the editor to be in comment mode, so comment objects can be created and
+		 * painted.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - comment button was clicked by user
+		 * @return void
+		 **/
 		v.commentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				falsifyAllBut("commentMode");
 			}
 		});
 
-		/*
-		 * if user clicks aggregation button, all modes besides aggregation are
-		 * falsified, meaning that the user may then click on 2 class boxes for an
-		 * aggregation relationship to be drawn between them.
-		 */
+		/**
+		 * Sets the editor to be in aggregation mode, so aggregation relationships can
+		 * be drawn between class boxes.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - aggregation button was clicked by user
+		 * @return void
+		 **/
 		v.aggregationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				falsifyAllBut("aggregationMode");
 			}
 		});
 
-		/*
-		 * if user clicks generalization button, all modes besides generalization are
-		 * falsified, meaning that the user may then click on 2 class boxes for a
-		 * generalization relationship to be drawn between them.
-		 */
+		/**
+		 * Sets the editor to be in generalization mode, so generalization relationships
+		 * can be drawn between class boxes.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - generalization button was clicked by user
+		 * @return void
+		 **/
 		v.generalizationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				falsifyAllBut("generalizationMode");
 			}
 		});
 
-		/*
-		 * if user clicks dependency button, all modes besides dependency are falsified,
-		 * meaning that the user may then click on 2 class boxes for a dependency
-		 * relationship to be drawn between them.
-		 */
+		/**
+		 * Sets the editor to be in dependency mode, so dependency relationships can be
+		 * drawn between class boxes.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - dependency button was clicked by user
+		 * @return void
+		 **/
 		v.dependencyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				falsifyAllBut("dependencyMode");
 			}
 		});
 
-		/*
-		 * if user clicks association button, all modes besides association are
-		 * falsified, meaning that the user may then click on 2 class boxes for an
-		 * association relationship to be drawn between them.
-		 */
+		/**
+		 * Sets the editor to be in association mode, so association relationships can
+		 * be drawn between class boxes.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - association button was clicked by user
+		 * @return void
+		 **/
 		v.associationButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				falsifyAllBut("associationMode");
 			}
 		});
 
-		/*
-		 * if user clicks composition button, all modes besides composition are
-		 * falsified, meaning that the user may then click on 2 class boxes for a
-		 * composition relationship to be drawn between them.
-		 */
+		/**
+		 * Sets the editor to be in composition mode, so composition relationships can
+		 * be drawn between class boxes.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - composition button was clicked by user
+		 * @return void
+		 **/
 		v.compositionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				falsifyAllBut("compositionMode");
 			}
 		});
 
-		/*
-		 * if user clicks delete button, all modes besides delete are falsified, meaning
-		 * that the user may then click on any class boxes or comments to remove them
-		 * from the pane.
-		 */
+		/**
+		 * Sets the editor to be in delete mode, so class boxes and comments can be
+		 * undrawn.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - delete button was clicked by user
+		 * @return void
+		 **/
 		v.deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
 				falsifyAllBut("deleteMode");
 			}
 		});
 
-		/*
-		 * if okay button is visible then the user has selected a class box if a user
-		 * clicks okay, the text in the 3 text fields above okay button will update
-		 * class information
-		 */
+		/**
+		 * The selected class box's name, attributes, and operations are updated.
+		 * 
+		 * @author Bri Long
+		 * @param e - ActionEvent - aggregation button was clicked by user
+		 * @return void
+		 **/
 		v.okayButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
 				if (selectedClass != null) {
@@ -297,6 +442,14 @@ public class Controller extends JPanel {
 		});
 	}
 
+	/**
+	 * Paint method that calls all specific paint methods, overwrites
+	 * paintComponent.
+	 * 
+	 * @author Bri Long
+	 * @param g Graphics object
+	 * @return void
+	 **/
 	@Override
 	public void paintComponent(Graphics g) {
 
@@ -362,6 +515,14 @@ public class Controller extends JPanel {
 		}
 	}
 
+	/**
+	 * Sets editor to be in the mode denoted by the string parameter, by falsifying
+	 * all other modes.
+	 * 
+	 * @author Bri Long
+	 * @param mode a string that determines the mode the editor will be in
+	 * @return void
+	 **/
 	public void falsifyAllBut(String mode) {
 		boolean result = ("deleteMode" != mode) ? (deleteMode = false) : (deleteMode = true);
 		result = ("classMode" != mode) ? (classMode = false) : (classMode = true);
@@ -372,5 +533,25 @@ public class Controller extends JPanel {
 		result = ("compositionMode" != mode) ? (compositionMode = false) : (compositionMode = true);
 		result = ("generalizationMode" != mode) ? (generalizationMode = false) : (generalizationMode = true);
 		result = ("selectMode" != mode) ? (selectMode = false) : (selectMode = true);
+	}
+
+	/**
+	 * Creates a pop-up window for user to update format of the print-version of the
+	 * right pane of the editor.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return PrinterJob
+	 **/
+	public PrinterJob pageSetUp() {
+		PrinterJob pjob = PrinterJob.getPrinterJob();
+		if (preformat == null) {
+			preformat = pjob.defaultPage();
+			preformat.setOrientation(PageFormat.LANDSCAPE);
+		} else {
+			preformat = postformat;
+		}
+		postformat = pjob.pageDialog(preformat);
+		return pjob;
 	}
 }
