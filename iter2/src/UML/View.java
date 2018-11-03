@@ -2,7 +2,6 @@ package UML;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,7 +18,7 @@ public class View {
 	JFrame frame = new JFrame("UMLEditor");
 	JPanel leftPane = new JPanel();
 	JSplitPane splitPane;
-	
+
 	JMenu file = new JMenu("File");
 	JMenuItem fileNew = new JMenuItem("New");
 	JMenuItem fileOpen = new JMenuItem("Open");
@@ -38,9 +37,9 @@ public class View {
 	JMenuItem editPaste = new JMenuItem("Paste");
 	JMenuItem editDelete = new JMenuItem("Delete");
 	JMenuItem editSelectAll = new JMenuItem("Select All");
-	
+
 	JMenu view = new JMenu("View");
-	
+
 	JLabel titleLabel = new JLabel("Enter Class Box Title: ");
 	JLabel attsLabel = new JLabel("Enter Class Attributes: ");
 	JLabel opsLabel = new JLabel("Enter Class Operations: ");
@@ -60,6 +59,12 @@ public class View {
 	JButton compositionButton = new JButton("Composition");
 	JButton okayButton = new JButton("Okay");
 
+	/**
+	 * Initialize window and setup.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 **/
 	public View() {
 
 		JMenuBar menuBar;
@@ -143,14 +148,12 @@ public class View {
 
 //FILE SUB-MENU-------------------------------------------------------------------
 
-
 		fileNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
 
 		fileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 
 		fileSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 
-		
 		filePrint.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 
 		fileClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
