@@ -11,10 +11,25 @@ import java.awt.print.PrinterException;
 public class Printer implements Printable {
 	final Component comp;
 
+	/**
+	 * Initialize this printer to print component parameter.
+	 * 
+	 * @author Bri Long
+	 * @param component - what will be printed
+	 **/
 	public Printer(Component component) {
 		comp = component;
 	}
 
+	/**
+	 * Initialize class box's left-hand corner x/y coordinates.
+	 * 
+	 * @author Bri Long
+	 * @param g          - Graphics object
+	 * @param format     - page format
+	 * @param page_index - number of pages to print
+	 * @return page exists or page does not exist
+	 **/
 	@Override
 	public int print(Graphics g, PageFormat format, int page_index) throws PrinterException {
 		if (page_index > 0) {
