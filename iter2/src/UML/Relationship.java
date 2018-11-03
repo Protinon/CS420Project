@@ -7,12 +7,28 @@ public class Relationship {
 	String relationship;
 	int difference;
 
+	/**
+	 * Initializes a relationship to be between 2 class objects and of a specializes
+	 * type.
+	 * 
+	 * @author Bri Long
+	 * @param relationship1 - the type of relationship that will be drawn
+	 * @param c0            - the "parent" class of the relationship
+	 * @param c3            - the "child" class of the relationship
+	 **/
 	public Relationship(String relationship1, Class c0, Class c3) {
 		c1 = c0;
 		c2 = c3;
 		relationship = relationship1;
 	}
 
+	/**
+	 * Draws a relationship between two classes, overrides paintComponent.
+	 * 
+	 * @author Bri Long
+	 * @param g - Graphics object
+	 * @return void
+	 **/
 	public void paintRelationship(Graphics g) {
 		// will be coordinates for arrow part of relationship
 		int x0, y0, x1, y1;
