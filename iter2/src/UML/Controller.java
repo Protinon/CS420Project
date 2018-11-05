@@ -524,7 +524,8 @@ public class Controller extends JPanel {
 	 * @return void
 	 **/
 	public void falsifyAllBut(String mode) {
-		boolean result = ("deleteMode" != mode) ? (deleteMode = false) : (deleteMode = true);
+		boolean result;
+		result = ("deleteMode" != mode) ? (deleteMode = false) : (deleteMode = true);
 		result = ("classMode" != mode) ? (classMode = false) : (classMode = true);
 		result = ("commentMode" != mode) ? (commentMode = false) : (commentMode = true);
 		result = ("aggregationMode" != mode) ? (aggregationMode = false) : (aggregationMode = true);
