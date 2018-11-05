@@ -2,6 +2,7 @@ package UML;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import javax.swing.JComponent;
 
@@ -9,7 +10,7 @@ public class Class extends JComponent {
 	private static final long serialVersionUID = -16435718797097829L;
 
 	int x, y, width = 126, height = 72, boxSize = 24, stringMax = 25;
-	String name = "Title", attributes = "Attributes", operations = "Operations";
+	String name = "Name", attributes = "Attributes", operations = "Operations";
 
 	/**
 	 * Initialize class box's left-hand corner x/y coordinates.
@@ -135,6 +136,16 @@ public class Class extends JComponent {
 	public void setLocation(int i, int j) {
 		x = i;
 		y = j;
+	}
+
+	/**
+	 * Returns this class box's location.
+	 * 
+	 * @author Bri Long
+	 * @return Point - location of left hand corner of this class box
+	 **/
+	public Point getLocation() {
+		return new Point(x, y);
 	}
 
 	/**
