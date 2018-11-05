@@ -1,6 +1,7 @@
 package UML;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 public class Comment {
@@ -17,6 +18,16 @@ public class Comment {
 	public Comment(int x1, int y1) {
 		x = x1;
 		y = y1;
+	}
+
+	/**
+	 * Returns this comment object's location.
+	 * 
+	 * @author Bri Long
+	 * @return Point - location of left hand corner of this comment object
+	 **/
+	public Point getLocation() {
+		return new Point(x, y);
 	}
 
 	/**
