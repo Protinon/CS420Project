@@ -71,33 +71,33 @@ class ClassTest {
 		assertEquals(veryLongOps.substring(0, 25), veryLongTest.getOperations());
 
 	}
-	
+
 	@Test
 	void testContains() {
-		Point upperLeftCorner = new Point(50, 50), insideObject = new Point(54, 60), 
-				aboveObject = new Point(49, 50), notNearObject = new Point(200, 300);
-		
+		Point upperLeftCorner = new Point(50, 50), insideObject = new Point(54, 60), aboveObject = new Point(49, 50),
+				notNearObject = new Point(200, 300);
+
 		assertEquals(true, veryLongTest.contains(upperLeftCorner));
 		assertEquals(true, veryLongTest.contains(insideObject));
 		assertEquals(false, veryLongTest.contains(aboveObject));
 		assertEquals(false, veryLongTest.contains(notNearObject));
-		
+
 	}
-	
+
 	@Test
-	void testSetLocation() {
-		
-		Point defaultLocation = new Point(50,50), negativeLocation = new Point(-10, -10), 
-				normalLocation = new Point(100,100), outsideScreen = new Point(-100, -100);
-		
+	void testSetGetLocation() {
+
+		Point defaultLocation = new Point(50, 50), negativeLocation = new Point(-10, -10),
+				normalLocation = new Point(100, 100), outsideScreen = new Point(-100, -100);
+
 		emptyTest.setLocation(negativeLocation);
 		normalTest.setLocation(normalLocation);
 		longTest.setLocation(outsideScreen);
-		
+
 		assertEquals(defaultLocation, defaultTest.getLocation());
 		assertEquals(negativeLocation, emptyTest.getLocation());
 		assertEquals(normalLocation, normalTest.getLocation());
 		assertEquals(outsideScreen, longTest.getLocation());
-		
+
 	}
 }
