@@ -45,10 +45,14 @@ public class MouseListener extends MouseAdapter {
 			if (c.selectedClass.contains(e.getX(), e.getY())) {
 				int dx = e.getX() - p1.x;
 				int dy = e.getY() - p1.y;
+				if(c.selectedClass.x + dx >= 0 && c.selectedClass.y+ dy >= 0 && 
+						(c.selectedClass.x + c.selectedClass.width +dx) <= c.getWidth() && (c.selectedClass.y + c.selectedClass.height + dy) <= c.getHeight()){
 				c.selectedClass.setLocation(c.selectedClass.x + dx, c.selectedClass.y + dy);
+				}
 				p1 = e.getPoint();
 				c.repaint();
 			}
+		}
 
 			/*
 			 * if user has clicked on a comment box, obtain its coordinates, update them
@@ -58,14 +62,16 @@ public class MouseListener extends MouseAdapter {
 				if (c.selectedComment.contains(e.getX(), e.getY())) {
 					int dx = e.getX() - p1.x;
 					int dy = e.getY() - p1.y;
+					if(c.selectedComment.x + dx >= 0 && c.selectedComment.y+ dy >= 0 && 
+							(c.selectedComment.x + c.selectedComment.width +dx) <= c.getWidth() && (c.selectedComment.y + c.selectedComment.height + dy) <= c.getHeight()){
 					c.selectedComment.setLocation(c.selectedComment.x + dx, c.selectedComment.y + dy);
+					}
 					p1 = e.getPoint();
 					c.repaint();
 				}
 			}
 		}
 
-	}
 
 	/**
 	 * Defines different functions for a user's mouse click depending on the mode
