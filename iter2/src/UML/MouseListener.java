@@ -1,6 +1,7 @@
 package UML;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -45,33 +46,49 @@ public class MouseListener extends MouseAdapter {
 			if (c.selectedClass.contains(e.getX(), e.getY())) {
 				int dx = e.getX() - p1.x;
 				int dy = e.getY() - p1.y;
-				if(c.selectedClass.x + dx >= 0 && c.selectedClass.y+ dy >= 0 && 
-						(c.selectedClass.x + c.selectedClass.width +dx) <= c.getWidth() && (c.selectedClass.y + c.selectedClass.height + dy) <= c.getHeight()){
-				c.selectedClass.setLocation(c.selectedClass.x + dx, c.selectedClass.y + dy);
+				if (c.selectedClass.x + dx >= 0 && c.selectedClass.y + dy >= 0
+						&& (c.selectedClass.x + c.selectedClass.width + dx) <= c.getWidth()
+						&& (c.selectedClass.y + c.selectedClass.height + dy) <= c.getHeight()) {
+					for (Class c3 : c.classBoxes) {
+						if (c3 != c.selectedClass) {
+							Rectangle r = new Rectangle(c3.x - 16, c3.y - 16, c3.width + 32, c3.height + 32);
+							if (r.contains(c.selectedClass.x + dx, c.selectedClass.y + dy)
+									|| r.contains(c.selectedClass.x + c.selectedClass.width + dx,
+											c.selectedClass.y + dy)
+									|| r.contains(c.selectedClass.x + c.selectedClass.width + dx,
+											c.selectedClass.y + c.selectedClass.height + dy)
+									|| r.contains(c.selectedClass.x + dx,
+											c.selectedClass.y + c.selectedClass.height + dy)) {
+								break;
+							} else {
+								c.selectedClass.setLocation(c.selectedClass.x + dx, c.selectedClass.y + dy);
+							}
+						}
+					}
 				}
 				p1 = e.getPoint();
 				c.repaint();
 			}
 		}
 
-			/*
-			 * if user has clicked on a comment box, obtain its coordinates, update them
-			 * from the user's mouse's position, and repaint
-			 */
-			if (aCommentIsSelected == true) {
-				if (c.selectedComment.contains(e.getX(), e.getY())) {
-					int dx = e.getX() - p1.x;
-					int dy = e.getY() - p1.y;
-					if(c.selectedComment.x + dx >= 0 && c.selectedComment.y+ dy >= 0 && 
-							(c.selectedComment.x + c.selectedComment.width +dx) <= c.getWidth() && (c.selectedComment.y + c.selectedComment.height + dy) <= c.getHeight()){
+		/*
+		 * if user has clicked on a comment box, obtain its coordinates, update them
+		 * from the user's mouse's position, and repaint
+		 */
+		if (aCommentIsSelected == true) {
+			if (c.selectedComment.contains(e.getX(), e.getY())) {
+				int dx = e.getX() - p1.x;
+				int dy = e.getY() - p1.y;
+				if (c.selectedComment.x + dx >= 0 && c.selectedComment.y + dy >= 0
+						&& (c.selectedComment.x + c.selectedComment.width + dx) <= c.getWidth()
+						&& (c.selectedComment.y + c.selectedComment.height + dy) <= c.getHeight()) {
 					c.selectedComment.setLocation(c.selectedComment.x + dx, c.selectedComment.y + dy);
-					}
-					p1 = e.getPoint();
-					c.repaint();
 				}
+				p1 = e.getPoint();
+				c.repaint();
 			}
 		}
-
+	}
 
 	/**
 	 * Defines different functions for a user's mouse click depending on the mode
@@ -246,3 +263,4 @@ public class MouseListener extends MouseAdapter {
 		}
 	}
 }
+
