@@ -1,10 +1,12 @@
 package UML;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 public class Dependency {
 	int x1, y1, x2, y2, x3, y3, arrowlength = 16;
 	Class c1, c2;
+	double slope;
 
 	/**
 	 * Paint method for this class box, overwrites paintComponent.
@@ -20,54 +22,37 @@ public class Dependency {
 	 * @param y4
 	 **/
 	public Dependency(Class c1, Class c2, int x0, int y0, int x4, int y4) {
-		this.c1 = c1;
-		this.c2 = c2;
-		if (((c1.x < c2.x) && ((c1.x + c1.width) > c2.x - arrowlength))
-				|| ((c1.x >= c2.x) && ((c2.x + c1.width) >= c1.x - arrowlength))) {
-			x1 = x0 - arrowlength / 2;
-			x2 = x0 + arrowlength / 2;
-			x3 = x4;
-			y1 = y0;
-			y2 = y0;
-			y3 = y4;
-		}
-
-		if (((c1.x >= c2.x) && ((c2.x + c1.width) <= c1.x - arrowlength))
-				|| ((c1.x < c2.x) && (c1.x + c1.width <= c2.x - arrowlength))) {
-			x1 = x0;
-			x2 = x0;
-			x3 = x4;
-			y1 = y0 + arrowlength / 2;
-			y2 = y0 - arrowlength / 2;
-			y3 = y4;
-		}
+		x1 = x0;
+		y1 = y0;
+		x2 = x4;
+		y2 = y4;
+		x3 = x0;
+		y3 = y0;
 	}
 
 	public void paintDependency(Graphics g) {
-		int[] pointsX = { x1, x2, x3 };
-		int[] pointsY = { y1, y2, y3 };
-		g.drawPolygon(pointsX, pointsY, 3);
-
-		if (c1.x < c2.x) {
-			if (c1.x + c1.width + arrowlength <= c2.x) {
-				g.drawLine(c1.x + c1.width, c1.y + c1.height / 2, c2.x - arrowlength, c2.y + c2.height / 2);
+		g.setColor(Color.BLACK);
+		if (y2 == y1) {
+			if (x1 < x2) {
+				for (int i = x1; i <= x2; i += 32) {
+					g.drawLine(i, y1, i + 16, y2);
+				}
 			} else {
-				if (c1.y >= c2.y + c2.height + arrowlength) {
-					g.drawLine(c1.x + c1.width / 2, c1.y, c2.x + c2.width / 2, c2.y + c2.height + arrowlength);
-				} else if (c1.y + c1.height + arrowlength <= c2.y) {
-					g.drawLine(c1.x + c1.width / 2, c1.y + c1.height, c2.x + c2.width / 2, c2.y - arrowlength);
+				for (int i = x1; i >= x2; i -= 32) {
+					g.drawLine(i, y1, i - 16, y2);
 				}
 			}
-		} else {
-			if (c1.x >= c2.x + c2.width + arrowlength) {
-				g.drawLine(c1.x, c1.y + c1.height / 2, c2.x + c2.width + arrowlength, c2.y + c2.height / 2);
+		} else if (x1 == x2) {
+			if (y1 < y2) {
+				for (int i = y1; i <= y2; i += 32) {
+					g.drawLine(x1, i, x2, i + 16);
+				}
 			} else {
-				if (c1.y >= c2.y + c2.height + arrowlength) {
-					g.drawLine(c1.x + c1.width / 2, c1.y, c2.x + c2.width / 2, c2.y + c2.height + arrowlength);
-				} else if (c1.y + c1.height + arrowlength <= c2.y) {
-					g.drawLine(c1.x + c1.width / 2, c1.y + c1.height, c2.x + c2.width / 2, c2.y - arrowlength);
+				for (int i = y1; i >= y2; i -= 32) {
+					g.drawLine(x1, i, x2, i - 16);
 				}
 			}
 		}
 	}
+
 }
