@@ -31,54 +31,55 @@ public class Relationship {
 	 **/
 	public void paintRelationship(Graphics g) {
 		// will be coordinates for arrow part of relationship
-		int x0, y0, x1, y1;
+		int x0 = 0, y0 = 0, x1 = 0, y1 = 0, arrowlength = 16;
 
-		if (relationship != "association") {
-			difference = 16;
-		} else {
-			difference = 0;
+		if (relationship == "generalization" || relationship == "dependency" || relationship == "aggregation"
+				|| relationship == "composition") {
+			arrowlength = 16;
+		} else if (relationship == "association") {
+			arrowlength = 0;
 		}
 
-		if ((c1.x < c2.x)) {
-			if (c1.x + c1.width > c2.x) {
-				if (c1.y > c2.y) {
-					g.drawLine(c1.x + c1.width / 2, c1.y, c2.x + c2.width / 2, c2.y + c2.height + difference);
-					x0 = c2.x + c2.width / 2;
-					y0 = c2.y + c2.height + difference;
-					x1 = c2.x + c2.width / 2;
-					y1 = c2.y + c2.height;
-				} else {
-					g.drawLine(c1.x + c1.width / 2, c1.y + c1.height, c2.x + c2.width / 2, c2.y - difference);
-					x0 = c2.x + c2.width / 2;
-					y0 = c2.y - difference;
-					x1 = c2.x + c2.width / 2;
-					y1 = c2.y;
-				}
-			} else {
-				g.drawLine(c1.x + c1.width, c1.y + c1.height / 2, c2.x - difference, c2.y + c2.height / 2);
-				x0 = c2.x - difference;
+		if (c1.x < c2.x) {
+			if (c1.x + c1.width + arrowlength <= c2.x) {
+				g.drawLine(c1.x + c1.width, c1.y + c1.height / 2, c2.x - arrowlength, c2.y + c2.height / 2);
+				x0 = c2.x - arrowlength;
 				y0 = c2.y + c2.height / 2;
 				x1 = c2.x;
 				y1 = c2.y + c2.height / 2;
+			} else {
+				if (c1.y >= c2.y + c2.height + arrowlength) {
+					g.drawLine(c1.x + c1.width / 2, c1.y, c2.x + c2.width / 2, c2.y + c2.height + arrowlength);
+					x0 = c2.x + c2.width / 2;
+					y0 = c2.y + c2.height + arrowlength;
+					x1 = c2.x + c2.width / 2;
+					y1 = c2.y + c2.height;
+				} else if (c1.y + c1.height + arrowlength <= c2.y) {
+					g.drawLine(c1.x + c1.width / 2, c1.y + c1.height, c2.x + c2.width / 2, c2.y - arrowlength);
+					x0 = c2.x + c2.width / 2;
+					y0 = c2.y - arrowlength;
+					x1 = c2.x + c2.width / 2;
+					y1 = c2.y;
+				}
 			}
 		} else {
-			if (c2.x + c2.width < c1.x) {
-				g.drawLine(c1.x, c1.y + c1.height / 2, c2.x + c2.width + difference, c2.y + c2.height / 2);
-				x0 = c2.x + c2.width + difference;
+			if (c1.x >= c2.x + c2.width + arrowlength) {
+				g.drawLine(c1.x, c1.y + c1.height / 2, c2.x + c2.width + arrowlength, c2.y + c2.height / 2);
+				x0 = c2.x + c2.width + arrowlength;
 				y0 = c2.y + c2.height / 2;
 				x1 = c2.x + c2.width;
 				y1 = c2.y + c2.height / 2;
 			} else {
-				if (c1.y > c2.y) {
-					g.drawLine(c1.x + c1.width / 2, c1.y, c2.x + c2.width / 2, c2.y + c2.height + difference);
+				if (c1.y >= c2.y + c2.height + arrowlength) {
+					g.drawLine(c1.x + c1.width / 2, c1.y, c2.x + c2.width / 2, c2.y + c2.height + arrowlength);
 					x0 = c2.x + c2.width / 2;
-					y0 = c2.y + c2.height + difference;
+					y0 = c2.y + c2.height + arrowlength;
 					x1 = c2.x + c2.width / 2;
 					y1 = c2.y + c2.height;
-				} else {
-					g.drawLine(c1.x + c1.width / 2, c1.y + c1.height, c2.x + c2.width / 2, c2.y - difference);
+				} else if (c1.y + c1.height + arrowlength <= c2.y) {
+					g.drawLine(c1.x + c1.width / 2, c1.y + c1.height, c2.x + c2.width / 2, c2.y - arrowlength);
 					x0 = c2.x + c2.width / 2;
-					y0 = c2.y - difference;
+					y0 = c2.y - arrowlength;
 					x1 = c2.x + c2.width / 2;
 					y1 = c2.y;
 				}
@@ -86,8 +87,20 @@ public class Relationship {
 		}
 
 		if (relationship == "generalization") {
-			Generalization generalization = new Generalization(c1.x, c1.y, c2.x, c2.y, x0, y0, x1, y1);
+			Generalization generalization = new Generalization(c1, c2, x0, y0, x1, y1);
 			generalization.paintGeneralization(g);
+		}
+		if (relationship == "aggregation") {
+			Aggregation aggregation = new Aggregation(c1, c2, x0, y0, x1, y1);
+			aggregation.paintAggregation(g);
+		}
+		if (relationship == "dependency") {
+			Dependency dependency = new Dependency(c1, c2, x0, y0, x1, y1);
+			dependency.paintDependency(g);
+		}
+		if (relationship == "composition") {
+			Composition composition = new Composition(c1, c2, x0, y0, x1, y1);
+			composition.paintComposition(g);
 		}
 	}
 }
