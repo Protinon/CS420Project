@@ -493,6 +493,8 @@ public class Controller extends JPanel {
 			for (int i = 0; i < dependedClasses.size() - 1; i += 2) {
 				Class c1 = dependedClasses.get(i);
 				Class c2 = dependedClasses.get(i + 1);
+				Relationship ir = new Relationship("dependency", c1, c2);
+				ir.paintRelationship(g);
 			}
 		}
 
@@ -502,6 +504,8 @@ public class Controller extends JPanel {
 			for (int i = 0; i < aggregatedClasses.size() - 1; i += 2) {
 				Class c1 = aggregatedClasses.get(i);
 				Class c2 = aggregatedClasses.get(i + 1);
+				Relationship ir = new Relationship("aggregation", c1, c2);
+				ir.paintRelationship(g);
 			}
 		}
 
@@ -511,6 +515,8 @@ public class Controller extends JPanel {
 			for (int i = 0; i < compositedClasses.size() - 1; i += 2) {
 				Class c1 = compositedClasses.get(i);
 				Class c2 = compositedClasses.get(i + 1);
+				Relationship ir = new Relationship("composition", c1, c2);
+				ir.paintRelationship(g);
 			}
 		}
 	}
