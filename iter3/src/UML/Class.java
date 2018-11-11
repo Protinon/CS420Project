@@ -4,13 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+
 import javax.swing.JComponent;
 
 public class Class extends JComponent {
 	private static final long serialVersionUID = -16435718797097829L;
 
-	int x, y, width = 126, height = 72, boxSize = 24, stringMax = 25;
-	String name = "Name", attributes = "Attributes", operations = "Operations";
+	private int x, y, width = 126, height = 72, boxSize = 24, stringMax = 25;
+	private String name = "Name", attributes = "Attributes", operations = "Operations";
 
 	/**
 	 * Initialize class box's left-hand corner x/y coordinates.
@@ -22,6 +23,14 @@ public class Class extends JComponent {
 	public Class(int x1, int y1) {
 		x = x1;
 		y = y1;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 
 	/**
