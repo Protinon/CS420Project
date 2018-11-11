@@ -18,6 +18,7 @@ import javax.swing.KeyStroke;
 public class View {
 	JFrame frame = new JFrame("UMLEditor");
 	JPanel leftPane = new JPanel();
+	JPanel rightPane = new JPanel();
 	JSplitPane splitPane;
 
 	JMenu file = new JMenu("File");
@@ -66,7 +67,7 @@ public class View {
 	 * @author Bri Long
 	 * @param N/A
 	 **/
-	public View() {
+	public View(Canvas rightPane) {
 
 		JMenuBar menuBar;
 		JSeparator sep = new JSeparator();
@@ -80,8 +81,7 @@ public class View {
 // ---------------------------------------------------------------------------------
 
 //SPLIT-PANE INITIALIZATION--------------------------------------------------------
-
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPane, new Controller(this));
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, leftPane, rightPane);
 		splitPane.setEnabled(false);
 		splitPane.setDividerLocation(152);
 		leftPane.setLayout(null);
