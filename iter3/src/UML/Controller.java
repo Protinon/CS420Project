@@ -1,8 +1,6 @@
 package UML;
 
-import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,11 +11,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
-import javax.swing.JPanel;
 
-public class Controller extends JPanel {
-	private static final long serialVersionUID = 1L;
-
+public class Controller {
 	private ArrayList<Comment> commentBoxes = new ArrayList<Comment>();
 
 	private ArrayList<Class> classBoxes = new ArrayList<Class>(), generalizedClasses = new ArrayList<Class>(),
@@ -34,6 +29,7 @@ public class Controller extends JPanel {
 
 	private View v;
 	private Controller c;
+	private Canvas rightPane;
 
 	/**
 	 * Constructor for this controller
@@ -42,14 +38,14 @@ public class Controller extends JPanel {
 	 * @param v1 View object that will be the window that this controller interacts
 	 *           with
 	 **/
-	public Controller(View v1) {
-		v = v1;
+	public Controller() {
 		c = this;
-		MouseListener m = new MouseListener(this);
-		this.addMouseListener(m);
-		this.addMouseMotionListener(m);
+		rightPane = new Canvas(this);
+		v = new View(rightPane);
 
-		setBackground(Color.WHITE);
+		MouseListener m = new MouseListener(this);
+		rightPane.addMouseListener(m);
+		rightPane.addMouseMotionListener(m);
 
 		fileActionListeners();
 		editActionListeners();
@@ -80,7 +76,7 @@ public class Controller extends JPanel {
 				javax.swing.SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						@SuppressWarnings("unused")
-						View v2 = new View();
+						Controller c2 = new Controller();
 					}
 				});
 			}
@@ -157,7 +153,7 @@ public class Controller extends JPanel {
 				PrinterJob pjob = pageSetUp(preformat, postformat);
 
 				if (preformat != postformat) {
-					pjob.setPrintable(new Printer(c), postformat);
+					pjob.setPrintable(new Printer(v.rightPane), postformat);
 					if (pjob.printDialog()) {
 						try {
 							pjob.print();
@@ -433,93 +429,10 @@ public class Controller extends JPanel {
 					selectedClass.setName(v.title.getText());
 					selectedClass.setAttributes(v.atts.getText());
 					selectedClass.setOperations(v.ops.getText());
-					repaint();
+					rightPane.repaint();
 				}
 			}
 		});
-	}
-
-	/**
-	 * Paint method that calls all specific paint methods, overwrites
-	 * paintComponent.
-	 * 
-	 * @author Bri Long
-	 * @param g Graphics object
-	 * @return void
-	 **/
-	@Override
-	public void paintComponent(Graphics g) {
-		overriddenPaintComponent(g);
-
-		// paint all classes user has created
-		for (Class classBox : classBoxes) {
-			classBox.paintClass(g);
-		}
-
-		// paint all comments user has created
-		for (Comment commentBox : commentBoxes) {
-			commentBox.paintComment(g);
-		}
-
-		// if there are at least 2 classes in associatedClasses,
-		// paint association between 1st and 2nd classes, 3rd and 4th etc
-		if (associatedClasses.size() > 1) {
-			for (int i = 0; i < associatedClasses.size() - 1; i += 2) {
-				Class c1 = associatedClasses.get(i);
-				Class c2 = associatedClasses.get(i + 1);
-				Relationship ir = new Relationship("association", c1, c2);
-				ir.paintRelationship(g);
-			}
-		}
-
-		// if there are at least 2 classes in generalizedClasses,
-		// paint generalization between 1st and 2nd classes, 3rd and 4th etc
-		if (generalizedClasses.size() > 1) {
-			for (int i = 0; i < generalizedClasses.size() - 1; i += 2) {
-				Class c1 = generalizedClasses.get(i);
-				Class c2 = generalizedClasses.get(i + 1);
-				Relationship ir = new Relationship("generalization", c1, c2);
-				ir.paintRelationship(g);
-			}
-		}
-
-		// if there are at least 2 classes in dependedClasses,
-		// paint dependency between 1st and 2nd classes, 3rd and 4th etc
-		if (dependedClasses.size() > 1) {
-			for (int i = 0; i < dependedClasses.size() - 1; i += 2) {
-				Class c1 = dependedClasses.get(i);
-				Class c2 = dependedClasses.get(i + 1);
-				Relationship ir = new Relationship("dependency", c1, c2);
-				ir.paintRelationship(g);
-			}
-		}
-
-		// if there are at least 2 classes in aggregatedClasses,
-		// paint aggregation between 1st and 2nd classes, 3rd and 4th etc
-		if (aggregatedClasses.size() > 1) {
-			for (int i = 0; i < aggregatedClasses.size() - 1; i += 2) {
-				Class c1 = aggregatedClasses.get(i);
-				Class c2 = aggregatedClasses.get(i + 1);
-				Relationship ir = new Relationship("aggregation", c1, c2);
-				ir.paintRelationship(g);
-			}
-		}
-
-		// if there are at least 2 classes in compositedClasses,
-		// paint composition between 1st and 2nd classes, 3rd and 4th etc
-		if (compositedClasses.size() > 1) {
-			for (int i = 0; i < compositedClasses.size() - 1; i += 2) {
-				Class c1 = compositedClasses.get(i);
-				Class c2 = compositedClasses.get(i + 1);
-				Relationship ir = new Relationship("composition", c1, c2);
-				ir.paintRelationship(g);
-			}
-		}
-
-	}
-
-	public void overriddenPaintComponent(Graphics g) {
-		super.paintComponent(g);
 	}
 
 	/**
@@ -568,7 +481,7 @@ public class Controller extends JPanel {
 		int classBoxLimit = 20;
 		if (classBoxes.size() < classBoxLimit) {
 			classBoxes.add(new Class(p1.x, p1.y));
-			repaint();
+			rightPane.repaint();
 		}
 	}
 
@@ -576,7 +489,7 @@ public class Controller extends JPanel {
 		int commentBoxLimit = 20;
 		if (commentBoxes.size() < commentBoxLimit) {
 			commentBoxes.add(new Comment(p1.x, p1.y));
-			repaint();
+			rightPane.repaint();
 		}
 	}
 
@@ -584,7 +497,7 @@ public class Controller extends JPanel {
 		for (Class classBox : classBoxes) {
 			if (classBox.contains(p1.x, p1.y)) {
 				associatedClasses.add(classBox);
-				repaint();
+				rightPane.repaint();
 			}
 		}
 	}
@@ -593,7 +506,7 @@ public class Controller extends JPanel {
 		for (Class classBox : classBoxes) {
 			if (classBox.contains(p1.x, p1.y)) {
 				generalizedClasses.add(classBox);
-				repaint();
+				rightPane.repaint();
 			}
 		}
 	}
@@ -602,7 +515,7 @@ public class Controller extends JPanel {
 		for (Class classBox : classBoxes) {
 			if (classBox.contains(p1.x, p1.y)) {
 				dependedClasses.add(classBox);
-				repaint();
+				rightPane.repaint();
 			}
 		}
 
@@ -612,7 +525,7 @@ public class Controller extends JPanel {
 		for (Class classBox : classBoxes) {
 			if (classBox.contains(p1.x, p1.y)) {
 				aggregatedClasses.add(classBox);
-				repaint();
+				rightPane.repaint();
 			}
 		}
 	}
@@ -621,7 +534,7 @@ public class Controller extends JPanel {
 		for (Class classBox : classBoxes) {
 			if (classBox.contains(p1.x, p1.y)) {
 				compositedClasses.add(classBox);
-				repaint();
+				rightPane.repaint();
 			}
 		}
 	}
@@ -644,7 +557,7 @@ public class Controller extends JPanel {
 
 		classBoxes.remove(classToRemove);
 		commentBoxes.remove(commentToRemove);
-		repaint();
+		rightPane.repaint();
 	}
 
 	public void selectObject(Point p1) {
@@ -742,5 +655,33 @@ public class Controller extends JPanel {
 
 	public ArrayList<Class> getClasses() {
 		return classBoxes;
+	}
+
+	public ArrayList<Comment> getComments() {
+		return commentBoxes;
+	}
+
+	public ArrayList<Class> getAssociations() {
+		return associatedClasses;
+	}
+
+	public ArrayList<Class> getGeneralizations() {
+		return generalizedClasses;
+	}
+
+	public ArrayList<Class> getDependencies() {
+		return dependedClasses;
+	}
+
+	public ArrayList<Class> getAggregations() {
+		return aggregatedClasses;
+	}
+
+	public ArrayList<Class> getCompositions() {
+		return compositedClasses;
+	}
+
+	public Canvas getCanvas() {
+		return rightPane;
 	}
 }
