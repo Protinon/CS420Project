@@ -7,7 +7,7 @@ public class Main {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				@SuppressWarnings("unused")
-				View v = new View();
+				Controller v = new Controller();
 			}
 		});
 	}
