@@ -41,9 +41,10 @@ public class MouseListener extends MouseAdapter {
 				int dx = e.getX() - p1.x;
 				int dy = e.getY() - p1.y;
 				if (c.getSelectedClass().getLocation().x + dx >= 0 && c.getSelectedClass().getLocation().y + dy >= 0
-						&& (c.getSelectedClass().getLocation().x + c.getSelectedClass().getWidth() + dx) <= c.getWidth()
+						&& (c.getSelectedClass().getLocation().x + c.getSelectedClass().getWidth() + dx) <= c
+								.getCanvas().getWidth()
 						&& (c.getSelectedClass().getLocation().y + c.getSelectedClass().getHeight() + dy) <= c
-								.getHeight()) {
+								.getCanvas().getHeight()) {
 					for (Class c3 : c.getClasses()) {
 						if (c3 != c.getSelectedClass()) {
 							Rectangle r = new Rectangle(c3.getLocation().x - 16, c3.getLocation().y - 16,
@@ -69,7 +70,7 @@ public class MouseListener extends MouseAdapter {
 					}
 				}
 				p1 = e.getPoint();
-				c.repaint();
+				c.getCanvas().repaint();
 			}
 		}
 
@@ -83,14 +84,14 @@ public class MouseListener extends MouseAdapter {
 				int dy = e.getY() - p1.y;
 				if (c.getSelectedComment().getLocation().x + dx >= 0 && c.getSelectedComment().getLocation().y + dy >= 0
 						&& (c.getSelectedComment().getLocation().x + c.getSelectedComment().getWidth() + dx) <= c
-								.getWidth()
+								.getCanvas().getWidth()
 						&& (c.getSelectedComment().getLocation().y + c.getSelectedComment().getHeight() + dy) <= c
-								.getHeight()) {
+								.getCanvas().getHeight()) {
 					c.getSelectedComment().setLocation(c.getSelectedComment().getLocation().x + dx,
 							c.getSelectedComment().getLocation().y + dy);
 				}
 				p1 = e.getPoint();
-				c.repaint();
+				c.getCanvas().repaint();
 			}
 		}
 	}
