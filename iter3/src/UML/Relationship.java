@@ -3,9 +3,8 @@ package UML;
 import java.awt.Graphics;
 
 public class Relationship {
-	Class c1, c2;
-	String relationship;
-	int difference;
+	private Class c1, c2;
+	private String relationship;
 
 	/**
 	 * Initializes a relationship to be between 2 class objects and of a specializes
@@ -31,7 +30,10 @@ public class Relationship {
 	 **/
 	public void paintRelationship(Graphics g) {
 		// will be coordinates for arrow part of relationship
-		int x0 = 0, y0 = 0, x1 = 0, y1 = 0, arrowlength = 16;
+		int a = 0, c = 0, b = 0, d = 0, arrowlength = 16;
+		int x1 = c1.getLocation().x, x2 = c2.getLocation().x, y1 = c1.getLocation().y, y2 = c2.getLocation().y;
+		int width = c1.getWidth();
+		int height = c1.getHeight();
 
 		if (relationship == "generalization" || relationship == "dependency" || relationship == "aggregation"
 				|| relationship == "composition") {
@@ -40,66 +42,108 @@ public class Relationship {
 			arrowlength = 0;
 		}
 
-		if (c1.x < c2.x) {
-			if (c1.x + c1.width + arrowlength <= c2.x) {
-				g.drawLine(c1.x + c1.width, c1.y + c1.height / 2, c2.x - arrowlength, c2.y + c2.height / 2);
-				x0 = c2.x - arrowlength;
-				y0 = c2.y + c2.height / 2;
-				x1 = c2.x;
-				y1 = c2.y + c2.height / 2;
+		if (x1 < x2) {
+			if (x1 + width + arrowlength <= x2) {
+				g.drawLine(x1 + width, y1 + height / 2, x2 - arrowlength, y2 + height / 2);
+				if (relationship != "dependency") {
+					a = x2 - arrowlength;
+					c = y2 + height / 2;
+					b = x2;
+					d = y2 + height / 2;
+				} else {
+					a = x1 + width;
+					c = y1 + height / 2;
+					b = x2 - arrowlength;
+					d = y2 + height / 2;
+				}
 			} else {
-				if (c1.y >= c2.y + c2.height + arrowlength) {
-					g.drawLine(c1.x + c1.width / 2, c1.y, c2.x + c2.width / 2, c2.y + c2.height + arrowlength);
-					x0 = c2.x + c2.width / 2;
-					y0 = c2.y + c2.height + arrowlength;
-					x1 = c2.x + c2.width / 2;
-					y1 = c2.y + c2.height;
-				} else if (c1.y + c1.height + arrowlength <= c2.y) {
-					g.drawLine(c1.x + c1.width / 2, c1.y + c1.height, c2.x + c2.width / 2, c2.y - arrowlength);
-					x0 = c2.x + c2.width / 2;
-					y0 = c2.y - arrowlength;
-					x1 = c2.x + c2.width / 2;
-					y1 = c2.y;
+				if (y1 >= y2 + height + arrowlength) {
+					g.drawLine(x1 + width / 2, y1, x2 + width / 2, y2 + height + arrowlength);
+					if (relationship != "dependency") {
+						a = x2 + width / 2;
+						c = y2 + height + arrowlength;
+						b = x2 + width / 2;
+						d = y2 + height;
+					} else {
+						a = x1 + width / 2;
+						c = y1;
+						b = x2 + width / 2;
+						d = y2 + height + arrowlength;
+					}
+				} else if (y1 + height + arrowlength <= y2) {
+					g.drawLine(x1 + width / 2, y1 + height, x2 + width / 2, y2 - arrowlength);
+					if (relationship != "dependency") {
+						a = x2 + width / 2;
+						c = y2 - arrowlength;
+						b = x2 + width / 2;
+						d = y2;
+					} else {
+						a = x1 + width / 2;
+						c = y1 + height;
+						b = x2 + width / 2;
+						d = y2 - arrowlength;
+					}
 				}
 			}
 		} else {
-			if (c1.x >= c2.x + c2.width + arrowlength) {
-				g.drawLine(c1.x, c1.y + c1.height / 2, c2.x + c2.width + arrowlength, c2.y + c2.height / 2);
-				x0 = c2.x + c2.width + arrowlength;
-				y0 = c2.y + c2.height / 2;
-				x1 = c2.x + c2.width;
-				y1 = c2.y + c2.height / 2;
+			if (x1 >= x2 + width + arrowlength) {
+				g.drawLine(x1, y1 + height / 2, x2 + width + arrowlength, y2 + height / 2);
+				if (relationship != "dependency") {
+					a = x2 + width + arrowlength;
+					c = y2 + height / 2;
+					b = x2 + width;
+					d = y2 + height / 2;
+				} else {
+					a = x1;
+					c = y1 + height / 2;
+					b = x2 + width + arrowlength;
+					d = y2 + height / 2;
+				}
 			} else {
-				if (c1.y >= c2.y + c2.height + arrowlength) {
-					g.drawLine(c1.x + c1.width / 2, c1.y, c2.x + c2.width / 2, c2.y + c2.height + arrowlength);
-					x0 = c2.x + c2.width / 2;
-					y0 = c2.y + c2.height + arrowlength;
-					x1 = c2.x + c2.width / 2;
-					y1 = c2.y + c2.height;
-				} else if (c1.y + c1.height + arrowlength <= c2.y) {
-					g.drawLine(c1.x + c1.width / 2, c1.y + c1.height, c2.x + c2.width / 2, c2.y - arrowlength);
-					x0 = c2.x + c2.width / 2;
-					y0 = c2.y - arrowlength;
-					x1 = c2.x + c2.width / 2;
-					y1 = c2.y;
+				if (y1 >= y2 + height + arrowlength) {
+					g.drawLine(x1 + width / 2, y1, x2 + width / 2, y2 + height + arrowlength);
+					if (relationship != "dependency") {
+						a = x2 + width / 2;
+						c = y2 + height + arrowlength;
+						b = x2 + width / 2;
+						d = y2 + height;
+					} else {
+						a = x1 + width / 2;
+						c = y1;
+						b = x2 + width / 2;
+						d = y2 + height + arrowlength;
+					}
+				} else if (y1 + height + arrowlength <= y2) {
+					g.drawLine(x1 + width / 2, y1 + height, x2 + width / 2, y2 - arrowlength);
+					if (relationship != "dependency") {
+						a = x2 + width / 2;
+						c = y2 - arrowlength;
+						b = x2 + width / 2;
+						d = y2;
+					} else {
+						a = x1 + width / 2;
+						c = y1 + height;
+						b = x2 + width / 2;
+						d = y2 - arrowlength;
+					}
 				}
 			}
 		}
 
 		if (relationship == "generalization") {
-			Generalization generalization = new Generalization(c1, c2, x0, y0, x1, y1);
+			Generalization generalization = new Generalization(c1, c2, a, c, b, d);
 			generalization.paintGeneralization(g);
 		}
 		if (relationship == "aggregation") {
-			Aggregation aggregation = new Aggregation(c1, c2, x0, y0, x1, y1);
+			Aggregation aggregation = new Aggregation(c1, c2, a, c, b, d);
 			aggregation.paintAggregation(g);
 		}
 		if (relationship == "dependency") {
-			Dependency dependency = new Dependency(c1, c2, x0, y0, x1, y1);
+			Dependency dependency = new Dependency(c1, c2, a, c, b, d);
 			dependency.paintDependency(g);
 		}
 		if (relationship == "composition") {
-			Composition composition = new Composition(c1, c2, x0, y0, x1, y1);
+			Composition composition = new Composition(c1, c2, a, c, b, d);
 			composition.paintComposition(g);
 		}
 	}
