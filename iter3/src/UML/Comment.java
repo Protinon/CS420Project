@@ -20,6 +20,14 @@ public class Comment {
 		y = y1;
 	}
 
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
 	/**
 	 * Returns this comment object's location.
 	 * 
@@ -83,4 +91,3 @@ public class Comment {
 		y = j;
 	}
 }
-
