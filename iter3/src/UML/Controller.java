@@ -3,6 +3,7 @@ package UML;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PageFormat;
@@ -17,31 +18,22 @@ import javax.swing.JPanel;
 public class Controller extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	ArrayList<Class> generalizedClasses = new ArrayList<Class>();
-	ArrayList<Class> classBoxes = new ArrayList<Class>();
-	ArrayList<Comment> commentBoxes = new ArrayList<Comment>();
-	ArrayList<Class> associatedClasses = new ArrayList<Class>();
-	ArrayList<Class> dependedClasses = new ArrayList<Class>();
-	ArrayList<Class> aggregatedClasses = new ArrayList<Class>();
-	ArrayList<Class> compositedClasses = new ArrayList<Class>();
+	private ArrayList<Comment> commentBoxes = new ArrayList<Comment>();
 
-	boolean selectMode = false;
-	boolean deleteMode = false;
-	boolean classMode = false;
-	boolean commentMode = false;
-	boolean aggregationMode = false;
-	boolean dependencyMode = false;
-	boolean associationMode = false;
-	boolean compositionMode = false;
-	boolean generalizationMode = false;
+	private ArrayList<Class> classBoxes = new ArrayList<Class>(), generalizedClasses = new ArrayList<Class>(),
+			associatedClasses = new ArrayList<Class>(), dependedClasses = new ArrayList<Class>(),
+			aggregatedClasses = new ArrayList<Class>(), compositedClasses = new ArrayList<Class>();
 
-	Class selectedClass;
-	Comment selectedComment;
+	private boolean aClassIsSelected = false, aCommentIsSelected = false;
+	private boolean selectMode = false, deleteMode = false, classMode = false, commentMode = false,
+			aggregationMode = false, dependencyMode = false, associationMode = false, compositionMode = false,
+			generalizationMode = false;
 
-	PageFormat postformat;
-	PageFormat preformat;
-	View v;
-	Controller c;
+	private Class selectedClass;
+	private Comment selectedComment;
+
+	private View v;
+	private Controller c;
 
 	/**
 	 * Constructor for this controller
@@ -73,6 +65,9 @@ public class Controller extends JPanel {
 	 * @return void
 	 **/
 	public void fileActionListeners() {
+		PageFormat postformat = null;
+		PageFormat preformat = null;
+
 		v.fileNew.addActionListener(new ActionListener() {
 			/**
 			 * Creates a new instance of this UML Editor by creating a new View object.
@@ -84,6 +79,7 @@ public class Controller extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				javax.swing.SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
+						@SuppressWarnings("unused")
 						View v2 = new View();
 					}
 				});
@@ -144,7 +140,7 @@ public class Controller extends JPanel {
 		 **/
 		v.filePageSetup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pageSetUp();
+				pageSetUp(preformat, postformat);
 			}
 		});
 
@@ -158,7 +154,7 @@ public class Controller extends JPanel {
 		 **/
 		v.filePrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PrinterJob pjob = pageSetUp();
+				PrinterJob pjob = pageSetUp(preformat, postformat);
 
 				if (preformat != postformat) {
 					pjob.setPrintable(new Printer(c), postformat);
@@ -308,6 +304,7 @@ public class Controller extends JPanel {
 		v.selectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
 				falsifyAllBut("selectMode");
+
 			}
 		});
 
@@ -452,8 +449,7 @@ public class Controller extends JPanel {
 	 **/
 	@Override
 	public void paintComponent(Graphics g) {
-
-		super.paintComponent(g);
+		overriddenPaintComponent(g);
 
 		// paint all classes user has created
 		for (Class classBox : classBoxes) {
@@ -519,6 +515,11 @@ public class Controller extends JPanel {
 				ir.paintRelationship(g);
 			}
 		}
+
+	}
+
+	public void overriddenPaintComponent(Graphics g) {
+		super.paintComponent(g);
 	}
 
 	/**
@@ -530,6 +531,7 @@ public class Controller extends JPanel {
 	 * @return void
 	 **/
 	public void falsifyAllBut(String mode) {
+		@SuppressWarnings("unused")
 		boolean result;
 		result = ("deleteMode" != mode) ? (deleteMode = false) : (deleteMode = true);
 		result = ("classMode" != mode) ? (classMode = false) : (classMode = true);
@@ -550,7 +552,7 @@ public class Controller extends JPanel {
 	 * @param N/A
 	 * @return PrinterJob
 	 **/
-	public PrinterJob pageSetUp() {
+	public PrinterJob pageSetUp(PageFormat preformat, PageFormat postformat) {
 		PrinterJob pjob = PrinterJob.getPrinterJob();
 		if (preformat == null) {
 			preformat = pjob.defaultPage();
@@ -560,5 +562,185 @@ public class Controller extends JPanel {
 		}
 		postformat = pjob.pageDialog(preformat);
 		return pjob;
+	}
+
+	public void addClass(Point p1) {
+		int classBoxLimit = 20;
+		if (classBoxes.size() < classBoxLimit) {
+			classBoxes.add(new Class(p1.x, p1.y));
+			repaint();
+		}
+	}
+
+	public void addComment(Point p1) {
+		int commentBoxLimit = 20;
+		if (commentBoxes.size() < commentBoxLimit) {
+			commentBoxes.add(new Comment(p1.x, p1.y));
+			repaint();
+		}
+	}
+
+	public void addAssociation(Point p1) {
+		for (Class classBox : classBoxes) {
+			if (classBox.contains(p1.x, p1.y)) {
+				associatedClasses.add(classBox);
+				repaint();
+			}
+		}
+	}
+
+	public void addGeneralization(Point p1) {
+		for (Class classBox : classBoxes) {
+			if (classBox.contains(p1.x, p1.y)) {
+				generalizedClasses.add(classBox);
+				repaint();
+			}
+		}
+	}
+
+	public void addDependency(Point p1) {
+		for (Class classBox : classBoxes) {
+			if (classBox.contains(p1.x, p1.y)) {
+				dependedClasses.add(classBox);
+				repaint();
+			}
+		}
+
+	}
+
+	public void addAggregation(Point p1) {
+		for (Class classBox : classBoxes) {
+			if (classBox.contains(p1.x, p1.y)) {
+				aggregatedClasses.add(classBox);
+				repaint();
+			}
+		}
+	}
+
+	public void addComposition(Point p1) {
+		for (Class classBox : classBoxes) {
+			if (classBox.contains(p1.x, p1.y)) {
+				compositedClasses.add(classBox);
+				repaint();
+			}
+		}
+	}
+
+	public void deleteObject(Point p1) {
+		Class classToRemove = null;
+		Comment commentToRemove = null;
+
+		for (Class classBox : classBoxes) {
+			if (classBox.contains(p1.x, p1.y)) {
+				classToRemove = classBox;
+			}
+		}
+
+		for (Comment commentBox : commentBoxes) {
+			if (commentBox.contains(p1.x, p1.y)) {
+				commentToRemove = commentBox;
+			}
+		}
+
+		classBoxes.remove(classToRemove);
+		commentBoxes.remove(commentToRemove);
+		repaint();
+	}
+
+	public void selectObject(Point p1) {
+
+		for (Class classBox : classBoxes) {
+			if (classBox.contains(p1)) {
+				selectedClass = classBox;
+				aClassIsSelected = true;
+				v.okayButton.setVisible(true);
+				v.titleLabel.setVisible(true);
+				v.title.setText(selectedClass.getName());
+				v.title.setVisible(true);
+				v.attsLabel.setVisible(true);
+				v.atts.setText(selectedClass.getAttributes());
+				v.atts.setVisible(true);
+				v.opsLabel.setVisible(true);
+				v.ops.setText(selectedClass.getOperations());
+				v.ops.setVisible(true);
+				break;
+			} else {
+				selectedClass = null;
+				aClassIsSelected = false;
+				v.okayButton.setVisible(false);
+				v.titleLabel.setVisible(false);
+				v.title.setVisible(false);
+				v.attsLabel.setVisible(false);
+				v.atts.setVisible(false);
+				v.opsLabel.setVisible(false);
+				v.ops.setVisible(false);
+			}
+		}
+
+		for (Comment commentBox : commentBoxes) {
+			if (commentBox.contains(p1.x, p1.y)) {
+				selectedComment = commentBox;
+				aCommentIsSelected = true;
+				break;
+			} else {
+				aCommentIsSelected = false;
+			}
+		}
+	}
+
+	public boolean classSelected() {
+		return aClassIsSelected;
+	}
+
+	public boolean commentSelected() {
+		return aCommentIsSelected;
+	}
+
+	public Class getSelectedClass() {
+		return selectedClass;
+	}
+
+	public Comment getSelectedComment() {
+		return selectedComment;
+	}
+
+	public boolean deleteMode() {
+		return deleteMode;
+	}
+
+	public boolean classMode() {
+		return classMode;
+	}
+
+	public boolean commentMode() {
+		return commentMode;
+	}
+
+	public boolean aggregationMode() {
+		return aggregationMode;
+	}
+
+	public boolean dependencyMode() {
+		return dependencyMode;
+	}
+
+	public boolean associationMode() {
+		return associationMode;
+	}
+
+	public boolean compositionMode() {
+		return compositionMode;
+	}
+
+	public boolean generalizationMode() {
+		return generalizationMode;
+	}
+
+	public boolean selectMode() {
+		return selectMode;
+	}
+
+	public ArrayList<Class> getClasses() {
+		return classBoxes;
 	}
 }
