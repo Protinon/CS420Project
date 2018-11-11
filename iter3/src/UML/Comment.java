@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 public class Comment {
-	int x, y, width = 125, height = 50;
+	private int x, y, width = 125, height = 50;
 
 	/**
 	 * Initialize this comment's left hand corner to the (x,y) coordinate formed by
