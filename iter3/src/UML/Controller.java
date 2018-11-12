@@ -9,12 +9,16 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import javax.swing.JFileChooser;
 
 public class Controller {
 	private ArrayList<Comment> commentBoxes = new ArrayList<Comment>();
 
+	private Stack<Action> actions = new Stack<Action>();
+	private Stack<Action> undoActions = new Stack<Action>();
+	private Stack<Action> redoActions = new Stack<Action>();
 	private ArrayList<Class> classBoxes = new ArrayList<Class>(), generalizedClasses = new ArrayList<Class>(),
 			associatedClasses = new ArrayList<Class>(), dependedClasses = new ArrayList<Class>(),
 			aggregatedClasses = new ArrayList<Class>(), compositedClasses = new ArrayList<Class>();
@@ -28,6 +32,7 @@ public class Controller {
 	private Comment selectedComment;
 
 	private View v;
+	@SuppressWarnings("unused")
 	private Controller c;
 	private Canvas rightPane;
 
@@ -149,6 +154,7 @@ public class Controller {
 		 * @return void
 		 **/
 		v.filePrint.addActionListener(new ActionListener() {
+			@SuppressWarnings("unused")
 			public void actionPerformed(ActionEvent e) {
 				PrinterJob pjob = pageSetUp(preformat, postformat);
 
@@ -196,6 +202,13 @@ public class Controller {
 		 **/
 		v.editUndo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Action a = actions.pop();
+				undoActions.add(a);
+				a.undoAction();
+				v.editRedo.setEnabled(true);
+				if (actions.isEmpty())
+					v.editUndo.setEnabled(false);
+				rightPane.repaint();
 			}
 		});
 
@@ -208,6 +221,16 @@ public class Controller {
 		 **/
 		v.editRedo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Action a = undoActions.pop();
+				redoActions.add(a);
+				actions.add(a);
+				a.doAction();
+				if (undoActions.isEmpty()) {
+					v.editRedo.setEnabled(false);
+				}
+				v.editUndo.setEnabled(true);
+				rightPane.repaint();
+
 			}
 		});
 
@@ -426,9 +449,18 @@ public class Controller {
 		v.okayButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
 				if (selectedClass != null) {
-					selectedClass.setName(v.title.getText());
+					SetClassNameAction setName = new SetClassNameAction(selectedClass, v.title.getText());
+					setName.doAction();
+					actions.push(setName);
+					SetClassAttributesAction setAtts = new SetClassAttributesAction(selectedClass, v.atts.getText());
 					selectedClass.setAttributes(v.atts.getText());
+					setAtts.doAction();
+					actions.push(setAtts);
+					SetClassOperationsAction setOps = new SetClassOperationsAction(selectedClass, v.ops.getText());
 					selectedClass.setOperations(v.ops.getText());
+					setOps.doAction();
+					actions.push(setOps);
+					v.editUndo.setEnabled(true);
 					rightPane.repaint();
 				}
 			}
@@ -480,7 +512,10 @@ public class Controller {
 	public void addClass(Point p1) {
 		int classBoxLimit = 20;
 		if (classBoxes.size() < classBoxLimit) {
-			classBoxes.add(new Class(p1.x, p1.y));
+			AddClassAction newClass = new AddClassAction(p1, classBoxes);
+			newClass.doAction();
+			actions.add(newClass);
+			v.editUndo.setEnabled(true);
 			rightPane.repaint();
 		}
 	}
@@ -488,7 +523,10 @@ public class Controller {
 	public void addComment(Point p1) {
 		int commentBoxLimit = 20;
 		if (commentBoxes.size() < commentBoxLimit) {
-			commentBoxes.add(new Comment(p1.x, p1.y));
+			AddCommentAction newComment = new AddCommentAction(p1, commentBoxes);
+			newComment.doAction();
+			actions.push(newComment);
+			v.editUndo.setEnabled(true);
 			rightPane.repaint();
 		}
 	}
@@ -496,7 +534,10 @@ public class Controller {
 	public void addAssociation(Point p1) {
 		for (Class classBox : classBoxes) {
 			if (classBox.contains(p1.x, p1.y)) {
-				associatedClasses.add(classBox);
+				AddAssociationAction addAssociations = new AddAssociationAction(classBox, p1, associatedClasses);
+				addAssociations.doAction();
+				actions.push(addAssociations);
+				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 			}
 		}
@@ -505,7 +546,11 @@ public class Controller {
 	public void addGeneralization(Point p1) {
 		for (Class classBox : classBoxes) {
 			if (classBox.contains(p1.x, p1.y)) {
-				generalizedClasses.add(classBox);
+				AddGeneralizationAction addGeneralizations = new AddGeneralizationAction(classBox, p1,
+						generalizedClasses);
+				addGeneralizations.doAction();
+				actions.push(addGeneralizations);
+				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 			}
 		}
@@ -514,7 +559,10 @@ public class Controller {
 	public void addDependency(Point p1) {
 		for (Class classBox : classBoxes) {
 			if (classBox.contains(p1.x, p1.y)) {
-				dependedClasses.add(classBox);
+				AddDependencyAction addDependencies = new AddDependencyAction(classBox, p1, dependedClasses);
+				addDependencies.doAction();
+				actions.push(addDependencies);
+				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 			}
 		}
@@ -524,7 +572,10 @@ public class Controller {
 	public void addAggregation(Point p1) {
 		for (Class classBox : classBoxes) {
 			if (classBox.contains(p1.x, p1.y)) {
-				aggregatedClasses.add(classBox);
+				AddAggregationAction addAggregations = new AddAggregationAction(classBox, p1, aggregatedClasses);
+				addAggregations.doAction();
+				actions.push(addAggregations);
+				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 			}
 		}
@@ -534,6 +585,9 @@ public class Controller {
 		for (Class classBox : classBoxes) {
 			if (classBox.contains(p1.x, p1.y)) {
 				compositedClasses.add(classBox);
+				AddCompositionAction addCompositions = new AddCompositionAction(classBox, p1, compositedClasses);
+				addCompositions.doAction();
+				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 			}
 		}
@@ -554,9 +608,11 @@ public class Controller {
 				commentToRemove = commentBox;
 			}
 		}
-
-		classBoxes.remove(classToRemove);
-		commentBoxes.remove(commentToRemove);
+		DeleteClassBoxAction deleteClass = new DeleteClassBoxAction(classToRemove, classBoxes);
+		deleteClass.doAction();
+		DeleteCommentBoxAction deleteComment = new DeleteCommentBoxAction(commentToRemove, commentBoxes);
+		deleteComment.doAction();
+		v.editUndo.setEnabled(true);
 		rightPane.repaint();
 	}
 
@@ -566,27 +622,20 @@ public class Controller {
 			if (classBox.contains(p1)) {
 				selectedClass = classBox;
 				aClassIsSelected = true;
-				v.okayButton.setVisible(true);
-				v.titleLabel.setVisible(true);
-				v.title.setText(selectedClass.getName());
-				v.title.setVisible(true);
-				v.attsLabel.setVisible(true);
-				v.atts.setText(selectedClass.getAttributes());
-				v.atts.setVisible(true);
-				v.opsLabel.setVisible(true);
-				v.ops.setText(selectedClass.getOperations());
-				v.ops.setVisible(true);
+				InspectorAction inspector = new InspectorAction(selectedClass, v);
+				inspector.doAction();
+				actions.add(inspector);
+				v.editUndo.setEnabled(true);
+				rightPane.repaint();
 				break;
 			} else {
 				selectedClass = null;
 				aClassIsSelected = false;
-				v.okayButton.setVisible(false);
-				v.titleLabel.setVisible(false);
-				v.title.setVisible(false);
-				v.attsLabel.setVisible(false);
-				v.atts.setVisible(false);
-				v.opsLabel.setVisible(false);
-				v.ops.setVisible(false);
+				RemoveInspectorAction inspector = new RemoveInspectorAction(null, v);
+				inspector.doAction();
+				actions.add(inspector);
+				v.editUndo.setEnabled(true);
+				rightPane.repaint();
 			}
 		}
 
