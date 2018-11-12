@@ -173,9 +173,10 @@ public class View {
 		menuBar.add(edit);
 
 //EDIT SUB-MENU-------------------------------------------------------------------
-
+		editUndo.setEnabled(false);
 		editUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
 
+		editRedo.setEnabled(false);
 		editRedo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
 
 		editCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
