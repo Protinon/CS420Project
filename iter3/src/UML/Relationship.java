@@ -131,20 +131,20 @@ public class Relationship {
 		}
 
 		if (relationship == "generalization") {
-			Generalization generalization = new Generalization(c1, c2, a, c, b, d);
-			generalization.paintGeneralization(g);
+			GeneralizationArrow generalization = new GeneralizationArrow(c1, c2, a, c, b, d);
+			generalization.paintGeneralizationArrow(g);
 		}
 		if (relationship == "aggregation") {
-			Aggregation aggregation = new Aggregation(c1, c2, a, c, b, d);
-			aggregation.paintAggregation(g);
+			AggregationArrow aggregation = new AggregationArrow(c1, c2, a, c, b, d);
+			aggregation.paintAggregationArrow(g);
 		}
 		if (relationship == "dependency") {
-			Dependency dependency = new Dependency(c1, c2, a, c, b, d);
-			dependency.paintDependency(g);
+			DependencyArrow dependency = new DependencyArrow(c1, c2, a, c, b, d);
+			dependency.paintDependencyArrow(g);
 		}
 		if (relationship == "composition") {
-			Composition composition = new Composition(c1, c2, a, c, b, d);
-			composition.paintComposition(g);
+			CompositionArrow composition = new CompositionArrow(c1, c2, a, c, b, d);
+			composition.paintCompositionArrow(g);
 		}
 	}
 }

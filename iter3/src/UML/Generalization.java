@@ -1,39 +1,74 @@
 package UML;
 
-import java.awt.Graphics;
+import java.awt.Point;
 
 public class Generalization {
-	private int x1, y1, x2, y2, x3, y3, arrowlength = 16;
+	private Class class1, class2;
+	private Point p1, p2;
+	public Generalization() {
 
-	public Generalization(Class c1, Class c2, int x0, int y0, int x4, int y4) {
-		if (((c1.getLocation().x < c2.getLocation().x)
-				&& ((c1.getLocation().x + c1.getWidth()) > c2.getLocation().x - arrowlength))
-				|| ((c1.getLocation().x >= c2.getLocation().x)
-						&& ((c2.getLocation().x + c1.getWidth()) >= c1.getLocation().x - arrowlength))) {
-			x1 = x0 - arrowlength / 2;
-			x2 = x0 + arrowlength / 2;
-			x3 = x4;
-			y1 = y0;
-			y2 = y0;
-			y3 = y4;
-		}
-
-		if (((c1.getLocation().x >= c2.getLocation().x)
-				&& ((c2.getLocation().x + c1.getWidth()) <= c1.getLocation().x - arrowlength))
-				|| ((c1.getLocation().x < c2.getLocation().x)
-						&& (c1.getLocation().x + c1.getWidth() <= c2.getLocation().x - arrowlength))) {
-			x1 = x0;
-			x2 = x0;
-			x3 = x4;
-			y1 = y0 + arrowlength / 2;
-			y2 = y0 - arrowlength / 2;
-			y3 = y4;
-		}
 	}
 
-	public void paintGeneralization(Graphics g) {
-		int[] pointsX = { x1, x2, x3 };
-		int[] pointsY = { y1, y2, y3 };
-		g.drawPolygon(pointsX, pointsY, 3);
+	public void setClass1(Class c1) {
+		class1 = c1;
+	}	
+
+	public void setClass2(Class c2) {
+		class2 = c2;
 	}
+
+	public Class getClass1() {
+		return class1;
+	}
+
+	public Class getClass2() {
+		return class2;
+	}
+	
+	public void setLocation() {
+		int arrowlength = 16;
+		int x1 = class1.getLocation().x, x2 = class2.getLocation().x, y1 = class1.getLocation().y, y2 = class2.getLocation().y;
+		int width = class1.getWidth();
+		int height = class1.getHeight();
+		if (x1 < x2) {
+			if (x1 + width + arrowlength <= x2) {
+				p1 = new Point(x1 + width, y1 + height/2);
+				p2 = new Point(x2 - arrowlength, y2 + height/2);
+			} else {
+				if (y1 >= y2 + height + arrowlength) {
+					p1 = new Point(x1 + width/2, y1);
+					p2 = new Point(x2 + width/2, y2 + height + arrowlength);
+				} else if (y1 + height + arrowlength <= y2) {
+					p1 = new Point(x1 + width/2, y1 + height);
+					p2 = new Point(x2 + width/2, y2 - arrowlength);
+				}
+			}
+		} else {
+			if (x1 >= x2 + width + arrowlength) {
+				p1 = new Point(x1, y1 + height/2);
+				p2 = new Point(x2 + width + arrowlength, y2 + height/2);
+			} else {
+				if (y1 >= y2 + height + arrowlength) {
+					p1 = new Point(x1 + width, y1);
+					p2 = new Point(x2 + width/2, y2 + height + arrowlength);
+				} else if (y1 + height + arrowlength <= y2) {
+					p1 = new Point(x1 + width/2, y1 + height);
+					p2 = new Point(x2 + width/2, y2 - arrowlength);
+				}
+			}
+		}
+	}
+	
+/*	public boolean contains(Point p) {
+		
+	}
+	*/
+	public Point getLocation1() {
+		return p1;
+	}
+	
+	public Point getLocation2() {
+		return p2;
+	}
+	
 }

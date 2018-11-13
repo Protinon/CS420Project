@@ -108,7 +108,13 @@ public class MouseListener extends MouseAdapter {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		p1 = new Point(e.getX(), e.getY());
-
+		Class j = null;
+		for (Class f : c.getClasses()) {
+			if (f.contains(p1)) {
+				j = f;
+				break;
+			}
+		}
 		if (c.deleteMode() == true) {
 			c.deleteObject(p1);
 		}
@@ -122,23 +128,33 @@ public class MouseListener extends MouseAdapter {
 		}
 
 		if (c.associationMode() == true) {
-			c.addAssociation(p1);
+			if (j != null) {
+				c.addAssociation(j);
+			}
 		}
 
 		if (c.generalizationMode() == true) {
-			c.addGeneralization(p1);
+			if (j != null) {
+				c.addGeneralization(j);
+			}
 		}
 
 		if (c.dependencyMode() == true) {
-			c.addDependency(p1);
+			if (j != null) {
+				c.addDependency(j);
+			}
 		}
 
 		if (c.aggregationMode() == true) {
-			c.addAggregation(p1);
+			if (j != null) {
+				c.addAggregation(j);
+			}
 		}
 
 		if (c.compositionMode() == true) {
-			c.addComposition(p1);
+			if (j != null) {
+				c.addComposition(j);
+			}
 		}
 
 		if (c.selectMode() == true) {

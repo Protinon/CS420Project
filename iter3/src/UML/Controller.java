@@ -19,9 +19,18 @@ public class Controller {
 	private Stack<Action> actions = new Stack<Action>();
 	private Stack<Action> undoActions = new Stack<Action>();
 	private Stack<Action> redoActions = new Stack<Action>();
-	private ArrayList<Class> classBoxes = new ArrayList<Class>(), generalizedClasses = new ArrayList<Class>(),
-			associatedClasses = new ArrayList<Class>(), dependedClasses = new ArrayList<Class>(),
-			aggregatedClasses = new ArrayList<Class>(), compositedClasses = new ArrayList<Class>();
+	private ArrayList<Association> associations = new ArrayList<Association>();
+	private Association	association = new Association();
+	private Generalization generalization = new Generalization();
+	private Dependency dependency = new Dependency();
+	private Composition composition = new Composition();
+	private Aggregation aggregation = new Aggregation();
+	private ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+	private ArrayList<Aggregation> aggregations = new ArrayList<Aggregation>();
+	private ArrayList<Composition> compositions = new ArrayList<Composition>();
+	private ArrayList<Dependency> dependencies = new ArrayList<Dependency>();
+
+	private ArrayList<Class> classBoxes = new ArrayList<Class>();
 
 	private boolean aClassIsSelected = false, aCommentIsSelected = false;
 	private boolean selectMode = false, deleteMode = false, classMode = false, commentMode = false,
@@ -29,6 +38,8 @@ public class Controller {
 			generalizationMode = false;
 
 	private Class selectedClass;
+	private Class copiedClass;
+	private Comment copiedComment;
 	private Comment selectedComment;
 
 	private View v;
@@ -243,6 +254,19 @@ public class Controller {
 		 **/
 		v.editCut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(classSelected()) {
+					copiedClass = getSelectedClass();
+					copiedComment = null;
+					InspectorAction i = new InspectorAction(getSelectedClass(), v);
+					i.undoAction();
+					deleteObject(new Point(0,0));
+					rightPane.repaint();
+				} else if (commentSelected()) {
+					copiedComment = getSelectedComment();
+					copiedClass = null;
+					deleteObject(new Point(0,0));
+					rightPane.repaint();
+				}
 			}
 		});
 
@@ -255,6 +279,14 @@ public class Controller {
 		 **/
 		v.editCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(classSelected()) {
+					copiedClass = getSelectedClass();
+					copiedComment = null;
+				} else if (commentSelected()) {
+					copiedComment = getSelectedComment();
+					copiedClass = null;
+				}
+		
 			}
 		});
 
@@ -267,6 +299,10 @@ public class Controller {
 		 **/
 		v.editPaste.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (copiedClass != null) {
+					addClass(copiedClass, new Point (copiedClass.getLocation().x + copiedClass.getWidth(), copiedClass.getLocation().y + copiedClass.getHeight()));
+					
+				}
 			}
 		});
 
@@ -279,6 +315,12 @@ public class Controller {
 		 **/
 		v.editDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(classSelected()) {
+					InspectorAction i = new InspectorAction(getSelectedClass(), v);
+					i.undoAction();
+					deleteObject(new Point(0,0));
+					rightPane.repaint();
+				}
 			}
 		});
 
@@ -520,6 +562,19 @@ public class Controller {
 		}
 	}
 
+	public void addClass(Class c, Point p1) {
+		int classBoxLimit = 20;
+		if(classBoxes.size() < classBoxLimit) {
+			AddClassAction newClass = new AddClassAction(p1, classBoxes);
+			newClass.doAction();
+			newClass.getObject().setName(c.getName());
+			newClass.getObject().setAttributes(c.getAttributes());
+			newClass.getObject().setOperations(c.getOperations());
+			actions.add(newClass);
+			v.editUndo.setEnabled(true);
+			rightPane.repaint();
+		}
+	}
 	public void addComment(Point p1) {
 		int commentBoxLimit = 20;
 		if (commentBoxes.size() < commentBoxLimit) {
@@ -531,81 +586,89 @@ public class Controller {
 		}
 	}
 
-	public void addAssociation(Point p1) {
-		for (Class classBox : classBoxes) {
-			if (classBox.contains(p1.x, p1.y)) {
-				AddAssociationAction addAssociations = new AddAssociationAction(classBox, p1, associatedClasses);
-				addAssociations.doAction();
-				actions.push(addAssociations);
-				v.editUndo.setEnabled(true);
-				rightPane.repaint();
-			}
+	public void addAssociation(Class c1) {
+		if(association.getClass1() == null) {
+			association.setClass1(c1);
+		} else if (association.getClass2() == null){
+			association.setClass2(c1);
+			associations.add(association);
+		}else {
+			association.setClass1(c1);
+			association.setClass2(null);
 		}
+		rightPane.repaint();
 	}
 
-	public void addGeneralization(Point p1) {
-		for (Class classBox : classBoxes) {
-			if (classBox.contains(p1.x, p1.y)) {
-				AddGeneralizationAction addGeneralizations = new AddGeneralizationAction(classBox, p1,
-						generalizedClasses);
-				addGeneralizations.doAction();
-				actions.push(addGeneralizations);
-				v.editUndo.setEnabled(true);
-				rightPane.repaint();
-			}
+	public void addGeneralization(Class c1) {
+		if(generalization.getClass1() == null) {
+			generalization.setClass1(c1);
+		} else if (generalization.getClass2() == null){
+			generalization.setClass2(c1);
+			generalizations.add(generalization);
+		}else {
+			generalization.setClass1(c1);
+			generalization.setClass2(null);
 		}
+		rightPane.repaint();
 	}
 
-	public void addDependency(Point p1) {
-		for (Class classBox : classBoxes) {
-			if (classBox.contains(p1.x, p1.y)) {
-				AddDependencyAction addDependencies = new AddDependencyAction(classBox, p1, dependedClasses);
-				addDependencies.doAction();
-				actions.push(addDependencies);
-				v.editUndo.setEnabled(true);
-				rightPane.repaint();
-			}
+	public void addDependency(Class c1) {
+		if(dependency.getClass1() == null) {
+			dependency.setClass1(c1);
+		} else if (dependency.getClass2() == null){
+			dependency.setClass2(c1);
+			dependencies.add(dependency);
+		}else {
+			dependency.setClass1(c1);
+			dependency.setClass2(null);
 		}
+		rightPane.repaint();
 
 	}
 
-	public void addAggregation(Point p1) {
-		for (Class classBox : classBoxes) {
-			if (classBox.contains(p1.x, p1.y)) {
-				AddAggregationAction addAggregations = new AddAggregationAction(classBox, p1, aggregatedClasses);
-				addAggregations.doAction();
-				actions.push(addAggregations);
-				v.editUndo.setEnabled(true);
-				rightPane.repaint();
-			}
+	public void addAggregation(Class c1) {
+		if(aggregation.getClass1() == null) {
+			aggregation.setClass1(c1);
+		} else if (aggregation.getClass2() == null){
+			aggregation.setClass2(c1);
+			aggregations.add(aggregation);
+		}else {
+			aggregation.setClass1(c1);
+			aggregation.setClass2(null);
 		}
+		rightPane.repaint();
 	}
 
-	public void addComposition(Point p1) {
-		for (Class classBox : classBoxes) {
-			if (classBox.contains(p1.x, p1.y)) {
-				compositedClasses.add(classBox);
-				AddCompositionAction addCompositions = new AddCompositionAction(classBox, p1, compositedClasses);
-				addCompositions.doAction();
-				v.editUndo.setEnabled(true);
-				rightPane.repaint();
-			}
+	public void addComposition(Class c1) {
+		if(composition.getClass1() == null) {
+			composition.setClass1(c1);
+		} else if (composition.getClass2() == null){
+			composition.setClass2(c1);
+			compositions.add(composition);
+		}else {
+			composition.setClass1(c1);
+			composition.setClass2(null);
 		}
+		rightPane.repaint();
 	}
 
 	public void deleteObject(Point p1) {
 		Class classToRemove = null;
 		Comment commentToRemove = null;
 
-		for (Class classBox : classBoxes) {
-			if (classBox.contains(p1.x, p1.y)) {
-				classToRemove = classBox;
+		if (selectedClass != null) {
+			classToRemove = selectedClass;
+		} else {
+			for (Class classBox : classBoxes) {
+				if (classBox.contains(p1.x, p1.y)) {
+					classToRemove = classBox;
+				}
 			}
-		}
 
-		for (Comment commentBox : commentBoxes) {
-			if (commentBox.contains(p1.x, p1.y)) {
-				commentToRemove = commentBox;
+			for (Comment commentBox : commentBoxes) {
+				if (commentBox.contains(p1.x, p1.y)) {
+					commentToRemove = commentBox;
+				}
 			}
 		}
 		DeleteClassBoxAction deleteClass = new DeleteClassBoxAction(classToRemove, classBoxes);
@@ -648,6 +711,8 @@ public class Controller {
 				aCommentIsSelected = false;
 			}
 		}
+		
+		
 	}
 
 	public boolean classSelected() {
@@ -710,24 +775,24 @@ public class Controller {
 		return commentBoxes;
 	}
 
-	public ArrayList<Class> getAssociations() {
-		return associatedClasses;
+	public ArrayList<Association> getAssociations() {
+		return associations;
 	}
 
-	public ArrayList<Class> getGeneralizations() {
-		return generalizedClasses;
+	public ArrayList<Generalization> getGeneralizations() {
+		return generalizations;
 	}
 
-	public ArrayList<Class> getDependencies() {
-		return dependedClasses;
+	public ArrayList<Dependency> getDependencies() {
+		return dependencies;
 	}
 
-	public ArrayList<Class> getAggregations() {
-		return aggregatedClasses;
+	public ArrayList<Aggregation> getAggregations() {
+		return aggregations;
 	}
 
-	public ArrayList<Class> getCompositions() {
-		return compositedClasses;
+	public ArrayList<Composition> getCompositions() {
+		return compositions;
 	}
 
 	public Canvas getCanvas() {

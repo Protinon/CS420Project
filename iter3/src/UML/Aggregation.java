@@ -1,80 +1,74 @@
 package UML;
 
-import java.awt.Graphics;
+import java.awt.Point;
 
 public class Aggregation {
-	private int x1, y1, x2, y2, x3, y3, x4, y4, arrowlength = 16;
+	private Class class1, class2;
+	private Point p1, p2;
+	public Aggregation() {
 
-	public Aggregation(Class c1, Class c2, int x0, int y0, int x5, int y5) {
+	}
 
-		if (c1.getLocation().x < c2.getLocation().x) {
-			if (c1.getLocation().x + c1.getWidth() + arrowlength <= c2.getLocation().x) {
-				x1 = x0;
-				y1 = y0;
-				x2 = x0 + arrowlength / 2;
-				y2 = y0 + arrowlength / 2;
-				x3 = x5;
-				y3 = y5;
-				x4 = x0 + arrowlength / 2;
-				y4 = y0 - arrowlength / 2;
+	public void setClass1(Class c1) {
+		class1 = c1;
+	}	
+
+	public void setClass2(Class c2) {
+		class2 = c2;
+	}
+
+	public Class getClass1() {
+		return class1;
+	}
+
+	public Class getClass2() {
+		return class2;
+	}
+	
+	public void setLocation() {
+		int arrowlength = 16;
+		int x1 = class1.getLocation().x, x2 = class2.getLocation().x, y1 = class1.getLocation().y, y2 = class2.getLocation().y;
+		int width = class1.getWidth();
+		int height = class1.getHeight();
+		if (x1 < x2) {
+			if (x1 + width + arrowlength <= x2) {
+				p1 = new Point(x1 + width, y1 + height/2);
+				p2 = new Point(x2 - arrowlength, y2 + height/2);
 			} else {
-				if (c1.getLocation().y >= c2.getLocation().y + c2.getHeight() + arrowlength) {
-					x1 = x0;
-					y1 = y0;
-					x2 = x0 - arrowlength / 2;
-					y2 = y0 - arrowlength / 2;
-					x3 = x5;
-					y3 = y5;
-					x4 = x0 + arrowlength / 2;
-					y4 = y0 - arrowlength / 2;
-				} else if (c1.getLocation().y + c1.getHeight() + arrowlength <= c2.getLocation().y) {
-					x1 = x0;
-					y1 = y0;
-					x2 = x0 + arrowlength / 2;
-					y2 = y0 + arrowlength / 2;
-					x3 = x5;
-					y3 = y5;
-					x4 = x0 - arrowlength / 2;
-					y4 = y0 + arrowlength / 2;
+				if (y1 >= y2 + height + arrowlength) {
+					p1 = new Point(x1 + width/2, y1);
+					p2 = new Point(x2 + width/2, y2 + height + arrowlength);
+				} else if (y1 + height + arrowlength <= y2) {
+					p1 = new Point(x1 + width/2, y1 + height);
+					p2 = new Point(x2 + width/2, y2 - arrowlength);
 				}
 			}
 		} else {
-			if (c1.getLocation().x >= c2.getLocation().x + c2.getWidth() + arrowlength) {
-				x1 = x0;
-				y1 = y0;
-				x2 = x0 - arrowlength / 2;
-				y2 = y0 + arrowlength / 2;
-				x3 = x5;
-				y3 = y5;
-				x4 = x0 - arrowlength / 2;
-				y4 = y0 - arrowlength / 2;
+			if (x1 >= x2 + width + arrowlength) {
+				p1 = new Point(x1, y1 + height/2);
+				p2 = new Point(x2 + width + arrowlength, y2 + height/2);
 			} else {
-				if (c1.getLocation().y >= c2.getLocation().y + c2.getHeight() + arrowlength) {
-					x1 = x0;
-					y1 = y0;
-					x2 = x0 - arrowlength / 2;
-					y2 = y0 - arrowlength / 2;
-					x3 = x5;
-					y3 = y5;
-					x4 = x0 + arrowlength / 2;
-					y4 = y0 - arrowlength / 2;
-				} else if (c1.getLocation().y + c1.getHeight() + arrowlength <= c2.getLocation().y) {
-					x1 = x0;
-					y1 = y0;
-					x2 = x0 - arrowlength / 2;
-					y2 = y0 + arrowlength / 2;
-					x3 = x5;
-					y3 = y5;
-					x4 = x0 + arrowlength / 2;
-					y4 = y0 + arrowlength / 2;
+				if (y1 >= y2 + height + arrowlength) {
+					p1 = new Point(x1 + width, y1);
+					p2 = new Point(x2 + width/2, y2 + height + arrowlength);
+				} else if (y1 + height + arrowlength <= y2) {
+					p1 = new Point(x1 + width/2, y1 + height);
+					p2 = new Point(x2 + width/2, y2 - arrowlength);
 				}
 			}
 		}
 	}
-
-	public void paintAggregation(Graphics g) {
-		int[] pointsX = { x1, x2, x3, x4 };
-		int[] pointsY = { y1, y2, y3, y4 };
-		g.drawPolygon(pointsX, pointsY, 4);
+	
+/*	public boolean contains(Point p) {
+		
 	}
+	*/
+	public Point getLocation1() {
+		return p1;
+	}
+	
+	public Point getLocation2() {
+		return p2;
+	}
+	
 }
