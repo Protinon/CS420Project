@@ -12,6 +12,10 @@ public class AddClassAction implements Action {
 		this.classes = classes;
 	}
 	
+	public Class getObject() {
+		return c;
+	}
+	
 	public void doAction() { 
 		c = new Class(p.x, p.y);
 		classes.add(c);
