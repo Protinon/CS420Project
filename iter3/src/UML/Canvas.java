@@ -38,35 +38,32 @@ public class Canvas extends JPanel {
 		
 		for (Association a : c.getAssociations()) {
 			if (a.getClass1()!= null && a.getClass2()!=null) {
-			Relationship ir = new Relationship("association", a.getClass1(), a.getClass2());
-			ir.paintRelationship(g);
+				a.paintAssociation(g);
 			}
 		}
 		
 		for(Generalization gl : c.getGeneralizations()) {
 			if(gl.getClass1() != null && gl.getClass2() != null) {
-				Relationship ir = new Relationship("generalization", gl.getClass1(), gl.getClass2());
-				ir.paintRelationship(g);			}
+					gl.paintGeneralization(g);		
+				}
 		}
 
 		for(Dependency d : c.getDependencies()) {
 			if(d.getClass1() != null && d.getClass2() != null) {
-				Relationship ir = new Relationship("dependency", d.getClass1(), d.getClass2());
-				ir.paintRelationship(g);
+				d.paintDependency(g);
 			}
 		}
 		
 		for(Aggregation a : c.getAggregations()) {
 			if(a.getClass1() != null && a.getClass2() != null) {
-				Relationship ir = new Relationship("aggregation", a.getClass1(), a.getClass2());
-				ir.paintRelationship(g);
-			}
+				a.paintAggregation(g);
+				}
 		}
 		
 		for(Composition c : c.getCompositions()) {
+			
 			if(c.getClass1() != null && c.getClass2() != null) {
-				Relationship ir = new Relationship("composition", c.getClass1(), c.getClass2());
-				ir.paintRelationship(g);
+				c.paintComposition(g);
 			}
 		}
 	}

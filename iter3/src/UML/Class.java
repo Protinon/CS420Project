@@ -12,6 +12,7 @@ public class Class extends JComponent {
 
 	private int x, y, width = 126, height = 72, boxSize = 24, stringMax = 25;
 	private String name = "Name", attributes = "Attributes", operations = "Operations";
+	private boolean related = false;
 
 	/**
 	 * Initialize class box's left-hand corner x/y coordinates.
@@ -190,5 +191,13 @@ public class Class extends JComponent {
 
 		// draw box around 3 subboxes ^^
 		g.drawRect(x, y, width, height);
+	}
+	
+	public boolean getRelated() {
+		return related;
+	}
+	
+	public void setRelated(boolean related) {
+		this.related = related;
 	}
 }

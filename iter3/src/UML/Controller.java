@@ -20,11 +20,6 @@ public class Controller {
 	private Stack<Action> undoActions = new Stack<Action>();
 	private Stack<Action> redoActions = new Stack<Action>();
 	private ArrayList<Association> associations = new ArrayList<Association>();
-	private Association	association = new Association();
-	private Generalization generalization = new Generalization();
-	private Dependency dependency = new Dependency();
-	private Composition composition = new Composition();
-	private Aggregation aggregation = new Aggregation();
 	private ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
 	private ArrayList<Aggregation> aggregations = new ArrayList<Aggregation>();
 	private ArrayList<Composition> compositions = new ArrayList<Composition>();
@@ -41,7 +36,7 @@ public class Controller {
 	private Class copiedClass;
 	private Comment copiedComment;
 	private Comment selectedComment;
-
+	private Point associationP1, associationP2, generalizationP1, generalizationP2, dependencyP1, dependencyP2, compositionP1, compositionP2, aggregationP1, aggregationP2;
 	private View v;
 	@SuppressWarnings("unused")
 	private Controller c;
@@ -220,6 +215,7 @@ public class Controller {
 				if (actions.isEmpty())
 					v.editUndo.setEnabled(false);
 				rightPane.repaint();
+			
 			}
 		});
 
@@ -241,7 +237,6 @@ public class Controller {
 				}
 				v.editUndo.setEnabled(true);
 				rightPane.repaint();
-
 			}
 		});
 
@@ -556,7 +551,7 @@ public class Controller {
 		if (classBoxes.size() < classBoxLimit) {
 			AddClassAction newClass = new AddClassAction(p1, classBoxes);
 			newClass.doAction();
-			actions.add(newClass);
+			actions.push(newClass);
 			v.editUndo.setEnabled(true);
 			rightPane.repaint();
 		}
@@ -570,7 +565,7 @@ public class Controller {
 			newClass.getObject().setName(c.getName());
 			newClass.getObject().setAttributes(c.getAttributes());
 			newClass.getObject().setOperations(c.getOperations());
-			actions.add(newClass);
+			actions.push(newClass);
 			v.editUndo.setEnabled(true);
 			rightPane.repaint();
 		}
@@ -586,71 +581,97 @@ public class Controller {
 		}
 	}
 
-	public void addAssociation(Class c1) {
-		if(association.getClass1() == null) {
-			association.setClass1(c1);
-		} else if (association.getClass2() == null){
-			association.setClass2(c1);
-			associations.add(association);
-		}else {
-			association.setClass1(c1);
-			association.setClass2(null);
+	public void addAssociation(Point p1) {
+		if (associationP1 == null) {
+			associationP1 = p1;
+		} else if(associationP2 == null) {
+			associationP2 = p1;
+			boolean doit = hasARelationship(associationP1, associationP2);
+			if (doit == false) {
+				AddAssociationAction a = new AddAssociationAction(associationP1, associationP2, associations, classBoxes);
+			a.doAction();
+			actions.push(a);
+			v.editUndo.setEnabled(true);
+			}
+			associationP1 = null;
+			associationP2 = null;
+		} 
+		rightPane.repaint();
+	}
+	
+
+	public void addGeneralization(Point p1) {
+		if (generalizationP1 == null) {
+			generalizationP1 = p1;
+		} else if(generalizationP2 == null) {
+			generalizationP2 = p1;
+			boolean doit = hasARelationship(generalizationP1, generalizationP2);	
+		if (doit == false) {
+			AddGeneralizationAction a = new AddGeneralizationAction(generalizationP1, generalizationP2, generalizations, classBoxes);
+			a.doAction();
+			actions.push(a);
+			v.editUndo.setEnabled(true);
 		}
+			generalizationP1 = null;
+			generalizationP2 = null;
+		} 
 		rightPane.repaint();
 	}
 
-	public void addGeneralization(Class c1) {
-		if(generalization.getClass1() == null) {
-			generalization.setClass1(c1);
-		} else if (generalization.getClass2() == null){
-			generalization.setClass2(c1);
-			generalizations.add(generalization);
-		}else {
-			generalization.setClass1(c1);
-			generalization.setClass2(null);
-		}
-		rightPane.repaint();
-	}
-
-	public void addDependency(Class c1) {
-		if(dependency.getClass1() == null) {
-			dependency.setClass1(c1);
-		} else if (dependency.getClass2() == null){
-			dependency.setClass2(c1);
-			dependencies.add(dependency);
-		}else {
-			dependency.setClass1(c1);
-			dependency.setClass2(null);
-		}
+	public void addDependency(Point p1) {
+		if (dependencyP1 == null) {
+			dependencyP1 = p1;
+		} else if(dependencyP2 == null) {
+			dependencyP2 = p1;
+			boolean doit = hasARelationship(dependencyP1, dependencyP2);
+			if(doit == false) {
+			AddDependencyAction a = new AddDependencyAction(dependencyP1, dependencyP2, dependencies, classBoxes);
+			a.doAction();
+			actions.push(a);
+			v.editUndo.setEnabled(true);
+			}
+			dependencyP1 = null;
+			dependencyP2 = null;
+		} 
 		rightPane.repaint();
 
 	}
 
-	public void addAggregation(Class c1) {
-		if(aggregation.getClass1() == null) {
-			aggregation.setClass1(c1);
-		} else if (aggregation.getClass2() == null){
-			aggregation.setClass2(c1);
-			aggregations.add(aggregation);
-		}else {
-			aggregation.setClass1(c1);
-			aggregation.setClass2(null);
+	public void addAggregation(Point p1) {
+		if (aggregationP1 == null) {
+			aggregationP1 = p1;
+		} else if(aggregationP2 == null) {
+			aggregationP2 = p1;
+			boolean doit = hasARelationship(aggregationP1, aggregationP2);	
+		if (doit == false) {
+			AddAggregationAction a = new AddAggregationAction(aggregationP1, aggregationP2, aggregations, classBoxes);
+			a.doAction();
+			actions.push(a);
+			v.editUndo.setEnabled(true);
 		}
+		aggregationP1 = null;
+		aggregationP2 = null;
+		} 
 		rightPane.repaint();
 	}
 
-	public void addComposition(Class c1) {
-		if(composition.getClass1() == null) {
-			composition.setClass1(c1);
-		} else if (composition.getClass2() == null){
-			composition.setClass2(c1);
-			compositions.add(composition);
-		}else {
-			composition.setClass1(c1);
-			composition.setClass2(null);
-		}
-		rightPane.repaint();
-	}
+	public void addComposition(Point p1) {
+		
+		if (compositionP1 == null) {
+			compositionP1 = p1;
+		} else if(compositionP2 == null) {
+			compositionP2 = p1;
+			boolean doit = hasARelationship(compositionP1, compositionP2);
+			if(doit == false ) {
+			AddCompositionAction a = new AddCompositionAction(compositionP1, compositionP2, compositions, classBoxes);
+			a.doAction();
+			actions.push(a);
+			v.editUndo.setEnabled(true);
+			}
+			compositionP1 = null;
+			compositionP2 = null;
+		} 
+		rightPane.repaint();	}
 
 	public void deleteObject(Point p1) {
 		Class classToRemove = null;
@@ -797,5 +818,22 @@ public class Controller {
 
 	public Canvas getCanvas() {
 		return rightPane;
+	}
+	
+	public boolean hasARelationship(Point p1, Point p2) {
+		Class c1 = null, c2 = null;
+		for (Class c : classBoxes) {
+			if(c.contains(p1)) {
+				c1 = c;
+			} else if(c.contains(p2)) {
+				c2 = c;
+			}
+		}
+		if(c1 != null && c2!=null) {
+		if (c1.getRelated() == true || c2.getRelated() == true) {
+			return true;
+		}
+		}
+		return false;
 	}
 }

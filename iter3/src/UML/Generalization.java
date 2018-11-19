@@ -1,20 +1,15 @@
 package UML;
 
+import java.awt.Graphics;
 import java.awt.Point;
 
 public class Generalization {
 	private Class class1, class2;
 	private Point p1, p2;
-	public Generalization() {
-
-	}
-
-	public void setClass1(Class c1) {
-		class1 = c1;
-	}	
-
-	public void setClass2(Class c2) {
-		class2 = c2;
+	public Generalization(Class c1, Class c2) {
+		this.class1 = c1;
+		this.class2 = c2;
+		setLocation();
 	}
 
 	public Class getClass1() {
@@ -59,10 +54,6 @@ public class Generalization {
 		}
 	}
 	
-/*	public boolean contains(Point p) {
-		
-	}
-	*/
 	public Point getLocation1() {
 		return p1;
 	}
@@ -71,4 +62,10 @@ public class Generalization {
 		return p2;
 	}
 	
+	public void paintGeneralization(Graphics g) {
+		Connector c = new Connector(class1, class2, 16);
+		c.paintConnector(g);
+		GeneralizationArrow gl = new GeneralizationArrow(class1, class2, c.getLoc1(), c.getLoc2(), c.getLoc3(), c.getLoc4());
+		gl.paintGeneralizationArrow(g);
+	}
 }

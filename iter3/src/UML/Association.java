@@ -1,20 +1,14 @@
 package UML;
 
+import java.awt.Graphics;
 import java.awt.Point;
 
 public class Association {
 	private Class class1, class2;
 	private Point p1, p2;
-	public Association() {
-
-	}
-
-	public void setClass1(Class c1) {
-		class1 = c1;
-	}	
-
-	public void setClass2(Class c2) {
-		class2 = c2;
+	public Association(Class c1, Class c2) {
+		this.class1 = c1;
+		this.class2 = c2;
 	}
 
 	public Class getClass1() {
@@ -58,16 +52,17 @@ public class Association {
 		}
 	}
 	
-/*	public boolean contains(Point p) {
-		
-	}
-	*/
 	public Point getLocation1() {
 		return p1;
 	}
 	
 	public Point getLocation2() {
 		return p2;
+	}
+	
+	public void paintAssociation(Graphics g) {
+		Connector c = new Connector(class1, class2, 0);
+		c.paintConnector(g);
 	}
 	
 }

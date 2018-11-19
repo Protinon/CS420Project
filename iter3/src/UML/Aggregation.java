@@ -1,12 +1,14 @@
 package UML;
 
+import java.awt.Graphics;
 import java.awt.Point;
 
 public class Aggregation {
 	private Class class1, class2;
 	private Point p1, p2;
-	public Aggregation() {
-
+	public Aggregation(Class c1, Class c2) {
+		this.class1 = c1;
+		this.class2 = c2;
 	}
 
 	public void setClass1(Class c1) {
@@ -59,10 +61,6 @@ public class Aggregation {
 		}
 	}
 	
-/*	public boolean contains(Point p) {
-		
-	}
-	*/
 	public Point getLocation1() {
 		return p1;
 	}
@@ -71,4 +69,10 @@ public class Aggregation {
 		return p2;
 	}
 	
+	public void paintAggregation(Graphics g) {
+		Connector c = new Connector(class1, class2, 16);
+		c.paintConnector(g);
+		AggregationArrow a = new AggregationArrow(class1, class2, c.getLoc1(), c.getLoc2(), c.getLoc3(), c.getLoc4());
+		a.paintAggregationArrow(g);
+	}
 }
