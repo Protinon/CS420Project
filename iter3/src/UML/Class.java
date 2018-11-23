@@ -12,7 +12,8 @@ public class Class extends JComponent {
 
 	private int x, y, width = 126, height = 72, boxSize = 24, stringMax = 25;
 	private String name = "Name", attributes = "Attributes", operations = "Operations";
-	private boolean related = false;
+	private boolean parentRelated = false, childRelated = false;
+	private Class child = null, parent = null;
 
 	/**
 	 * Initialize class box's left-hand corner x/y coordinates.
@@ -193,11 +194,35 @@ public class Class extends JComponent {
 		g.drawRect(x, y, width, height);
 	}
 	
-	public boolean getRelated() {
-		return related;
+	public boolean isAParent() {
+		return parentRelated;
 	}
 	
-	public void setRelated(boolean related) {
-		this.related = related;
+	public boolean isAChild() {
+		return childRelated;
+	}
+	
+	public void setParentRelated(boolean related) {
+		this.parentRelated = related;
+	}
+	
+	public void setChildRelated(boolean related) {
+		this.childRelated = related;
+	}
+	
+	public Class getChild() {
+		return child;
+	}
+	
+	public Class getParent() {
+		return parent;
+	}
+	
+	public void setChild(Class child) {
+		this.child = child;
+	}
+	
+	public void setParent(Class parent) {
+		this.parent = parent;
 	}
 }

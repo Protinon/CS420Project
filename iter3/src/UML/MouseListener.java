@@ -62,13 +62,14 @@ public class MouseListener extends MouseAdapter {
 											c.getSelectedClass().getLocation().y + c.getSelectedClass().getHeight()
 													+ dy)) {
 								break;
-							} else {
-								c.getSelectedClass().setLocation(c.getSelectedClass().getLocation().x + dx,
-										c.getSelectedClass().getLocation().y + dy);
 							}
+						} else {
+							c.getSelectedClass().setLocation(c.getSelectedClass().getLocation().x + dx,
+									c.getSelectedClass().getLocation().y + dy);
 						}
 					}
 				}
+
 				p1 = e.getPoint();
 				c.getCanvas().repaint();
 			}
@@ -129,31 +130,31 @@ public class MouseListener extends MouseAdapter {
 
 		if (c.associationMode() == true) {
 			if (j != null) {
-				c.addAssociation(j);
+				c.addAssociation(p1);
 			}
 		}
 
 		if (c.generalizationMode() == true) {
 			if (j != null) {
-				c.addGeneralization(j);
+				c.addGeneralization(p1);
 			}
 		}
 
 		if (c.dependencyMode() == true) {
 			if (j != null) {
-				c.addDependency(j);
+				c.addDependency(p1);
 			}
 		}
 
 		if (c.aggregationMode() == true) {
 			if (j != null) {
-				c.addAggregation(j);
+				c.addAggregation(p1);
 			}
 		}
 
 		if (c.compositionMode() == true) {
 			if (j != null) {
-				c.addComposition(j);
+				c.addComposition(p1);
 			}
 		}
 

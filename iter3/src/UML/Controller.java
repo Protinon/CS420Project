@@ -605,7 +605,8 @@ public class Controller {
 			generalizationP1 = p1;
 		} else if(generalizationP2 == null) {
 			generalizationP2 = p1;
-			boolean doit = hasARelationship(generalizationP1, generalizationP2);	
+			boolean doit = hasARelationship(generalizationP1, generalizationP2);
+			System.out.println(doit);
 		if (doit == false) {
 			AddGeneralizationAction a = new AddGeneralizationAction(generalizationP1, generalizationP2, generalizations, classBoxes);
 			a.doAction();
@@ -656,22 +657,25 @@ public class Controller {
 	}
 
 	public void addComposition(Point p1) {
-		
+
 		if (compositionP1 == null) {
 			compositionP1 = p1;
-		} else if(compositionP2 == null) {
+		} else if (compositionP2 == null) {
 			compositionP2 = p1;
 			boolean doit = hasARelationship(compositionP1, compositionP2);
-			if(doit == false ) {
-			AddCompositionAction a = new AddCompositionAction(compositionP1, compositionP2, compositions, classBoxes);
-			a.doAction();
-			actions.push(a);
-			v.editUndo.setEnabled(true);
+			System.out.println(doit);
+			if (doit == false) {
+				AddCompositionAction a = new AddCompositionAction(compositionP1, compositionP2, compositions,
+						classBoxes);
+				a.doAction();
+				actions.push(a);
+				v.editUndo.setEnabled(true);
 			}
 			compositionP1 = null;
 			compositionP2 = null;
-		} 
-		rightPane.repaint();	}
+		}
+		rightPane.repaint();
+	}
 
 	public void deleteObject(Point p1) {
 		Class classToRemove = null;
@@ -819,21 +823,30 @@ public class Controller {
 	public Canvas getCanvas() {
 		return rightPane;
 	}
-	
+
 	public boolean hasARelationship(Point p1, Point p2) {
 		Class c1 = null, c2 = null;
 		for (Class c : classBoxes) {
-			if(c.contains(p1)) {
+			if (c.contains(p1)) {
 				c1 = c;
-			} else if(c.contains(p2)) {
+			} else if (c.contains(p2)) {
 				c2 = c;
 			}
 		}
-		if(c1 != null && c2!=null) {
-		if (c1.getRelated() == true || c2.getRelated() == true) {
-			return true;
+		if (c1.isAParent() == true) {
+			if (c2.isAChild() == true && c1.getChild() == c2) {
+				return true;
+			} else {
+				return false;
+			}
+		} else if (c1.isAChild() == true) {
+			if (c2.isAParent() == true && c1.getParent() == c2) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
 		}
-		}
-		return false;
 	}
 }
