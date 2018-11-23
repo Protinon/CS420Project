@@ -25,8 +25,10 @@ public class AddCompositionAction implements Action {
 				}
 			}
 		compositions.add(new Composition(class1,class2));
-		class1.setRelated(true);
-		class2.setRelated(true);
+		class1.setParentRelated(true);
+		class1.setChild(class2);
+		class2.setChildRelated(true);
+		class2.setParent(class1);
 	}
 
 	public void undoAction() {
