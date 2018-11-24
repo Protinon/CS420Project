@@ -7,8 +7,12 @@ import java.awt.event.ActionListener;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.Stack;
 
 import javax.swing.JFileChooser;
@@ -36,7 +40,8 @@ public class Controller {
 	private Class copiedClass;
 	private Comment copiedComment;
 	private Comment selectedComment;
-	private Point associationP1, associationP2, generalizationP1, generalizationP2, dependencyP1, dependencyP2, compositionP1, compositionP2, aggregationP1, aggregationP2;
+	private Point associationP1, associationP2, generalizationP1, generalizationP2, dependencyP1, dependencyP2,
+			compositionP1, compositionP2, aggregationP1, aggregationP2;
 	private View v;
 	@SuppressWarnings("unused")
 	private Controller c;
@@ -63,7 +68,7 @@ public class Controller {
 		viewActionListeners();
 		buttonActionListeners();
 	}
-
+	
 	/**
 	 * Action listeners for v's file tab's functions
 	 * 
@@ -102,15 +107,6 @@ public class Controller {
 		 **/
 		v.fileOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser c = new JFileChooser();
-				int rVal = c.showOpenDialog(null);
-				if (rVal == JFileChooser.APPROVE_OPTION) {
-					File fileToOpen = c.getSelectedFile();
-					try {
-						Desktop.getDesktop().open(fileToOpen);
-					} catch (Exception ex) {
-					}
-				}
 			}
 		});
 
@@ -135,6 +131,7 @@ public class Controller {
 		 **/
 		v.fileSaveAs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 
@@ -215,7 +212,7 @@ public class Controller {
 				if (actions.isEmpty())
 					v.editUndo.setEnabled(false);
 				rightPane.repaint();
-			
+
 			}
 		});
 
@@ -249,17 +246,17 @@ public class Controller {
 		 **/
 		v.editCut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(classSelected()) {
+				if (classSelected()) {
 					copiedClass = getSelectedClass();
 					copiedComment = null;
 					InspectorAction i = new InspectorAction(getSelectedClass(), v);
 					i.undoAction();
-					deleteObject(new Point(0,0));
+					deleteObject(new Point(0, 0));
 					rightPane.repaint();
 				} else if (commentSelected()) {
 					copiedComment = getSelectedComment();
 					copiedClass = null;
-					deleteObject(new Point(0,0));
+					deleteObject(new Point(0, 0));
 					rightPane.repaint();
 				}
 			}
@@ -274,14 +271,14 @@ public class Controller {
 		 **/
 		v.editCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(classSelected()) {
+				if (classSelected()) {
 					copiedClass = getSelectedClass();
 					copiedComment = null;
 				} else if (commentSelected()) {
 					copiedComment = getSelectedComment();
 					copiedClass = null;
 				}
-		
+
 			}
 		});
 
@@ -295,8 +292,9 @@ public class Controller {
 		v.editPaste.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (copiedClass != null) {
-					addClass(copiedClass, new Point (copiedClass.getLocation().x + copiedClass.getWidth(), copiedClass.getLocation().y + copiedClass.getHeight()));
-					
+					addClass(copiedClass, new Point(copiedClass.getLocation().x + copiedClass.getWidth(),
+							copiedClass.getLocation().y + copiedClass.getHeight()));
+
 				}
 			}
 		});
@@ -310,10 +308,10 @@ public class Controller {
 		 **/
 		v.editDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(classSelected()) {
+				if (classSelected()) {
 					InspectorAction i = new InspectorAction(getSelectedClass(), v);
 					i.undoAction();
-					deleteObject(new Point(0,0));
+					deleteObject(new Point(0, 0));
 					rightPane.repaint();
 				}
 			}
@@ -559,7 +557,7 @@ public class Controller {
 
 	public void addClass(Class c, Point p1) {
 		int classBoxLimit = 20;
-		if(classBoxes.size() < classBoxLimit) {
+		if (classBoxes.size() < classBoxLimit) {
 			AddClassAction newClass = new AddClassAction(p1, classBoxes);
 			newClass.doAction();
 			newClass.getObject().setName(c.getName());
@@ -570,6 +568,7 @@ public class Controller {
 			rightPane.repaint();
 		}
 	}
+
 	public void addComment(Point p1) {
 		int commentBoxLimit = 20;
 		if (commentBoxes.size() < commentBoxLimit) {
@@ -584,56 +583,56 @@ public class Controller {
 	public void addAssociation(Point p1) {
 		if (associationP1 == null) {
 			associationP1 = p1;
-		} else if(associationP2 == null) {
+		} else if (associationP2 == null) {
 			associationP2 = p1;
 			boolean doit = hasARelationship(associationP1, associationP2);
 			if (doit == false) {
-				AddAssociationAction a = new AddAssociationAction(associationP1, associationP2, associations, classBoxes);
-			a.doAction();
-			actions.push(a);
-			v.editUndo.setEnabled(true);
+				AddAssociationAction a = new AddAssociationAction(associationP1, associationP2, associations,
+						classBoxes);
+				a.doAction();
+				actions.push(a);
+				v.editUndo.setEnabled(true);
 			}
 			associationP1 = null;
 			associationP2 = null;
-		} 
+		}
 		rightPane.repaint();
 	}
-	
 
 	public void addGeneralization(Point p1) {
 		if (generalizationP1 == null) {
 			generalizationP1 = p1;
-		} else if(generalizationP2 == null) {
+		} else if (generalizationP2 == null) {
 			generalizationP2 = p1;
 			boolean doit = hasARelationship(generalizationP1, generalizationP2);
-			System.out.println(doit);
-		if (doit == false) {
-			AddGeneralizationAction a = new AddGeneralizationAction(generalizationP1, generalizationP2, generalizations, classBoxes);
-			a.doAction();
-			actions.push(a);
-			v.editUndo.setEnabled(true);
-		}
+			if (doit == false) {
+				AddGeneralizationAction a = new AddGeneralizationAction(generalizationP1, generalizationP2,
+						generalizations, classBoxes);
+				a.doAction();
+				actions.push(a);
+				v.editUndo.setEnabled(true);
+			}
 			generalizationP1 = null;
 			generalizationP2 = null;
-		} 
+		}
 		rightPane.repaint();
 	}
 
 	public void addDependency(Point p1) {
 		if (dependencyP1 == null) {
 			dependencyP1 = p1;
-		} else if(dependencyP2 == null) {
+		} else if (dependencyP2 == null) {
 			dependencyP2 = p1;
 			boolean doit = hasARelationship(dependencyP1, dependencyP2);
-			if(doit == false) {
-			AddDependencyAction a = new AddDependencyAction(dependencyP1, dependencyP2, dependencies, classBoxes);
-			a.doAction();
-			actions.push(a);
-			v.editUndo.setEnabled(true);
+			if (doit == false) {
+				AddDependencyAction a = new AddDependencyAction(dependencyP1, dependencyP2, dependencies, classBoxes);
+				a.doAction();
+				actions.push(a);
+				v.editUndo.setEnabled(true);
 			}
 			dependencyP1 = null;
 			dependencyP2 = null;
-		} 
+		}
 		rightPane.repaint();
 
 	}
@@ -641,18 +640,19 @@ public class Controller {
 	public void addAggregation(Point p1) {
 		if (aggregationP1 == null) {
 			aggregationP1 = p1;
-		} else if(aggregationP2 == null) {
+		} else if (aggregationP2 == null) {
 			aggregationP2 = p1;
-			boolean doit = hasARelationship(aggregationP1, aggregationP2);	
-		if (doit == false) {
-			AddAggregationAction a = new AddAggregationAction(aggregationP1, aggregationP2, aggregations, classBoxes);
-			a.doAction();
-			actions.push(a);
-			v.editUndo.setEnabled(true);
+			boolean doit = hasARelationship(aggregationP1, aggregationP2);
+			if (doit == false) {
+				AddAggregationAction a = new AddAggregationAction(aggregationP1, aggregationP2, aggregations,
+						classBoxes);
+				a.doAction();
+				actions.push(a);
+				v.editUndo.setEnabled(true);
+			}
+			aggregationP1 = null;
+			aggregationP2 = null;
 		}
-		aggregationP1 = null;
-		aggregationP2 = null;
-		} 
 		rightPane.repaint();
 	}
 
@@ -663,7 +663,6 @@ public class Controller {
 		} else if (compositionP2 == null) {
 			compositionP2 = p1;
 			boolean doit = hasARelationship(compositionP1, compositionP2);
-			System.out.println(doit);
 			if (doit == false) {
 				AddCompositionAction a = new AddCompositionAction(compositionP1, compositionP2, compositions,
 						classBoxes);
@@ -681,26 +680,32 @@ public class Controller {
 		Class classToRemove = null;
 		Comment commentToRemove = null;
 
-		if (selectedClass != null) {
-			classToRemove = selectedClass;
-		} else {
-			for (Class classBox : classBoxes) {
-				if (classBox.contains(p1.x, p1.y)) {
-					classToRemove = classBox;
-				}
-			}
-
-			for (Comment commentBox : commentBoxes) {
-				if (commentBox.contains(p1.x, p1.y)) {
-					commentToRemove = commentBox;
-				}
+		for (Class classBox : classBoxes) {
+			if (classBox.contains(p1.x, p1.y)) {
+				classToRemove = classBox;
 			}
 		}
-		DeleteClassBoxAction deleteClass = new DeleteClassBoxAction(classToRemove, classBoxes);
-		deleteClass.doAction();
-		DeleteCommentBoxAction deleteComment = new DeleteCommentBoxAction(commentToRemove, commentBoxes);
-		deleteComment.doAction();
-		v.editUndo.setEnabled(true);
+
+		for (Comment commentBox : commentBoxes) {
+			if (commentBox.contains(p1.x, p1.y)) {
+				commentToRemove = commentBox;
+			}
+		}
+		if (classToRemove != null) {
+			DeleteClassBoxAction deleteClass = new DeleteClassBoxAction(classToRemove, classBoxes);
+			deleteClass.doAction();
+			actions.push(deleteClass);
+			v.editUndo.setEnabled(true);
+			classToRemove = null;
+		}
+
+		if (commentToRemove != null) {
+			DeleteCommentBoxAction deleteComment = new DeleteCommentBoxAction(commentToRemove, commentBoxes);
+			deleteComment.doAction();
+			actions.push(deleteComment);
+			v.editUndo.setEnabled(true);
+			commentToRemove = null;
+		}
 		rightPane.repaint();
 	}
 
@@ -736,8 +741,7 @@ public class Controller {
 				aCommentIsSelected = false;
 			}
 		}
-		
-		
+
 	}
 
 	public boolean classSelected() {
@@ -832,21 +836,24 @@ public class Controller {
 			} else if (c.contains(p2)) {
 				c2 = c;
 			}
+
 		}
-		if (c1.isAParent() == true) {
-			if (c2.isAChild() == true && c1.getChild() == c2) {
-				return true;
-			} else {
-				return false;
+		if (c1 != null && c2 != null) {
+			if (c1.isAParent() == true) {
+				if (c2.isAChild() == true && c1.getChild() == c2) {
+					return true;
+				} else {
+					return false;
+				}
+			} else if (c1.isAChild() == true) {
+				if (c2.isAParent() == true && c1.getParent() == c2) {
+					return true;
+				} else {
+					return false;
+				}
 			}
-		} else if (c1.isAChild() == true) {
-			if (c2.isAParent() == true && c1.getParent() == c2) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 }
