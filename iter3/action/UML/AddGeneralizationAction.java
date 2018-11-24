@@ -25,11 +25,13 @@ public class AddGeneralizationAction implements Action {
 				class2 = c;
 			}
 		}
-		generalizations.add(new Generalization(class1, class2));
-		class1.setParentRelated(true);
-		class1.setChild(class2);
-		class2.setChildRelated(true);
-		class2.setParent(class1);
+		if (class1 != null && class2 != null) {
+			generalizations.add(new Generalization(class1, class2));
+			class1.setParentRelated(true);
+			class1.setChild(class2);
+			class2.setChildRelated(true);
+			class2.setParent(class1);
+		}
 	}
 
 	public void undoAction() {

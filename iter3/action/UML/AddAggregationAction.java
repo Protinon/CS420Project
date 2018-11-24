@@ -25,11 +25,13 @@ public class AddAggregationAction implements Action {
 				class2 = c;
 			}
 		}
-		aggregations.add(new Aggregation(class1, class2));
-		class1.setParentRelated(true);
-		class1.setChild(class2);
-		class2.setChildRelated(true);
-		class2.setParent(class1);
+		if (class1 != null && class2 != null) {
+			aggregations.add(new Aggregation(class1, class2));
+			class1.setParentRelated(true);
+			class1.setChild(class2);
+			class2.setChildRelated(true);
+			class2.setParent(class1);
+		}
 	}
 
 	public void undoAction() {

@@ -24,11 +24,13 @@ public class AddCompositionAction implements Action {
 					class2 = c;
 				}
 			}
-		compositions.add(new Composition(class1,class2));
-		class1.setParentRelated(true);
-		class1.setChild(class2);
-		class2.setChildRelated(true);
-		class2.setParent(class1);
+		if (class1 != null && class2 != null) {
+			compositions.add(new Composition(class1, class2));
+			class1.setParentRelated(true);
+			class1.setChild(class2);
+			class2.setChildRelated(true);
+			class2.setParent(class1);
+		}
 	}
 
 	public void undoAction() {

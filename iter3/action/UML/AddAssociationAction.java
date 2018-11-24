@@ -18,17 +18,19 @@ public class AddAssociationAction implements Action {
 
 	public void doAction() {
 		for (Class c : classes) {
-				if (c.contains(p1)) {
-					class1 = c;
-				} else if (c.contains(p2)) {
-					class2 = c;
-				}
+			if (c.contains(p1)) {
+				class1 = c;
+			} else if (c.contains(p2)) {
+				class2 = c;
 			}
-		associations.add(new Association(class1,class2));
-		class1.setParentRelated(true);
-		class1.setChild(class2);
-		class2.setChildRelated(true);
-		class2.setParent(class1);
+		}
+		if (class1 != null && class2 != null) {
+			associations.add(new Association(class1, class2));
+			class1.setParentRelated(true);
+			class1.setChild(class2);
+			class2.setChildRelated(true);
+			class2.setParent(class1);
+		}
 	}
 
 	public void undoAction() {
