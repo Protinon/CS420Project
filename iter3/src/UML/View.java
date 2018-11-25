@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -40,8 +42,6 @@ public class View {
 	JMenuItem editDelete = new JMenuItem("Delete");
 	JMenuItem editSelectAll = new JMenuItem("Select All");
 
-	JMenu view = new JMenu("View");
-
 	JLabel titleLabel = new JLabel("Enter Class Box Title: ");
 	JLabel attsLabel = new JLabel("Enter Class Attributes: ");
 	JLabel opsLabel = new JLabel("Enter Class Operations: ");
@@ -61,6 +61,17 @@ public class View {
 	JButton compositionButton = new JButton("Composition");
 	JButton okayButton = new JButton("Okay");
 
+	JLabel direction = new JLabel("Change Direction: ");
+	JLabel parentMultiplicity = new JLabel("Parent Multiplicity: ");
+	JLabel childMultiplicity = new JLabel("Child Multiplicity: ");
+	
+	JTextField parentM = new JTextField("");
+	JTextField childM = new JTextField("");
+	
+	JCheckBox directionChange = new JCheckBox("Switch Direction");
+	String[] choices = { "Association", "Aggregation", "Composition", "Dependency", "Generalization"};
+
+    final JComboBox<String> cb = new JComboBox<String>(choices);
 	/**
 	 * Initialize window and setup.
 	 * 
@@ -200,8 +211,38 @@ public class View {
 		edit.add(editSelectAll);
 
 // -------------------------------------------------------------------------------
-		menuBar.add(view);
 
 // -------------------------------------------------------------------------------
+		
+	
+		cb.setBounds(0, 240, 150, 25);
+		parentMultiplicity.setBounds(2, 265, 150, 25);
+		parentM.setBounds(0, 290, 150, 25);
+		childMultiplicity.setBounds(2, 315, 150, 25);
+		childM.setBounds(0, 340, 150, 25);
+		directionChange.setBounds(0, 365, 150, 25);
+
+		
+		
+		directionChange.setVisible(false);
+	    cb.setVisible(false);
+	    parentMultiplicity.setVisible(false);
+	    parentM.setVisible(false);
+	    childMultiplicity.setVisible(false);
+	    childM.setVisible(false);
+
+	    
+	    
+	    
+	    
+	    leftPane.add(cb);	
+	    leftPane.add(directionChange);
+	    leftPane.add(parentMultiplicity);
+	    leftPane.add(childMultiplicity);
+	    leftPane.add(childM);
+	    leftPane.add(parentM);
+
+	    
+		
 	}
 }

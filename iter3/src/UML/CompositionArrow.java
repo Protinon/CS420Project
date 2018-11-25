@@ -1,6 +1,7 @@
 package UML;
 
 import java.awt.Graphics;
+import java.awt.Polygon;
 
 public class CompositionArrow {
 	private int x1, y1, x2, y2, x3, y3, x4, y4, arrowlength = 16;
@@ -71,6 +72,16 @@ public class CompositionArrow {
 			}
 		}
 
+	}
+	
+	public boolean contains(int x5, int y5) {
+		int[] pointsX = { x1, x2, x3, x4 };
+		int[] pointsY = { y1, y2, y3, y4 };
+		Polygon r = new Polygon(pointsX, pointsY, 4);
+		if (r.contains(x5, y5)) {
+			return true;
+		}
+		return false;
 	}
 
 	public void paintCompositionArrow(Graphics g) {

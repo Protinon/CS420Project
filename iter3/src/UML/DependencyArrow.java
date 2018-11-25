@@ -2,6 +2,7 @@ package UML;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Polygon;
 
 public class DependencyArrow {
 	private int x1, y1, x2, y2;
@@ -13,6 +14,16 @@ public class DependencyArrow {
 		y2 = y4;
 	}
 
+	public boolean contains(int x5, int y5) {
+		int[] pointsX = { x1, x2, x1};
+		int[] pointsY = { y1, y2, y1};
+		Polygon r = new Polygon(pointsX, pointsY, 3);
+		if (r.contains(x5, y5)) {
+			return true;
+		}
+		return false;
+	}
+	
 	public void paintDependencyArrow(Graphics g) {
 		g.setColor(Color.BLACK);
 		if (y2 == y1) {

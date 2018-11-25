@@ -1,21 +1,13 @@
 package UML;
 
-import java.awt.Desktop;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.Stack;
-
-import javax.swing.JFileChooser;
 
 public class Controller {
 	private ArrayList<Comment> commentBoxes = new ArrayList<Comment>();
@@ -29,9 +21,10 @@ public class Controller {
 	private ArrayList<Composition> compositions = new ArrayList<Composition>();
 	private ArrayList<Dependency> dependencies = new ArrayList<Dependency>();
 
+	private Relationship selectedRelationship;
 	private ArrayList<Class> classBoxes = new ArrayList<Class>();
 
-	private boolean aClassIsSelected = false, aCommentIsSelected = false;
+	private boolean aClassIsSelected = false, aCommentIsSelected = false, aRelationshipIsSelected = false;
 	private boolean selectMode = false, deleteMode = false, classMode = false, commentMode = false,
 			aggregationMode = false, dependencyMode = false, associationMode = false, compositionMode = false,
 			generalizationMode = false;
@@ -65,10 +58,9 @@ public class Controller {
 
 		fileActionListeners();
 		editActionListeners();
-		viewActionListeners();
 		buttonActionListeners();
 	}
-	
+
 	/**
 	 * Action listeners for v's file tab's functions
 	 * 
@@ -131,7 +123,7 @@ public class Controller {
 		 **/
 		v.fileSaveAs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 			}
 		});
 
@@ -328,16 +320,6 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-	}
-
-	/**
-	 * Action listeners for v's view tab's functions
-	 * 
-	 * @author Bri Long
-	 * @param N/A
-	 * @return void
-	 **/
-	public void viewActionListeners() {
 	}
 
 	/**
@@ -736,12 +718,108 @@ public class Controller {
 			if (commentBox.contains(p1.x, p1.y)) {
 				selectedComment = commentBox;
 				aCommentIsSelected = true;
+				rightPane.repaint();
 				break;
 			} else {
 				aCommentIsSelected = false;
+				rightPane.repaint();
 			}
 		}
 
+		for (Composition co : compositions) {
+			if (co.getArrow().contains(p1.x, p1.y)) {
+				System.out.println("Hey");
+				selectedRelationship = co;
+				aRelationshipIsSelected = true;
+				RelationshipInspectorAction inspector = new RelationshipInspectorAction(co.getClass1(), co.getClass2(),
+						co, v);
+				inspector.doAction();
+				actions.add(inspector);
+				v.editUndo.setEnabled(true);
+				rightPane.repaint();
+				return;
+		} else {
+				aRelationshipIsSelected = false;
+				selectedRelationship = null;
+				RemoveRelationshipInspectorAction inspector = new RemoveRelationshipInspectorAction(co.getClass1(),
+						co.getClass2(), co, v);
+				inspector.doAction();
+				actions.add(inspector);
+				v.editUndo.setEnabled(true);
+				rightPane.repaint();
+
+			}
+		}
+		for (Aggregation agg : aggregations) {
+			if (agg.getArrow().contains(p1.x, p1.y)) {
+				System.out.println("yo");
+				selectedRelationship = agg;
+				aRelationshipIsSelected = true;
+				RelationshipInspectorAction inspector = new RelationshipInspectorAction(agg.getClass1(),
+						agg.getClass2(), agg, v);
+				inspector.doAction();
+				actions.add(inspector);
+				v.editUndo.setEnabled(true);
+				rightPane.repaint();
+				return;
+			} else {
+				aRelationshipIsSelected = false;
+				selectedRelationship = null;
+				RemoveRelationshipInspectorAction inspector = new RemoveRelationshipInspectorAction(agg.getClass1(),
+						agg.getClass2(), agg, v);
+				inspector.doAction();
+				actions.add(inspector);
+				v.editUndo.setEnabled(true);
+				rightPane.repaint();
+			}
+		}
+
+		for (Generalization d : generalizations) {
+			if (d.getArrow().contains(p1.x, p1.y)) {
+				selectedRelationship = d;
+				aRelationshipIsSelected = true;
+				RelationshipInspectorAction inspector = new RelationshipInspectorAction(d.getClass1(), d.getClass2(), d,
+						v);
+				inspector.doAction();
+				actions.add(inspector);
+				v.editUndo.setEnabled(true);
+				rightPane.repaint();
+				return;
+				} else {
+				aRelationshipIsSelected = false;
+				selectedRelationship = null;
+				RemoveRelationshipInspectorAction inspector = new RemoveRelationshipInspectorAction(d.getClass1(),
+						d.getClass2(), d, v);
+				inspector.doAction();
+				actions.add(inspector);
+				v.editUndo.setEnabled(true);
+				rightPane.repaint();
+			}
+		}
+
+
+		for (Dependency d : dependencies) {
+			if (d.getArrow().contains(p1.x, p1.y)) {
+				selectedRelationship = d;
+				aRelationshipIsSelected = true;
+				RelationshipInspectorAction inspector = new RelationshipInspectorAction(d.getClass1(), d.getClass2(), d,
+						v);
+				inspector.doAction();
+				actions.add(inspector);
+				v.editUndo.setEnabled(true);
+				rightPane.repaint();
+				return;
+				} else {
+				aRelationshipIsSelected = false;
+				selectedRelationship = null;
+				RemoveRelationshipInspectorAction inspector = new RemoveRelationshipInspectorAction(d.getClass1(),
+						d.getClass2(), d, v);
+				inspector.doAction();
+				actions.add(inspector);
+				v.editUndo.setEnabled(true);
+				rightPane.repaint();
+			}
+		}
 	}
 
 	public boolean classSelected() {
@@ -750,6 +828,10 @@ public class Controller {
 
 	public boolean commentSelected() {
 		return aCommentIsSelected;
+	}
+
+	public boolean relationshipSelected() {
+		return aRelationshipIsSelected;
 	}
 
 	public Class getSelectedClass() {

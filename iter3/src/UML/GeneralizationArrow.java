@@ -1,6 +1,7 @@
 package UML;
 
 import java.awt.Graphics;
+import java.awt.Polygon;
 
 public class GeneralizationArrow {
 	private int x1, y1, x2, y2, x3, y3, arrowlength = 16;
@@ -31,6 +32,16 @@ public class GeneralizationArrow {
 		}
 	}
 
+	public boolean contains(int x5, int y5) {
+		int[] pointsX = { x1, x2, x3};
+		int[] pointsY = { y1, y2, y3};
+		Polygon r = new Polygon(pointsX, pointsY, 3);
+		if (r.contains(x5, y5)) {
+			return true;
+		}
+		return false;
+	}
+	
 	public void paintGeneralizationArrow(Graphics g) {
 		int[] pointsX = { x1, x2, x3 };
 		int[] pointsY = { y1, y2, y3 };
