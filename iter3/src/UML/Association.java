@@ -10,7 +10,10 @@ public class Association implements Relationship{
 		this.c1 = c1;
 		this.c2 = c2;
 	}
-
+public Arrow getArrow() {
+	return null;
+	
+}
 	public Class getClass1() {
 		return c1;
 	}

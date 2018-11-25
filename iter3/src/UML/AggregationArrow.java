@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
-public class AggregationArrow {
+public class AggregationArrow implements Arrow{
 	private int x1, y1, x2, y2, x3, y3, x4, y4, arrowlength = 16;
 
 	public AggregationArrow(Class c1, Class c2, int x0, int y0, int x5, int y5) {

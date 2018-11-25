@@ -3,7 +3,7 @@ package UML;
 import java.awt.Graphics;
 import java.awt.Polygon;
 
-public class GeneralizationArrow {
+public class GeneralizationArrow implements Arrow {
 	private int x1, y1, x2, y2, x3, y3, arrowlength = 16;
 
 	public GeneralizationArrow(Class c1, Class c2, int x0, int y0, int x4, int y4) {

@@ -3,7 +3,7 @@ package UML;
 import java.awt.Graphics;
 import java.awt.Polygon;
 
-public class CompositionArrow {
+public class CompositionArrow implements Arrow {
 	private int x1, y1, x2, y2, x3, y3, x4, y4, arrowlength = 16;
 
 	public CompositionArrow(Class c1, Class c2, int x0, int y0, int x5, int y5) {

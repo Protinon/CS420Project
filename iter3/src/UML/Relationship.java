@@ -3,6 +3,7 @@ package UML;
 import java.awt.Point;
 
 public interface Relationship {
+	public Arrow getArrow();
 	public void update();
 	public void setClass1(Class c1);
 	public void setClass2(Class c2);

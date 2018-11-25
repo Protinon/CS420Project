@@ -463,7 +463,7 @@ public class Controller {
 		 * @param e - ActionEvent - aggregation button was clicked by user
 		 * @return void
 		 **/
-		v.okayButton.addActionListener(new ActionListener() {
+		v.classOkayButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
 				if (selectedClass != null) {
 					SetClassNameAction setName = new SetClassNameAction(selectedClass, v.title.getText());

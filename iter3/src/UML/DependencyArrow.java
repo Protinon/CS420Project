@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 
-public class DependencyArrow {
+public class DependencyArrow implements Arrow {
 	private int x1, y1, x2, y2;
 
 	public DependencyArrow(Class c1, Class c2, int x0, int y0, int x4, int y4) {

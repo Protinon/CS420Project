@@ -59,8 +59,8 @@ public class View {
 	JButton generalizationButton = new JButton("Generalization");
 	JButton associationButton = new JButton("Association");
 	JButton compositionButton = new JButton("Composition");
-	JButton okayButton = new JButton("Okay");
-
+	JButton classOkayButton = new JButton("Okay");
+	JButton rOkayButton = new JButton("Okay");
 	JLabel direction = new JLabel("Change Direction: ");
 	JLabel parentMultiplicity = new JLabel("Parent Multiplicity: ");
 	JLabel childMultiplicity = new JLabel("Child Multiplicity: ");
@@ -133,7 +133,7 @@ public class View {
 		atts.setBounds(0, 310, 150, 25);
 		opsLabel.setBounds(2, 335, 150, 25);
 		ops.setBounds(0, 360, 150, 25);
-		okayButton.setBounds(0, 395, 150, 25);
+		classOkayButton.setBounds(0, 395, 150, 25);
 
 		titleLabel.setVisible(false);
 		title.setVisible(false);
@@ -141,7 +141,7 @@ public class View {
 		atts.setVisible(false);
 		opsLabel.setVisible(false);
 		ops.setVisible(false);
-		okayButton.setVisible(false);
+		classOkayButton.setVisible(false);
 
 		leftPane.add(titleLabel);
 		leftPane.add(title);
@@ -149,7 +149,7 @@ public class View {
 		leftPane.add(atts);
 		leftPane.add(opsLabel);
 		leftPane.add(ops);
-		leftPane.add(okayButton);
+		leftPane.add(classOkayButton);
 //MENU BAR INITIALIZATION---------------------------------------------------------
 
 		menuBar = new JMenuBar();
@@ -221,6 +221,7 @@ public class View {
 		childMultiplicity.setBounds(2, 315, 150, 25);
 		childM.setBounds(0, 340, 150, 25);
 		directionChange.setBounds(0, 365, 150, 25);
+		rOkayButton.setBounds(0, 395, 150, 25);
 
 		
 		
@@ -230,7 +231,7 @@ public class View {
 	    parentM.setVisible(false);
 	    childMultiplicity.setVisible(false);
 	    childM.setVisible(false);
-
+	    rOkayButton.setVisible(false);
 	    
 	    
 	    
@@ -241,7 +242,7 @@ public class View {
 	    leftPane.add(childMultiplicity);
 	    leftPane.add(childM);
 	    leftPane.add(parentM);
-
+	    leftPane.add(rOkayButton);
 	    
 		
 	}
