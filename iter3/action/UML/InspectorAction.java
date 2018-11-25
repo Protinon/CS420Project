@@ -12,7 +12,7 @@ public class InspectorAction implements Action {
 	View v;
 	public InspectorAction (Class c, View v) {
 		this.v = v;
-		this.okay = v.okayButton;
+		this.okay = v.classOkayButton;
 		this.name = v.title;
 		this.nameLabel = v.titleLabel;
 		this.atts = v.atts;

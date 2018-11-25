@@ -11,7 +11,7 @@ public class RemoveInspectorAction implements Action{
 	View v;
 	public RemoveInspectorAction (Class c, View v) {
 		this.v = v;
-		this.okay = v.okayButton;
+		this.okay = v.classOkayButton;
 		this.name = v.title;
 		this.nameLabel = v.titleLabel;
 		this.atts = v.atts;

@@ -21,7 +21,7 @@ public class RelationshipInspectorAction implements Action {
 		this.child = child;
 		this.v = vl;
 		this.relationships = vl.cb;
-		this.okay =vl.okayButton;
+		this.okay =vl.rOkayButton;
 		this.relate = r;
 		relats = vl.choices;
 		this.direction = vl.directionChange;
