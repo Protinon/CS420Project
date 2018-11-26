@@ -5,7 +5,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 public class Comment {
-	private int x, y, width = 125, height = 50;
+	private int x, y;
+	private int width = 125, height = 50;
 
 	/**
 	 * Initialize this comment's left hand corner to the (x,y) coordinate formed by
@@ -16,8 +17,8 @@ public class Comment {
 	 * @param y1 will be used as y in (x,y) coordinate to initialize object
 	 **/
 	public Comment(int x1, int y1) {
-		x = x1;
-		y = y1;
+		this.x = x1;
+		this.y = y1;
 	}
 
 	public int getWidth() {

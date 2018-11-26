@@ -4,10 +4,10 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 
 public class CompositionArrow implements Arrow {
-	private int x1, y1, x2, y2, x3, y3, x4, y4, arrowlength = 16;
+	private int x1, y1, x2, y2, x3, y3, x4, y4;
+	private int arrowlength = 16;
 
 	public CompositionArrow(Class c1, Class c2, int x0, int y0, int x5, int y5) {
-
 		if (c1.getLocation().x < c2.getLocation().x) {
 			if (c1.getLocation().x + c1.getWidth() + arrowlength <= c2.getLocation().x) {
 				x1 = x0;
@@ -71,14 +71,13 @@ public class CompositionArrow implements Arrow {
 				}
 			}
 		}
-
 	}
-	
-	public boolean contains(int x5, int y5) {
+
+	public boolean contains(int x, int y) {
 		int[] pointsX = { x1, x2, x3, x4 };
 		int[] pointsY = { y1, y2, y3, y4 };
 		Polygon r = new Polygon(pointsX, pointsY, 4);
-		if (r.contains(x5, y5)) {
+		if (r.contains(x, y)) {
 			return true;
 		}
 		return false;

@@ -3,8 +3,9 @@ package UML;
 import java.awt.Graphics;
 import java.awt.Polygon;
 
-public class GeneralizationArrow implements Arrow {
-	private int x1, y1, x2, y2, x3, y3, arrowlength = 16;
+public class GeneralizationArrow implements Arrow{
+	private int x1, y1, x2, y2, x3, y3;
+	private int arrowlength = 16;
 
 	public GeneralizationArrow(Class c1, Class c2, int x0, int y0, int x4, int y4) {
 		if (((c1.getLocation().x < c2.getLocation().x)
@@ -32,16 +33,16 @@ public class GeneralizationArrow implements Arrow {
 		}
 	}
 
-	public boolean contains(int x5, int y5) {
-		int[] pointsX = { x1, x2, x3};
-		int[] pointsY = { y1, y2, y3};
+	public boolean contains(int x, int y) {
+		int[] pointsX = { x1, x2, x3 };
+		int[] pointsY = { y1, y2, y3 };
 		Polygon r = new Polygon(pointsX, pointsY, 3);
-		if (r.contains(x5, y5)) {
+		if (r.contains(x, y)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public void paintGeneralizationArrow(Graphics g) {
 		int[] pointsX = { x1, x2, x3 };
 		int[] pointsY = { y1, y2, y3 };

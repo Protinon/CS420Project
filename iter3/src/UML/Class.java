@@ -8,12 +8,22 @@ import java.awt.Rectangle;
 import javax.swing.JComponent;
 
 public class Class extends JComponent {
-	private static final long serialVersionUID = -16435718797097829L;
 
-	private int x, y, width = 126, height = 72, boxSize = 24, stringMax = 25;
-	private String name = "Name", attributes = "Attributes", operations = "Operations";
-	private boolean parentRelated = false, childRelated = false;
-	private Class child = null, parent = null;
+	private int x, y;
+	private int width = 126;
+	private int height = 72;
+	private int boxSize = 24;
+	private int stringMax = 25;
+	
+	private String name = "Name";
+	private String attributes = "Attributes";
+	private String operations = "Operations";
+	
+	private boolean parentRelated = false;
+	private boolean childRelated = false;
+	
+	private Class child = null;
+	private Class parent = null;
 
 	/**
 	 * Initialize class box's left-hand corner x/y coordinates.

@@ -6,8 +6,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class MouseListener extends MouseAdapter {
-	Controller c;
-	Point p1;
+	private Controller c;
+	private Point p1;
 
 	/**
 	 * Initializes this mouse listener to be associated with a controller.
@@ -17,7 +17,7 @@ public class MouseListener extends MouseAdapter {
 	 * @return void
 	 **/
 	public MouseListener(Controller c1) {
-		c = c1;
+		this.c = c1;
 	}
 
 	/**

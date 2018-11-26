@@ -2,7 +2,6 @@ package UML;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -33,7 +32,6 @@ public class View {
 	JMenuItem fileClose = new JMenuItem("Close");
 
 	JMenu edit = new JMenu("Edit");
-
 	JMenuItem editUndo = new JMenuItem("Undo");
 	JMenuItem editRedo = new JMenuItem("Redo");
 	JMenuItem editCut = new JMenuItem("Cut");
@@ -50,6 +48,13 @@ public class View {
 	JTextField atts = new JTextField();
 	JTextField ops = new JTextField();
 
+	JTextField pMultiplicity = new JTextField("");
+	JTextField cMultiplicity = new JTextField("");
+
+	JLabel directionLabel = new JLabel("Change Direction: ");
+	JLabel pMultiplicityLabel = new JLabel("Parent Multiplicity: ");
+	JLabel cMultiplicityLabel = new JLabel("Child Multiplicity: ");
+
 	JButton selectButton = new JButton("Select");
 	JButton deleteButton = new JButton("Delete");
 	JButton commentButton = new JButton("Comment");
@@ -61,17 +66,12 @@ public class View {
 	JButton compositionButton = new JButton("Composition");
 	JButton classOkayButton = new JButton("Okay");
 	JButton rOkayButton = new JButton("Okay");
-	JLabel direction = new JLabel("Change Direction: ");
-	JLabel parentMultiplicity = new JLabel("Parent Multiplicity: ");
-	JLabel childMultiplicity = new JLabel("Child Multiplicity: ");
-	
-	JTextField parentM = new JTextField("");
-	JTextField childM = new JTextField("");
-	
-	JCheckBox directionChange = new JCheckBox("Switch Direction");
-	String[] choices = { "Association", "Aggregation", "Composition", "Dependency", "Generalization"};
 
-    final JComboBox<String> cb = new JComboBox<String>(choices);
+	JCheckBox directionChange = new JCheckBox("Switch Direction");
+	String[] relationships = { "Association", "Aggregation", "Composition", "Dependency", "Generalization" };
+
+	final JComboBox<String> relationshipTypes = new JComboBox<String>(relationships);
+
 	/**
 	 * Initialize window and setup.
 	 * 
@@ -126,7 +126,7 @@ public class View {
 		leftPane.add(sep);
 //--------------------------------------------------------------------------------
 
-//INSPECTOR-LIKE FUNCTIONS INITIALIZATION-----------------------------------------
+//CLASS BOX INSPECTOR-LIKE FUNCTIONS INITIALIZATION-------------------------------
 		titleLabel.setBounds(2, 235, 150, 25);
 		title.setBounds(0, 260, 150, 25);
 		attsLabel.setBounds(2, 285, 150, 25);
@@ -150,6 +150,32 @@ public class View {
 		leftPane.add(opsLabel);
 		leftPane.add(ops);
 		leftPane.add(classOkayButton);
+
+//RELATIONSHIP INSPECTOR-LIKE FUNCTIONS INITIALIZATION----------------------------	
+		relationshipTypes.setBounds(0, 240, 150, 25);
+		pMultiplicityLabel.setBounds(2, 265, 150, 25);
+		pMultiplicity.setBounds(0, 290, 150, 25);
+		cMultiplicityLabel.setBounds(2, 315, 150, 25);
+		cMultiplicity.setBounds(0, 340, 150, 25);
+		directionChange.setBounds(0, 365, 150, 25);
+		rOkayButton.setBounds(0, 395, 150, 25);
+
+		directionChange.setVisible(false);
+		relationshipTypes.setVisible(false);
+		pMultiplicityLabel.setVisible(false);
+		pMultiplicity.setVisible(false);
+		cMultiplicityLabel.setVisible(false);
+		cMultiplicity.setVisible(false);
+		rOkayButton.setVisible(false);
+
+		leftPane.add(relationshipTypes);
+		leftPane.add(directionChange);
+		leftPane.add(pMultiplicityLabel);
+		leftPane.add(cMultiplicityLabel);
+		leftPane.add(cMultiplicity);
+		leftPane.add(pMultiplicity);
+		leftPane.add(rOkayButton);
+
 //MENU BAR INITIALIZATION---------------------------------------------------------
 
 		menuBar = new JMenuBar();
@@ -212,38 +238,6 @@ public class View {
 
 // -------------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------------
-		
-	
-		cb.setBounds(0, 240, 150, 25);
-		parentMultiplicity.setBounds(2, 265, 150, 25);
-		parentM.setBounds(0, 290, 150, 25);
-		childMultiplicity.setBounds(2, 315, 150, 25);
-		childM.setBounds(0, 340, 150, 25);
-		directionChange.setBounds(0, 365, 150, 25);
-		rOkayButton.setBounds(0, 395, 150, 25);
-
-		
-		
-		directionChange.setVisible(false);
-	    cb.setVisible(false);
-	    parentMultiplicity.setVisible(false);
-	    parentM.setVisible(false);
-	    childMultiplicity.setVisible(false);
-	    childM.setVisible(false);
-	    rOkayButton.setVisible(false);
-	    
-	    
-	    
-	    
-	    leftPane.add(cb);	
-	    leftPane.add(directionChange);
-	    leftPane.add(parentMultiplicity);
-	    leftPane.add(childMultiplicity);
-	    leftPane.add(childM);
-	    leftPane.add(parentM);
-	    leftPane.add(rOkayButton);
-	    
-		
+// -------------------------------------------------------------------------------    
 	}
 }

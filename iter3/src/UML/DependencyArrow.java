@@ -15,15 +15,15 @@ public class DependencyArrow implements Arrow {
 	}
 
 	public boolean contains(int x5, int y5) {
-		int[] pointsX = { x1, x2, x1};
-		int[] pointsY = { y1, y2, y1};
+		int[] pointsX = { x1, x2, x1 };
+		int[] pointsY = { y1, y2, y1 };
 		Polygon r = new Polygon(pointsX, pointsY, 3);
 		if (r.contains(x5, y5)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public void paintDependencyArrow(Graphics g) {
 		g.setColor(Color.BLACK);
 		if (y2 == y1) {

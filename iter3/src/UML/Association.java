@@ -3,81 +3,88 @@ package UML;
 import java.awt.Graphics;
 import java.awt.Point;
 
-public class Association implements Relationship{
-	private Class c1, c2;
-	private Point p1, p2;
-	public Association(Class c1, Class c2) {
-		this.c1 = c1;
-		this.c2 = c2;
+public class Association implements Relationship {
+	private Class parent;
+	private Class child;
+
+	private Point relationshipStartPoint;
+	private Point relationshipEndPoint;
+
+	public Association(Class parent, Class child) {
+		this.parent = parent;
+		this.child = child;
 	}
-public Arrow getArrow() {
-	return null;
-	
-}
+
+	public Arrow getArrow() {
+		return null;
+
+	}
+
 	public Class getClass1() {
-		return c1;
+		return parent;
 	}
 
 	public Class getClass2() {
-		return c2;
+		return child;
 	}
-	
+
 	public void setLocation() {
-		int x1 = c1.getLocation().x, x2 = c2.getLocation().x, y1 = c1.getLocation().y, y2 = c2.getLocation().y;
-		int width = c1.getWidth();
-		int height = c1.getHeight();
+		int x1 = parent.getLocation().x, x2 = child.getLocation().x, y1 = parent.getLocation().y,
+				y2 = child.getLocation().y;
+		int width = parent.getWidth();
+		int height = parent.getHeight();
 		if (x1 < x2) {
 			if (x1 + width <= x2) {
-				p1 = new Point(x1 + width, y1 + height);
-				p2 = new Point(x2, y2 + height/2);
+				relationshipStartPoint = new Point(x1 + width, y1 + height);
+				relationshipEndPoint = new Point(x2, y2 + height / 2);
 			} else {
 				if (y1 >= y2 + height) {
-					p1 = new Point(x1 + width/2, y1);
-					p2 = new Point(x2 + width/2, y2 + height);
+					relationshipStartPoint = new Point(x1 + width / 2, y1);
+					relationshipEndPoint = new Point(x2 + width / 2, y2 + height);
 				} else if (y1 + height <= y2) {
-					p1 = new Point(x1 + width/2, y1 + height);
-					p2 = new Point(x2 + width/2, y2);
+					relationshipStartPoint = new Point(x1 + width / 2, y1 + height);
+					relationshipEndPoint = new Point(x2 + width / 2, y2);
 				}
 			}
 		} else {
 			if (x1 >= x2 + width) {
-				p1 = new Point(x1, y1 + height/2);
-				p2 = new Point(x2 + width, y2 + height/2);
+				relationshipStartPoint = new Point(x1, y1 + height / 2);
+				relationshipEndPoint = new Point(x2 + width, y2 + height / 2);
 			} else {
 				if (y1 >= y2 + height) {
-					p1 = new Point(x1 + width/2, y1);
-					p2 = new Point(x2 + width/2, y2 + height);
+					relationshipStartPoint = new Point(x1 + width / 2, y1);
+					relationshipEndPoint = new Point(x2 + width / 2, y2 + height);
 				} else if (y1 + height <= y2) {
-					p1 = new Point(x1 + width/2, y1 + height);
-					p2 = new Point(x2 + width/2, y2);
+					relationshipStartPoint = new Point(x1 + width / 2, y1 + height);
+					relationshipEndPoint = new Point(x2 + width / 2, y2);
 				}
 			}
 		}
 	}
-	
-	public void setClass1(Class c1) {
-		this.c1 = c1;
-		update();
-	}	
 
-	public void setClass2(Class c2) {
-		this.c2 = c2;
+	public void setClass1(Class parent) {
+		this.parent = parent;
 		update();
 	}
-	
-	public void update() {}
-	
+
+	public void setClass2(Class child) {
+		this.child = child;
+		update();
+	}
+
+	public void update() {
+	}
+
 	public Point getLocation1() {
-		return p1;
+		return relationshipStartPoint;
 	}
-	
+
 	public Point getLocation2() {
-		return p2;
+		return relationshipEndPoint;
 	}
-	
+
 	public void paintAssociation(Graphics g) {
-		Connector c = new Connector(c1, c2, 0);
+		Connector c = new Connector(parent, child, 0);
 		c.paintConnector(g);
 	}
-	
 }
