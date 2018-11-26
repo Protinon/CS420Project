@@ -520,7 +520,7 @@ public class Controller {
 					addPM.doAction();
 					actions.push(addPM);
 
-					AddChildMultiplicityAction addCM = new AddChildMultiplicityAction(v.pMultiplicity.getText(),
+					AddChildMultiplicityAction addCM = new AddChildMultiplicityAction(v.cMultiplicity.getText(),
 							selectedRelationship);
 					addCM.doAction();
 					actions.push(addCM);
@@ -862,7 +862,7 @@ public class Controller {
 				actions.add(relationshipInspectorAction);
 				v.editUndo.setEnabled(true);
 				rightPane.repaint();
-				break;
+				return;
 			} else {
 				aRelationshipIsSelected = false;
 				selectedRelationship = null;
