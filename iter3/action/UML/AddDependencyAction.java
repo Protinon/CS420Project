@@ -8,15 +8,24 @@ public class AddDependencyAction implements Action {
 	private Class parent;
 	private Class child;
 
-	public AddDependencyAction (Class c1, Class c2, ArrayList<Dependency> dependencies) {
+	private String childM;
+	private String parentM;
+
+	public AddDependencyAction(Class c1, Class c2, ArrayList<Dependency> dependencies, String childM,
+			String parentM) {
 		this.dependencies = dependencies;
 		this.parent = c1;
 		this.child = c2;
+		this.childM = childM;
+		this.parentM = parentM;
 	}
 
 	public void doAction() {
 		if (parent != null && child != null) {
-			dependencies.add(new Dependency(parent, child));
+			Dependency cl = new Dependency(parent, child);
+			dependencies.add(cl);
+			cl.setChildMultiplicity(childM);
+			cl.setParentMultiplicity(parentM);
 			parent.setParentRelated(true);
 			parent.setChild(child);
 			child.setChildRelated(true);

@@ -8,15 +8,24 @@ public class AddCompositionAction implements Action {
 	private Class parent;
 	private Class child;
 
-	public AddCompositionAction (Class c1, Class c2, ArrayList<Composition> compositions) {
+	private String childM;
+	private String parentM;
+
+	public AddCompositionAction(Class c1, Class c2, ArrayList<Composition> compositions, String childM,
+			String parentM) {
 		this.compositions = compositions;
 		this.parent = c1;
 		this.child = c2;
+		this.childM = childM;
+		this.parentM = parentM;
 	}
 
 	public void doAction() {
 		if (parent != null && child != null) {
-			compositions.add(new Composition(parent, child));
+			Composition cl = new Composition(parent, child);
+			compositions.add(cl);
+			cl.setChildMultiplicity(childM);
+			cl.setParentMultiplicity(parentM);
 			parent.setParentRelated(true);
 			parent.setChild(child);
 			child.setChildRelated(true);

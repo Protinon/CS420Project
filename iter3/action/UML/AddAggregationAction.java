@@ -8,24 +8,28 @@ public class AddAggregationAction implements Action {
 	private Class parent;
 	private Class child;
 
-	private Relationship selectedRelationship;
-	
-	public AddAggregationAction (Class c1, Class c2, Relationship selectedRelationship, ArrayList<Aggregation> aggregations, Canvas rightPane) {
+	private String childM;
+	private String parentM;
+
+	public AddAggregationAction(Class c1, Class c2, ArrayList<Aggregation> aggregations, String childM,
+			String parentM) {
 		this.aggregations = aggregations;
 		this.parent = c1;
 		this.child = c2;
-		this.selectedRelationship = selectedRelationship;
+		this.childM = childM;
+		this.parentM = parentM;
 	}
 
 	public void doAction() {
 		if (parent != null && child != null) {
-			Aggregation agg = new Aggregation(parent, child);
-			aggregations.add(agg);
+			Aggregation cl = new Aggregation(parent, child);
+			aggregations.add(cl);
+			cl.setChildMultiplicity(childM);
+			cl.setParentMultiplicity(parentM);
 			parent.setParentRelated(true);
 			parent.setChild(child);
 			child.setChildRelated(true);
 			child.setParent(parent);
-			selectedRelationship = agg;
 		}
 	}
 

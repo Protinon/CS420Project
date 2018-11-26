@@ -8,15 +8,24 @@ public class AddGeneralizationAction implements Action {
 	private Class parent;
 	private Class child;
 
-	public AddGeneralizationAction (Class c1, Class c2, ArrayList<Generalization> generalizations) {
+	private String childM;
+	private String parentM;
+
+	public AddGeneralizationAction(Class c1, Class c2, ArrayList<Generalization> generalizations, String childM,
+			String parentM) {
 		this.generalizations = generalizations;
 		this.parent = c1;
 		this.child = c2;
+		this.childM = childM;
+		this.parentM = parentM;
 	}
 
 	public void doAction() {
 		if (parent != null && child != null) {
-			generalizations.add(new Generalization(parent, child));
+			Generalization cl = new Generalization(parent, child);
+			generalizations.add(cl);
+			cl.setChildMultiplicity(childM);
+			cl.setParentMultiplicity(parentM);
 			parent.setParentRelated(true);
 			parent.setChild(child);
 			child.setChildRelated(true);

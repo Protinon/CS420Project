@@ -8,15 +8,24 @@ public class AddAssociationAction implements Action {
 	private Class parent;
 	private Class child;
 
-	public AddAssociationAction (Class c1, Class c2, ArrayList<Association> associations) {
+	private String childM;
+	private String parentM;
+
+	public AddAssociationAction(Class c1, Class c2, ArrayList<Association> associations, String childM,
+			String parentM) {
 		this.associations = associations;
 		this.parent = c1;
 		this.child = c2;
+		this.childM = childM;
+		this.parentM = parentM;
 	}
 
 	public void doAction() {
 		if (parent != null && child != null) {
-			associations.add(new Association(parent, child));
+			Association cl = new Association(parent, child);
+			associations.add(cl);
+			cl.setChildMultiplicity(childM);
+			cl.setParentMultiplicity(parentM);
 			parent.setParentRelated(true);
 			parent.setChild(child);
 			child.setChildRelated(true);
