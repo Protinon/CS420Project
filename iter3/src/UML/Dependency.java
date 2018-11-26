@@ -31,6 +31,10 @@ public class Dependency implements Relationship {
 	public DependencyArrow getArrow() {
 		return arrow;
 	}
+	
+	public String toString() {
+		return "Dependency";
+	}
 
 	public void update() {
 		int x1 = parent.getLocation().x, x2 = child.getLocation().x, y1 = parent.getLocation().y,

@@ -31,6 +31,10 @@ public class Generalization implements Relationship {
 	public GeneralizationArrow getArrow() {
 		return arrow;
 	}
+	
+	public String toString() {
+		return "Generalization";
+	}
 
 	public void update() {
 		int x1 = parent.getLocation().x, x2 = child.getLocation().x, y1 = parent.getLocation().y,

@@ -28,6 +28,10 @@ public class Aggregation implements Relationship {
 		setLocation();
 	}
 
+	public String toString() {
+		return "Aggregation";
+	}
+	
 	public AggregationArrow getArrow() {
 		return arrow;
 	}

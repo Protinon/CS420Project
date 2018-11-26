@@ -41,8 +41,7 @@ public class MouseListener extends MouseAdapter {
 				int dx = e.getX() - p1.x;
 				int dy = e.getY() - p1.y;
 				if (c.getSelectedClass().getLocation().x + dx >= 0 && c.getSelectedClass().getLocation().y + dy >= 0
-						&& (c.getSelectedClass().getLocation().x + c.getSelectedClass().getWidth() + dx) <= c
-								.getCanvas().getWidth()
+						&& (c.getSelectedClass().getLocation().x + c.getSelectedClass().getWidth() + dx) <= c.getCanvas().getWidth()
 						&& (c.getSelectedClass().getLocation().y + c.getSelectedClass().getHeight() + dy) <= c
 								.getCanvas().getHeight()) {
 					for (Class c3 : c.getClasses()) {
@@ -62,14 +61,13 @@ public class MouseListener extends MouseAdapter {
 											c.getSelectedClass().getLocation().y + c.getSelectedClass().getHeight()
 													+ dy)) {
 								break;
+							} else {
+								c.getSelectedClass().setLocation(c.getSelectedClass().getLocation().x + dx,
+										c.getSelectedClass().getLocation().y + dy);
 							}
-						} else {
-							c.getSelectedClass().setLocation(c.getSelectedClass().getLocation().x + dx,
-									c.getSelectedClass().getLocation().y + dy);
 						}
 					}
 				}
-
 				p1 = e.getPoint();
 				c.getCanvas().repaint();
 			}
@@ -96,7 +94,6 @@ public class MouseListener extends MouseAdapter {
 			}
 		}
 	}
-
 	/**
 	 * Defines different functions for a user's mouse click depending on the mode
 	 * the editor is in.

@@ -26,6 +26,9 @@ public class Association implements Relationship {
 		setLocation();
 	}
 
+	public String toString() {
+		return "Association";
+	}
 	public Arrow getArrow() {
 		return null;
 	}

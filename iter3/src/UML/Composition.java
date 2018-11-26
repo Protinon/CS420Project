@@ -28,6 +28,9 @@ public class Composition implements Relationship {
 		setLocation();
 	}
 
+	public String toString() {
+		return "Composition";
+	}
 	public CompositionArrow getArrow() {
 		return arrow;
 	}

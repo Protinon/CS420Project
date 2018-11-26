@@ -215,12 +215,16 @@ public class Controller {
 		 **/
 		v.editUndo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				for (Action a : actions) {
+					System.out.println(a);
+				}
 				Action actionToUndo = actions.pop();
 				undoActions.add(actionToUndo);
 				actionToUndo.undoAction();
 				v.editRedo.setEnabled(true);
 				if (actions.isEmpty())
 					v.editUndo.setEnabled(false);
+
 				rightPane.repaint();
 			}
 		});
@@ -316,8 +320,8 @@ public class Controller {
 		v.editDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (classSelected()) {
-					InspectorAction inspector = new InspectorAction(getSelectedClass(), v);
-					inspector.undoAction();
+					InspectorAction a = new InspectorAction(getSelectedClass(), v);
+					a.undoAction();
 					deleteObject(new Point(0, 0));
 					rightPane.repaint();
 				}
@@ -480,20 +484,26 @@ public class Controller {
 		v.classOkayButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
 				if (selectedClass != null) {
-					SetClassNameAction setName = new SetClassNameAction(selectedClass, v.title.getText());
-					setName.doAction();
-					actions.push(setName);
+					if (!v.title.getText().equals(selectedClass.getName())) {
+						SetClassNameAction setName = new SetClassNameAction(selectedClass, v.title.getText());
+						setName.doAction();
+						actions.push(setName);
+					}
 
-					SetClassAttributesAction setAtts = new SetClassAttributesAction(selectedClass, v.atts.getText());
-					selectedClass.setAttributes(v.atts.getText());
-					setAtts.doAction();
-					actions.push(setAtts);
+					if (!v.atts.getText().equals(selectedClass.getAttributes())) {
+						SetClassAttributesAction setAtts = new SetClassAttributesAction(selectedClass,
+								v.atts.getText());
+						selectedClass.setAttributes(v.atts.getText());
+						setAtts.doAction();
+						actions.push(setAtts);
+					}
 
-					SetClassOperationsAction setOps = new SetClassOperationsAction(selectedClass, v.ops.getText());
-					selectedClass.setOperations(v.ops.getText());
-					setOps.doAction();
-					actions.push(setOps);
-
+					if (!v.ops.getText().equals(selectedClass.getOperations())) {
+						SetClassOperationsAction setOps = new SetClassOperationsAction(selectedClass, v.ops.getText());
+						selectedClass.setOperations(v.ops.getText());
+						setOps.doAction();
+						actions.push(setOps);
+					}
 					v.editUndo.setEnabled(true);
 					rightPane.repaint();
 				}
@@ -503,6 +513,20 @@ public class Controller {
 		v.rOkayButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
 				if (selectedRelationship != null) {
+					if (!v.pMultiplicity.getText().equals(selectedRelationship.getParentMultiplicity())) {
+						AddParentMultiplicityAction addPM = new AddParentMultiplicityAction(v.pMultiplicity.getText(),
+								selectedRelationship);
+						addPM.doAction();
+						actions.push(addPM);
+					}
+
+					if (!v.cMultiplicity.getText().equals(selectedRelationship.getChildMultiplicity())) {
+						AddChildMultiplicityAction addCM = new AddChildMultiplicityAction(v.cMultiplicity.getText(),
+								selectedRelationship);
+						addCM.doAction();
+						actions.push(addCM);
+					}
+
 					if (v.directionChange.isSelected()) {
 						SwitchRelationshipDirectionAction switchDirection = new SwitchRelationshipDirectionAction(c, v,
 								selectedRelationship);
@@ -511,20 +535,11 @@ public class Controller {
 						v.directionChange.setSelected(false);
 					}
 
-					ChangeRelationshipTypeAction change = new ChangeRelationshipTypeAction(c, v);
-					change.doAction();
-					actions.push(change);
-
-					AddParentMultiplicityAction addPM = new AddParentMultiplicityAction(v.pMultiplicity.getText(),
-							selectedRelationship);
-					addPM.doAction();
-					actions.push(addPM);
-
-					AddChildMultiplicityAction addCM = new AddChildMultiplicityAction(v.cMultiplicity.getText(),
-							selectedRelationship);
-					addCM.doAction();
-					actions.push(addCM);
-
+					if (selectedRelationship.toString() != v.relationshipTypes.getSelectedItem()) {
+						ChangeRelationshipTypeAction change = new ChangeRelationshipTypeAction(c, v);
+						change.doAction();
+						actions.push(change);
+					}
 					RemoveRelationshipInspectorAction a = new RemoveRelationshipInspectorAction(
 							selectedRelationship.getClass1(), selectedRelationship.getClass2(), selectedRelationship,
 							v);
@@ -613,9 +628,9 @@ public class Controller {
 			rightPane.repaint();
 		}
 	}
-	
+
 	public void addAggregation(Point p1) {
-		Class parent = null , child = null;
+		Class parent = null, child = null;
 		if (aggregationPoint1 == null) {
 			aggregationPoint1 = p1;
 		} else if (aggregationPoint2 == null) {
@@ -623,13 +638,13 @@ public class Controller {
 			boolean available = hasARelationship(aggregationPoint1, aggregationPoint2);
 			if (available == false) {
 				for (Class clazz : classBoxes) {
-					if (clazz.contains(aggregationPoint1) ) {
+					if (clazz.contains(aggregationPoint1)) {
 						parent = clazz;
-					} else if(clazz.contains(aggregationPoint2)) {
+					} else if (clazz.contains(aggregationPoint2)) {
 						child = clazz;
 					}
 				}
-				AddAggregationAction a = new AddAggregationAction(parent, child, selectedRelationship, aggregations, rightPane);
+				AddAggregationAction a = new AddAggregationAction(parent, child, aggregations, "", "");
 				a.doAction();
 				actions.push(a);
 				v.editUndo.setEnabled(true);
@@ -639,17 +654,17 @@ public class Controller {
 		}
 		rightPane.repaint();
 	}
-	
-	public void addAggregation(Class c1, Class c2) {
-		AddAggregationAction a = new AddAggregationAction(c1, c2, selectedRelationship, aggregations,rightPane);
+
+	public void addAggregation(Class c1, Class c2, String c, String p) {
+		AddAggregationAction a = new AddAggregationAction(c1, c2, aggregations, c, p);
 		a.doAction();
 		actions.push(a);
 		v.editUndo.setEnabled(true);
-	rightPane.repaint();
-}
-	
+		rightPane.repaint();
+	}
+
 	public void addAssociation(Point p1) {
-		Class parent = null , child = null;
+		Class parent = null, child = null;
 		if (associationPoint1 == null) {
 			associationPoint1 = p1;
 		} else if (associationPoint2 == null) {
@@ -657,13 +672,13 @@ public class Controller {
 			boolean available = hasARelationship(associationPoint1, associationPoint2);
 			if (available == false) {
 				for (Class clazz : classBoxes) {
-					if (clazz.contains(associationPoint1) ) {
+					if (clazz.contains(associationPoint1)) {
 						parent = clazz;
-					} else if(clazz.contains(associationPoint2)) {
+					} else if (clazz.contains(associationPoint2)) {
 						child = clazz;
 					}
 				}
-				AddAssociationAction a = new AddAssociationAction(parent, child, associations);
+				AddAssociationAction a = new AddAssociationAction(parent, child, associations, "", "");
 				a.doAction();
 				actions.push(a);
 				v.editUndo.setEnabled(true);
@@ -673,17 +688,17 @@ public class Controller {
 		}
 		rightPane.repaint();
 	}
-	
-	public void addAssociation(Class c1, Class c2) {
-		AddAssociationAction a = new AddAssociationAction(c1, c2, associations);
+
+	public void addAssociation(Class c1, Class c2, String c, String p) {
+		AddAssociationAction a = new AddAssociationAction(c1, c2, associations, c, p);
 		a.doAction();
 		actions.push(a);
 		v.editUndo.setEnabled(true);
-	rightPane.repaint();
-}
+		rightPane.repaint();
+	}
 
 	public void addGeneralization(Point p1) {
-		Class parent = null , child = null;
+		Class parent = null, child = null;
 		if (generalizationPoint1 == null) {
 			generalizationPoint1 = p1;
 		} else if (generalizationPoint2 == null) {
@@ -691,13 +706,13 @@ public class Controller {
 			boolean available = hasARelationship(generalizationPoint1, generalizationPoint2);
 			if (available == false) {
 				for (Class clazz : classBoxes) {
-					if (clazz.contains(generalizationPoint1) ) {
+					if (clazz.contains(generalizationPoint1)) {
 						parent = clazz;
-					} else if(clazz.contains(generalizationPoint2)) {
+					} else if (clazz.contains(generalizationPoint2)) {
 						child = clazz;
 					}
 				}
-				AddGeneralizationAction a = new AddGeneralizationAction(parent, child, generalizations);
+				AddGeneralizationAction a = new AddGeneralizationAction(parent, child, generalizations, "", "");
 				a.doAction();
 				actions.push(a);
 				v.editUndo.setEnabled(true);
@@ -708,16 +723,16 @@ public class Controller {
 		rightPane.repaint();
 	}
 
-	public void addGeneralization(Class c1, Class c2) {
-		AddGeneralizationAction a = new AddGeneralizationAction(c1, c2, generalizations);
+	public void addGeneralization(Class c1, Class c2, String c, String p) {
+		AddGeneralizationAction a = new AddGeneralizationAction(c1, c2, generalizations, c, p);
 		a.doAction();
 		actions.push(a);
 		v.editUndo.setEnabled(true);
-	rightPane.repaint();
-}
+		rightPane.repaint();
+	}
 
 	public void addDependency(Point p1) {
-		Class parent = null , child = null;
+		Class parent = null, child = null;
 		if (dependencyPoint1 == null) {
 			dependencyPoint1 = p1;
 		} else if (dependencyPoint2 == null) {
@@ -725,13 +740,13 @@ public class Controller {
 			boolean available = hasARelationship(dependencyPoint1, dependencyPoint2);
 			if (available == false) {
 				for (Class clazz : classBoxes) {
-					if (clazz.contains(dependencyPoint1) ) {
+					if (clazz.contains(dependencyPoint1)) {
 						parent = clazz;
-					} else if(clazz.contains(dependencyPoint2)) {
+					} else if (clazz.contains(dependencyPoint2)) {
 						child = clazz;
 					}
 				}
-				AddDependencyAction a = new AddDependencyAction(parent, child, dependencies);
+				AddDependencyAction a = new AddDependencyAction(parent, child, dependencies, "", "");
 				a.doAction();
 				actions.push(a);
 				v.editUndo.setEnabled(true);
@@ -741,17 +756,17 @@ public class Controller {
 		}
 		rightPane.repaint();
 	}
-	
-	public void addDependency(Class c1, Class c2) {
-		AddDependencyAction a = new AddDependencyAction(c1, c2, dependencies);
+
+	public void addDependency(Class c1, Class c2, String c, String p) {
+		AddDependencyAction a = new AddDependencyAction(c1, c2, dependencies, c, p);
 		a.doAction();
 		actions.push(a);
 		v.editUndo.setEnabled(true);
-	rightPane.repaint();
-}
+		rightPane.repaint();
+	}
 
 	public void addComposition(Point p1) {
-		Class parent = null , child = null;
+		Class parent = null, child = null;
 		if (compositionPoint1 == null) {
 			compositionPoint1 = p1;
 		} else if (compositionPoint2 == null) {
@@ -759,13 +774,13 @@ public class Controller {
 			boolean available = hasARelationship(compositionPoint1, compositionPoint2);
 			if (available == false) {
 				for (Class clazz : classBoxes) {
-					if (clazz.contains(compositionPoint1) ) {
+					if (clazz.contains(compositionPoint1)) {
 						parent = clazz;
-					} else if(clazz.contains(compositionPoint2)) {
+					} else if (clazz.contains(compositionPoint2)) {
 						child = clazz;
 					}
 				}
-				AddCompositionAction a = new AddCompositionAction(parent, child, compositions);
+				AddCompositionAction a = new AddCompositionAction(parent, child, compositions, "", "");
 				a.doAction();
 				actions.push(a);
 				v.editUndo.setEnabled(true);
@@ -775,15 +790,15 @@ public class Controller {
 		}
 		rightPane.repaint();
 	}
-	
-	public void addComposition(Class c1, Class c2) {
-		AddCompositionAction a = new AddCompositionAction(c1, c2, compositions);
+
+	public void addComposition(Class c1, Class c2, String c, String p) {
+		AddCompositionAction a = new AddCompositionAction(c1, c2, compositions, c, p);
 		a.doAction();
 		actions.push(a);
 		v.editUndo.setEnabled(true);
-	rightPane.repaint();
-}
-	
+		rightPane.repaint();
+	}
+
 	public void deleteObject(Point p1) {
 		Class classToRemove = null;
 		Comment commentToRemove = null;
@@ -823,9 +838,8 @@ public class Controller {
 			if (classBox.contains(p1)) {
 				selectedClass = classBox;
 				aClassIsSelected = true;
-				InspectorAction inspectorAction = new InspectorAction(selectedClass, v);
-				inspectorAction.doAction();
-				actions.add(inspectorAction);
+				InspectorAction Action = new InspectorAction(selectedClass, v);
+				Action.doAction();
 				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 				break;
@@ -834,7 +848,6 @@ public class Controller {
 				aClassIsSelected = false;
 				RemoveInspectorAction removeInspectorAction = new RemoveInspectorAction(null, v);
 				removeInspectorAction.doAction();
-				actions.add(removeInspectorAction);
 				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 			}
@@ -859,7 +872,6 @@ public class Controller {
 				RelationshipInspectorAction relationshipInspectorAction = new RelationshipInspectorAction(
 						co.getClass1(), co.getClass2(), co, v);
 				relationshipInspectorAction.doAction();
-				actions.add(relationshipInspectorAction);
 				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 				return;
@@ -869,7 +881,6 @@ public class Controller {
 				RemoveRelationshipInspectorAction relationshipInspectorAction = new RemoveRelationshipInspectorAction(
 						co.getClass1(), co.getClass2(), co, v);
 				relationshipInspectorAction.doAction();
-				actions.add(relationshipInspectorAction);
 				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 			}
@@ -881,7 +892,6 @@ public class Controller {
 				RelationshipInspectorAction relationshipInspectorAction = new RelationshipInspectorAction(
 						agg.getClass1(), agg.getClass2(), agg, v);
 				relationshipInspectorAction.doAction();
-				actions.add(relationshipInspectorAction);
 				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 				return;
@@ -891,7 +901,6 @@ public class Controller {
 				RemoveRelationshipInspectorAction relationshipInspectorAction = new RemoveRelationshipInspectorAction(
 						agg.getClass1(), agg.getClass2(), agg, v);
 				relationshipInspectorAction.doAction();
-				actions.add(relationshipInspectorAction);
 				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 			}
@@ -904,7 +913,6 @@ public class Controller {
 				RelationshipInspectorAction relationshipInspectorAction = new RelationshipInspectorAction(d.getClass1(),
 						d.getClass2(), d, v);
 				relationshipInspectorAction.doAction();
-				actions.add(relationshipInspectorAction);
 				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 				return;
@@ -914,7 +922,6 @@ public class Controller {
 				RemoveRelationshipInspectorAction relationshipInspectorAction = new RemoveRelationshipInspectorAction(
 						d.getClass1(), d.getClass2(), d, v);
 				relationshipInspectorAction.doAction();
-				actions.add(relationshipInspectorAction);
 				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 			}
@@ -927,7 +934,6 @@ public class Controller {
 				RelationshipInspectorAction relationshipInspectorAction = new RelationshipInspectorAction(d.getClass1(),
 						d.getClass2(), d, v);
 				relationshipInspectorAction.doAction();
-				actions.add(relationshipInspectorAction);
 				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 				return;
@@ -937,7 +943,6 @@ public class Controller {
 				RemoveRelationshipInspectorAction relationshipInspectorAction = new RemoveRelationshipInspectorAction(
 						d.getClass1(), d.getClass2(), d, v);
 				relationshipInspectorAction.doAction();
-				actions.add(relationshipInspectorAction);
 				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 			}

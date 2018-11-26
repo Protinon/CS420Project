@@ -17,4 +17,5 @@ public void setParentMultiplicity(String mult);
 public void setChildMultiplicity(String mult);
 public String getParentMultiplicity();
 public String getChildMultiplicity();
+public String toString();
 }
