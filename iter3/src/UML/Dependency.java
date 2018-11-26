@@ -7,13 +7,14 @@ public class Dependency implements Relationship {
 	private Class parent;
 	private Class child;
 	
-	private Point relationshipStartPoint;
+	private Point connectorStartPoint;
+	private Point connectorEndPoint;
 	private Point relationshipEndPoint;
 	
 	private GeneralizationArrow dependencyArrow;
 	
 	private int a, b, c, d;
-	private int dependencyArrowLength = 16;
+	private int arrowLength = 16;
 
 	public Dependency(Class parent, Class child) {
 		this.parent = parent;
@@ -32,39 +33,39 @@ public class Dependency implements Relationship {
 		int height = parent.getHeight();
 
 		if (x1 < x2) {
-			if (x1 + width + dependencyArrowLength <= x2) {
-				a = x2 - dependencyArrowLength;
+			if (x1 + width + arrowLength <= x2) {
+				a = x2 - arrowLength;
 				c = y2 + height / 2;
 				b = x2;
 				d = y2 + height / 2;
 			} else {
-				if (y1 >= y2 + height + dependencyArrowLength) {
+				if (y1 >= y2 + height + arrowLength) {
 					a = x2 + width / 2;
-					c = y2 + height + dependencyArrowLength;
+					c = y2 + height + arrowLength;
 					b = x2 + width / 2;
 					d = y2 + height;
-				} else if (y1 + height + dependencyArrowLength <= y2) {
+				} else if (y1 + height + arrowLength <= y2) {
 					a = x2 + width / 2;
-					c = y2 - dependencyArrowLength;
+					c = y2 - arrowLength;
 					b = x2 + width / 2;
 					d = y2;
 				}
 			}
 		} else {
-			if (x1 >= x2 + width + dependencyArrowLength) {
-				a = x2 + width + dependencyArrowLength;
+			if (x1 >= x2 + width + arrowLength) {
+				a = x2 + width + arrowLength;
 				c = y2 + height / 2;
 				b = x2 + width;
 				d = y2 + height / 2;
 			} else {
-				if (y1 >= y2 + height + dependencyArrowLength) {
+				if (y1 >= y2 + height + arrowLength) {
 					a = x2 + width / 2;
-					c = y2 + height + dependencyArrowLength;
+					c = y2 + height + arrowLength;
 					b = x2 + width / 2;
 					d = y2 + height;
-				} else if (y1 + height + dependencyArrowLength <= y2) {
+				} else if (y1 + height + arrowLength <= y2) {
 					a = x2 + width / 2;
-					c = y2 - dependencyArrowLength;
+					c = y2 - arrowLength;
 					b = x2 + width / 2;
 					d = y2;
 				}
@@ -92,35 +93,42 @@ public class Dependency implements Relationship {
 	}
 
 	public void setLocation() {
-		int dependencyArrowlength = 16;
 		int x1 = parent.getLocation().x, x2 = child.getLocation().x, y1 = parent.getLocation().y,
 				y2 = child.getLocation().y;
 		int width = parent.getWidth();
 		int height = parent.getHeight();
 		if (x1 < x2) {
-			if (x1 + width + dependencyArrowlength <= x2) {
-				relationshipStartPoint = new Point(x1 + width, y1 + height / 2);
-				relationshipEndPoint = new Point(x2 - dependencyArrowlength, y2 + height / 2);
+			if (x1 + width + arrowLength <= x2) {
+				connectorStartPoint = new Point(x1 + width, y1 + height / 2);
+				connectorEndPoint = new Point(x2 - arrowLength, y2 + height / 2);
+				relationshipEndPoint = new Point(x2, y2 + height/2);
 			} else {
-				if (y1 >= y2 + height + dependencyArrowlength) {
-					relationshipStartPoint = new Point(x1 + width / 2, y1);
-					relationshipEndPoint = new Point(x2 + width / 2, y2 + height + dependencyArrowlength);
-				} else if (y1 + height + dependencyArrowlength <= y2) {
-					relationshipStartPoint = new Point(x1 + width / 2, y1 + height);
-					relationshipEndPoint = new Point(x2 + width / 2, y2 - dependencyArrowlength);
+				if (y1 >= y2 + height + arrowLength) {
+					connectorStartPoint = new Point(x1 + width / 2, y1);
+					connectorEndPoint = new Point(x2 + width / 2, y2 + height + arrowLength);
+					relationshipEndPoint = new Point(x2 + width/2, y2 + height + arrowLength);
+				} else if (y1 + height + arrowLength <= y2) {
+					connectorStartPoint = new Point(x1 + width / 2, y1 + height);
+					connectorEndPoint = new Point(x2 + width / 2, y2 - arrowLength);
+					relationshipEndPoint = new Point(x2 + width/2, y2);
 				}
 			}
 		} else {
-			if (x1 >= x2 + width + dependencyArrowlength) {
-				relationshipStartPoint = new Point(x1, y1 + height / 2);
-				relationshipEndPoint = new Point(x2 + width + dependencyArrowlength, y2 + height / 2);
+			if (x1 >= x2 + width + arrowLength) {
+				connectorStartPoint = new Point(x1, y1 + height / 2);
+				connectorEndPoint = new Point(x2 + width + arrowLength, y2 + height / 2);
+				relationshipEndPoint = new Point(x2 + width, y2 + height/2);
+
 			} else {
-				if (y1 >= y2 + height + dependencyArrowlength) {
-					relationshipStartPoint = new Point(x1 + width, y1);
-					relationshipEndPoint = new Point(x2 + width / 2, y2 + height + dependencyArrowlength);
-				} else if (y1 + height + dependencyArrowlength <= y2) {
-					relationshipStartPoint = new Point(x1 + width / 2, y1 + height);
-					relationshipEndPoint = new Point(x2 + width / 2, y2 - dependencyArrowlength);
+				if (y1 >= y2 + height + arrowLength) {
+					connectorStartPoint = new Point(x1 + width, y1);
+					connectorEndPoint = new Point(x2 + width / 2, y2 + height + arrowLength);
+					relationshipEndPoint = new Point(x2 + width/2, y2 + height);
+				} else if (y1 + height + arrowLength <= y2) {
+					connectorStartPoint = new Point(x1 + width / 2, y1 + height);
+					connectorEndPoint = new Point(x2 + width / 2, y2 - arrowLength);
+					relationshipEndPoint = new Point(x2 + width/2, y2);
+
 				}
 			}
 		}
@@ -128,15 +136,19 @@ public class Dependency implements Relationship {
 	}
 
 	public Point getLocation1() {
-		return relationshipStartPoint;
+		return connectorStartPoint;
 	}
 
 	public Point getLocation2() {
+		return connectorEndPoint;
+	}
+	
+	public Point getArrowEndLocation() {
 		return relationshipEndPoint;
 	}
 
 	public void paintDependency(Graphics g) {
-		Connector cl = new Connector(parent, child, dependencyArrowLength);
+		Connector cl = new Connector(parent, child, arrowLength);
 		cl.paintConnector(g);
 		update();
 		dependencyArrow.paintGeneralizationArrow(g);

@@ -4,10 +4,11 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 public class Composition implements Relationship {
-	private Class c1;
-	private Class c2;
+	private Class parent;
+	private Class child;
 	
-	private Point relationshipStartPoint;
+	private Point connectorStartPoint;
+	private Point connectorEndPoint;
 	private Point relationshipEndPoint;
 	
 	private CompositionArrow arrow;
@@ -15,9 +16,9 @@ public class Composition implements Relationship {
 	private int a, b, c, d;
 	private int arrowLength = 16;
 
-	public Composition(Class c1, Class c2) {
-		this.c1 = c1;
-		this.c2 = c2;
+	public Composition(Class parent, Class child) {
+		this.parent = parent;
+		this.child = child;
 		setLocation();
 	}
 
@@ -26,9 +27,9 @@ public class Composition implements Relationship {
 	}
 
 	public void update() {
-		int x1 = c1.getLocation().x, x2 = c2.getLocation().x, y1 = c1.getLocation().y, y2 = c2.getLocation().y;
-		int width = c1.getWidth();
-		int height = c1.getHeight();
+		int x1 = parent.getLocation().x, x2 = child.getLocation().x, y1 = parent.getLocation().y, y2 = child.getLocation().y;
+		int width = parent.getWidth();
+		int height = parent.getHeight();
 
 		if (x1 < x2) {
 			if (x1 + width + arrowLength <= x2) {
@@ -69,55 +70,64 @@ public class Composition implements Relationship {
 				}
 			}
 		}
-		arrow = new CompositionArrow(c1, c2, a, c, b, d);
+		arrow = new CompositionArrow(parent, child, a, c, b, d);
 	}
 
-	public void setClass1(Class c1) {
-		this.c1 = c1;
+	public void setClass1(Class parent) {
+		this.parent = parent;
 		update();
 	}
 
-	public void setClass2(Class c2) {
-		this.c2 = c2;
+	public void setClass2(Class child) {
+		this.child = child;
 		update();
 	}
 
 	public Class getClass1() {
-		return c1;
+		return parent;
 	}
 
 	public Class getClass2() {
-		return c2;
+		return child;
 	}
 
 	public void setLocation() {
-		int x1 = c1.getLocation().x, x2 = c2.getLocation().x, y1 = c1.getLocation().y, y2 = c2.getLocation().y;
-		int width = c1.getWidth();
-		int height = c1.getHeight();
+		int x1 = parent.getLocation().x, x2 = child.getLocation().x, y1 = parent.getLocation().y,
+				y2 = child.getLocation().y;
+		int width = parent.getWidth();
+		int height = parent.getHeight();
 		if (x1 < x2) {
 			if (x1 + width + arrowLength <= x2) {
-				relationshipStartPoint = new Point(x1 + width, y1 + height / 2);
-				relationshipEndPoint = new Point(x2 - arrowLength, y2 + height / 2);
+				connectorStartPoint = new Point(x1 + width, y1 + height / 2);
+				connectorEndPoint = new Point(x2 - arrowLength, y2 + height / 2);
+				relationshipEndPoint = new Point(x2, y2 + height/2);
 			} else {
 				if (y1 >= y2 + height + arrowLength) {
-					relationshipStartPoint = new Point(x1 + width / 2, y1);
-					relationshipEndPoint = new Point(x2 + width / 2, y2 + height + arrowLength);
+					connectorStartPoint = new Point(x1 + width / 2, y1);
+					connectorEndPoint = new Point(x2 + width / 2, y2 + height + arrowLength);
+					relationshipEndPoint = new Point(x2 + width/2, y2 + height + arrowLength);
 				} else if (y1 + height + arrowLength <= y2) {
-					relationshipStartPoint = new Point(x1 + width / 2, y1 + height);
-					relationshipEndPoint = new Point(x2 + width / 2, y2 - arrowLength);
+					connectorStartPoint = new Point(x1 + width / 2, y1 + height);
+					connectorEndPoint = new Point(x2 + width / 2, y2 - arrowLength);
+					relationshipEndPoint = new Point(x2 + width/2, y2);
 				}
 			}
 		} else {
 			if (x1 >= x2 + width + arrowLength) {
-				relationshipStartPoint = new Point(x1, y1 + height / 2);
-				relationshipEndPoint = new Point(x2 + width + arrowLength, y2 + height / 2);
+				connectorStartPoint = new Point(x1, y1 + height / 2);
+				connectorEndPoint = new Point(x2 + width + arrowLength, y2 + height / 2);
+				relationshipEndPoint = new Point(x2 + width, y2 + height/2);
+
 			} else {
 				if (y1 >= y2 + height + arrowLength) {
-					relationshipStartPoint = new Point(x1 + width, y1);
-					relationshipEndPoint = new Point(x2 + width / 2, y2 + height + arrowLength);
+					connectorStartPoint = new Point(x1 + width, y1);
+					connectorEndPoint = new Point(x2 + width / 2, y2 + height + arrowLength);
+					relationshipEndPoint = new Point(x2 + width/2, y2 + height);
 				} else if (y1 + height + arrowLength <= y2) {
-					relationshipStartPoint = new Point(x1 + width / 2, y1 + height);
-					relationshipEndPoint = new Point(x2 + width / 2, y2 - arrowLength);
+					connectorStartPoint = new Point(x1 + width / 2, y1 + height);
+					connectorEndPoint = new Point(x2 + width / 2, y2 - arrowLength);
+					relationshipEndPoint = new Point(x2 + width/2, y2);
+
 				}
 			}
 		}
@@ -125,15 +135,19 @@ public class Composition implements Relationship {
 	}
 
 	public Point getLocation1() {
-		return relationshipStartPoint;
+		return connectorStartPoint;
 	}
 
 	public Point getLocation2() {
+		return connectorEndPoint;
+	}
+	
+	public Point getArrowEndLocation() {
 		return relationshipEndPoint;
 	}
 
 	public void paintComposition(Graphics g) {
-		Connector cl = new Connector(c1, c2, 16);
+		Connector cl = new Connector(parent, child, 16);
 		cl.paintConnector(g);
 		update();
 		arrow.paintCompositionArrow(g);

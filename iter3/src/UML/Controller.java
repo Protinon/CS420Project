@@ -499,6 +499,25 @@ public class Controller {
 				}
 			}
 		});
+
+		v.rOkayButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ex) {
+				if (selectedRelationship != null) {
+					ChangeRelationshipTypeAction change = new ChangeRelationshipTypeAction(c, v);
+					
+					change.doAction();
+					actions.push(change);
+					
+					v.editUndo.setEnabled(true);
+					
+					RemoveRelationshipInspectorAction a = new RemoveRelationshipInspectorAction(selectedRelationship.getClass1(), selectedRelationship.getClass2(),
+							selectedRelationship, v);
+					a.doAction();
+					
+					rightPane.repaint();
+				}
+			}
+		});
 	}
 
 	/**
@@ -577,16 +596,57 @@ public class Controller {
 			rightPane.repaint();
 		}
 	}
-
+	
+	public void addAggregation(Point p1) {
+		Class parent = null , child = null;
+		if (aggregationPoint1 == null) {
+			aggregationPoint1 = p1;
+		} else if (aggregationPoint2 == null) {
+			aggregationPoint2 = p1;
+			boolean available = hasARelationship(aggregationPoint1, aggregationPoint2);
+			if (available == false) {
+				for (Class clazz : classBoxes) {
+					if (clazz.contains(aggregationPoint1) ) {
+						parent = clazz;
+					} else if(clazz.contains(aggregationPoint2)) {
+						child = clazz;
+					}
+				}
+				AddAggregationAction a = new AddAggregationAction(parent, child, aggregations);
+				a.doAction();
+				actions.push(a);
+				v.editUndo.setEnabled(true);
+			}
+			aggregationPoint1 = null;
+			aggregationPoint2 = null;
+		}
+		rightPane.repaint();
+	}
+	
+	public void addAggregation(Class c1, Class c2) {
+		AddAggregationAction a = new AddAggregationAction(c1, c2, aggregations);
+		a.doAction();
+		actions.push(a);
+		v.editUndo.setEnabled(true);
+	rightPane.repaint();
+}
+	
 	public void addAssociation(Point p1) {
+		Class parent = null , child = null;
 		if (associationPoint1 == null) {
 			associationPoint1 = p1;
 		} else if (associationPoint2 == null) {
 			associationPoint2 = p1;
 			boolean available = hasARelationship(associationPoint1, associationPoint2);
 			if (available == false) {
-				AddAssociationAction a = new AddAssociationAction(associationPoint1, associationPoint2, associations,
-						classBoxes);
+				for (Class clazz : classBoxes) {
+					if (clazz.contains(associationPoint1) ) {
+						parent = clazz;
+					} else if(clazz.contains(associationPoint2)) {
+						child = clazz;
+					}
+				}
+				AddAssociationAction a = new AddAssociationAction(parent, child, associations);
 				a.doAction();
 				actions.push(a);
 				v.editUndo.setEnabled(true);
@@ -596,16 +656,31 @@ public class Controller {
 		}
 		rightPane.repaint();
 	}
+	
+	public void addAssociation(Class c1, Class c2) {
+		AddAssociationAction a = new AddAssociationAction(c1, c2, associations);
+		a.doAction();
+		actions.push(a);
+		v.editUndo.setEnabled(true);
+	rightPane.repaint();
+}
 
 	public void addGeneralization(Point p1) {
+		Class parent = null , child = null;
 		if (generalizationPoint1 == null) {
 			generalizationPoint1 = p1;
 		} else if (generalizationPoint2 == null) {
 			generalizationPoint2 = p1;
 			boolean available = hasARelationship(generalizationPoint1, generalizationPoint2);
 			if (available == false) {
-				AddGeneralizationAction a = new AddGeneralizationAction(generalizationPoint1, generalizationPoint2,
-						generalizations, classBoxes);
+				for (Class clazz : classBoxes) {
+					if (clazz.contains(generalizationPoint1) ) {
+						parent = clazz;
+					} else if(clazz.contains(generalizationPoint2)) {
+						child = clazz;
+					}
+				}
+				AddGeneralizationAction a = new AddGeneralizationAction(parent, child, generalizations);
 				a.doAction();
 				actions.push(a);
 				v.editUndo.setEnabled(true);
@@ -616,15 +691,30 @@ public class Controller {
 		rightPane.repaint();
 	}
 
+	public void addGeneralization(Class c1, Class c2) {
+		AddGeneralizationAction a = new AddGeneralizationAction(c1, c2, generalizations);
+		a.doAction();
+		actions.push(a);
+		v.editUndo.setEnabled(true);
+	rightPane.repaint();
+}
+
 	public void addDependency(Point p1) {
+		Class parent = null , child = null;
 		if (dependencyPoint1 == null) {
 			dependencyPoint1 = p1;
 		} else if (dependencyPoint2 == null) {
 			dependencyPoint2 = p1;
 			boolean available = hasARelationship(dependencyPoint1, dependencyPoint2);
 			if (available == false) {
-				AddDependencyAction a = new AddDependencyAction(dependencyPoint1, dependencyPoint2, dependencies,
-						classBoxes);
+				for (Class clazz : classBoxes) {
+					if (clazz.contains(dependencyPoint1) ) {
+						parent = clazz;
+					} else if(clazz.contains(dependencyPoint2)) {
+						child = clazz;
+					}
+				}
+				AddDependencyAction a = new AddDependencyAction(parent, child, dependencies);
 				a.doAction();
 				actions.push(a);
 				v.editUndo.setEnabled(true);
@@ -634,37 +724,33 @@ public class Controller {
 		}
 		rightPane.repaint();
 	}
-
-	public void addAggregation(Point p1) {
-		if (aggregationPoint1 == null) {
-			aggregationPoint1 = p1;
-		} else if (aggregationPoint2 == null) {
-			aggregationPoint2 = p1;
-			boolean available = hasARelationship(aggregationPoint1, aggregationPoint2);
-			if (available == false) {
-				AddAggregationAction a = new AddAggregationAction(aggregationPoint1, aggregationPoint2, aggregations,
-						classBoxes);
-				a.doAction();
-				actions.push(a);
-				v.editUndo.setEnabled(true);
-			}
-			aggregationPoint1 = null;
-			aggregationPoint2 = null;
-		}
-		rightPane.repaint();
-	}
+	
+	public void addDependency(Class c1, Class c2) {
+		AddDependencyAction a = new AddDependencyAction(c1, c2, dependencies);
+		a.doAction();
+		actions.push(a);
+		v.editUndo.setEnabled(true);
+	rightPane.repaint();
+}
 
 	public void addComposition(Point p1) {
+		Class parent = null , child = null;
 		if (compositionPoint1 == null) {
 			compositionPoint1 = p1;
 		} else if (compositionPoint2 == null) {
 			compositionPoint2 = p1;
 			boolean available = hasARelationship(compositionPoint1, compositionPoint2);
 			if (available == false) {
-				AddCompositionAction addCompositionAction = new AddCompositionAction(compositionPoint1,
-						compositionPoint2, compositions, classBoxes);
-				addCompositionAction.doAction();
-				actions.push(addCompositionAction);
+				for (Class clazz : classBoxes) {
+					if (clazz.contains(compositionPoint1) ) {
+						parent = clazz;
+					} else if(clazz.contains(compositionPoint2)) {
+						child = clazz;
+					}
+				}
+				AddCompositionAction a = new AddCompositionAction(parent, child, compositions);
+				a.doAction();
+				actions.push(a);
 				v.editUndo.setEnabled(true);
 			}
 			compositionPoint1 = null;
@@ -672,7 +758,15 @@ public class Controller {
 		}
 		rightPane.repaint();
 	}
-
+	
+	public void addComposition(Class c1, Class c2) {
+		AddCompositionAction a = new AddCompositionAction(c1, c2, compositions);
+		a.doAction();
+		actions.push(a);
+		v.editUndo.setEnabled(true);
+	rightPane.repaint();
+}
+	
 	public void deleteObject(Point p1) {
 		Class classToRemove = null;
 		Comment commentToRemove = null;
@@ -948,5 +1042,9 @@ public class Controller {
 			}
 		}
 		return false;
+	}
+
+	public Relationship getSelectedRelationship() {
+		return selectedRelationship;
 	}
 }

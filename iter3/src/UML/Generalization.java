@@ -7,13 +7,14 @@ public class Generalization implements Relationship {
 	private Class parent;
 	private Class child;
 	
-	private Point relationshipStartPoint;
+	private Point connectorStartPoint;
+	private Point connectorEndPoint;
 	private Point relationshipEndPoint;
 	
 	private GeneralizationArrow generalizationArrow;
 	
 	private int a, b, c, d;
-	private int generalizationArrowLength = 16;
+	private int arrowLength = 16;
 
 	public Generalization(Class parent, Class child) {
 		this.parent = parent;
@@ -32,39 +33,39 @@ public class Generalization implements Relationship {
 		int height = parent.getHeight();
 
 		if (x1 < x2) {
-			if (x1 + width + generalizationArrowLength <= x2) {
-				a = x2 - generalizationArrowLength;
+			if (x1 + width + arrowLength <= x2) {
+				a = x2 - arrowLength;
 				c = y2 + height / 2;
 				b = x2;
 				d = y2 + height / 2;
 			} else {
-				if (y1 >= y2 + height + generalizationArrowLength) {
+				if (y1 >= y2 + height + arrowLength) {
 					a = x2 + width / 2;
-					c = y2 + height + generalizationArrowLength;
+					c = y2 + height + arrowLength;
 					b = x2 + width / 2;
 					d = y2 + height;
-				} else if (y1 + height + generalizationArrowLength <= y2) {
+				} else if (y1 + height + arrowLength <= y2) {
 					a = x2 + width / 2;
-					c = y2 - generalizationArrowLength;
+					c = y2 - arrowLength;
 					b = x2 + width / 2;
 					d = y2;
 				}
 			}
 		} else {
-			if (x1 >= x2 + width + generalizationArrowLength) {
-				a = x2 + width + generalizationArrowLength;
+			if (x1 >= x2 + width + arrowLength) {
+				a = x2 + width + arrowLength;
 				c = y2 + height / 2;
 				b = x2 + width;
 				d = y2 + height / 2;
 			} else {
-				if (y1 >= y2 + height + generalizationArrowLength) {
+				if (y1 >= y2 + height + arrowLength) {
 					a = x2 + width / 2;
-					c = y2 + height + generalizationArrowLength;
+					c = y2 + height + arrowLength;
 					b = x2 + width / 2;
 					d = y2 + height;
-				} else if (y1 + height + generalizationArrowLength <= y2) {
+				} else if (y1 + height + arrowLength <= y2) {
 					a = x2 + width / 2;
-					c = y2 - generalizationArrowLength;
+					c = y2 - arrowLength;
 					b = x2 + width / 2;
 					d = y2;
 				}
@@ -97,29 +98,37 @@ public class Generalization implements Relationship {
 		int width = parent.getWidth();
 		int height = parent.getHeight();
 		if (x1 < x2) {
-			if (x1 + width + generalizationArrowLength <= x2) {
-				relationshipStartPoint = new Point(x1 + width, y1 + height / 2);
-				relationshipEndPoint = new Point(x2 - generalizationArrowLength, y2 + height / 2);
+			if (x1 + width + arrowLength <= x2) {
+				connectorStartPoint = new Point(x1 + width, y1 + height / 2);
+				connectorEndPoint = new Point(x2 - arrowLength, y2 + height / 2);
+				relationshipEndPoint = new Point(x2, y2 + height/2);
 			} else {
-				if (y1 >= y2 + height + generalizationArrowLength) {
-					relationshipStartPoint = new Point(x1 + width / 2, y1);
-					relationshipEndPoint = new Point(x2 + width / 2, y2 + height + generalizationArrowLength);
-				} else if (y1 + height + generalizationArrowLength <= y2) {
-					relationshipStartPoint = new Point(x1 + width / 2, y1 + height);
-					relationshipEndPoint = new Point(x2 + width / 2, y2 - generalizationArrowLength);
+				if (y1 >= y2 + height + arrowLength) {
+					connectorStartPoint = new Point(x1 + width / 2, y1);
+					connectorEndPoint = new Point(x2 + width / 2, y2 + height + arrowLength);
+					relationshipEndPoint = new Point(x2 + width/2, y2 + height + arrowLength);
+				} else if (y1 + height + arrowLength <= y2) {
+					connectorStartPoint = new Point(x1 + width / 2, y1 + height);
+					connectorEndPoint = new Point(x2 + width / 2, y2 - arrowLength);
+					relationshipEndPoint = new Point(x2 + width/2, y2);
 				}
 			}
 		} else {
-			if (x1 >= x2 + width + generalizationArrowLength) {
-				relationshipStartPoint = new Point(x1, y1 + height / 2);
-				relationshipEndPoint = new Point(x2 + width + generalizationArrowLength, y2 + height / 2);
+			if (x1 >= x2 + width + arrowLength) {
+				connectorStartPoint = new Point(x1, y1 + height / 2);
+				connectorEndPoint = new Point(x2 + width + arrowLength, y2 + height / 2);
+				relationshipEndPoint = new Point(x2 + width, y2 + height/2);
+
 			} else {
-				if (y1 >= y2 + height + generalizationArrowLength) {
-					relationshipStartPoint = new Point(x1 + width, y1);
-					relationshipEndPoint = new Point(x2 + width / 2, y2 + height + generalizationArrowLength);
-				} else if (y1 + height + generalizationArrowLength <= y2) {
-					relationshipStartPoint = new Point(x1 + width / 2, y1 + height);
-					relationshipEndPoint = new Point(x2 + width / 2, y2 - generalizationArrowLength);
+				if (y1 >= y2 + height + arrowLength) {
+					connectorStartPoint = new Point(x1 + width, y1);
+					connectorEndPoint = new Point(x2 + width / 2, y2 + height + arrowLength);
+					relationshipEndPoint = new Point(x2 + width/2, y2 + height);
+				} else if (y1 + height + arrowLength <= y2) {
+					connectorStartPoint = new Point(x1 + width / 2, y1 + height);
+					connectorEndPoint = new Point(x2 + width / 2, y2 - arrowLength);
+					relationshipEndPoint = new Point(x2 + width/2, y2);
+
 				}
 			}
 		}
@@ -127,15 +136,18 @@ public class Generalization implements Relationship {
 	}
 
 	public Point getLocation1() {
-		return relationshipStartPoint;
+		return connectorStartPoint;
 	}
 
 	public Point getLocation2() {
-		return relationshipEndPoint;
+		return connectorEndPoint;
 	}
 
+	public Point getArrowEndLocation() {
+		return relationshipEndPoint;
+	}
 	public void paintGeneralization(Graphics g) {
-		Connector cl = new Connector(parent, child, generalizationArrowLength);
+		Connector cl = new Connector(parent, child, arrowLength);
 		cl.paintConnector(g);
 		update();
 		generalizationArrow.paintGeneralizationArrow(g);
