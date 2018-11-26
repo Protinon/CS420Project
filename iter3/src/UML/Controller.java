@@ -717,7 +717,7 @@ public class Controller {
 				actions.add(inspectorAction);
 				v.editUndo.setEnabled(true);
 				rightPane.repaint();
-				return;
+				break;
 			} else {
 				selectedClass = null;
 				aClassIsSelected = false;
@@ -751,7 +751,7 @@ public class Controller {
 				actions.add(relationshipInspectorAction);
 				v.editUndo.setEnabled(true);
 				rightPane.repaint();
-				return;
+				break;
 			} else {
 				aRelationshipIsSelected = false;
 				selectedRelationship = null;
