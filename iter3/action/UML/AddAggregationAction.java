@@ -4,10 +4,14 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 public class AddAggregationAction implements Action {
-	private Point p1, p2;
+	private Point p1;
+	private Point p2;
+	
 	private ArrayList<Aggregation> aggregations;
 	private ArrayList<Class> classes;
-	private Class class1, class2;
+	
+	private Class parent;
+	private Class child;
 
 	public AddAggregationAction(Point p1, Point p2, ArrayList<Aggregation> aggregations,
 			ArrayList<Class> classes) {
@@ -20,22 +24,23 @@ public class AddAggregationAction implements Action {
 	public void doAction() {
 		for (Class c : classes) {
 			if (c.contains(p1)) {
-				class1 = c;
+				parent = c;
 			} else if (c.contains(p2)) {
-				class2 = c;
+				child = c;
 			}
 		}
-		if (class1 != null && class2 != null) {
-			aggregations.add(new Aggregation(class1, class2));
-			class1.setParentRelated(true);
-			class1.setChild(class2);
-			class2.setChildRelated(true);
-			class2.setParent(class1);
+		
+		if (parent != null && child != null) {
+			aggregations.add(new Aggregation(parent, child));
+			parent.setParentRelated(true);
+			parent.setChild(child);
+			child.setChildRelated(true);
+			child.setParent(parent);
 		}
 	}
 
 	public void undoAction() {
-		aggregations.remove(class1);
-		aggregations.remove(class2);
+		aggregations.remove(parent);
+		aggregations.remove(child);
 	}
 }

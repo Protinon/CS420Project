@@ -3,18 +3,19 @@ package UML;
 import java.util.ArrayList;
 
 public class DeleteCommentBoxAction implements Action {
-	Comment c;
-	ArrayList<Comment> comments;
-	public DeleteCommentBoxAction(Comment c, ArrayList<Comment> comments) {
-		this.c = c;
+	private Comment comment;
+	private ArrayList<Comment> comments;
+
+	public DeleteCommentBoxAction(Comment comment, ArrayList<Comment> comments) {
+		this.comment = comment;
 		this.comments = comments;
 	}
-	
+
 	public void doAction() {
-		comments.remove(c);
+		comments.remove(comment);
 	}
-	
+
 	public void undoAction() {
-		comments.add(c);
+		comments.add(comment);
 	}
 }

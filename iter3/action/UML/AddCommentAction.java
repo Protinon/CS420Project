@@ -4,9 +4,11 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 public class AddCommentAction implements Action {
-	Comment c;
-	Point p;
-	ArrayList<Comment> comments;
+	private Comment comment;
+	
+	private Point p;
+	
+	private ArrayList<Comment> comments;
 	
 	public AddCommentAction(Point p, ArrayList<Comment> comments) {
 		this.p = p;
@@ -14,11 +16,11 @@ public class AddCommentAction implements Action {
 	}
 	
 	public void doAction() {
-		c = new Comment(p.x, p.y);
-		comments.add(c);
+		comment = new Comment(p.x, p.y);
+		comments.add(comment);
 	}
 	
 	public void undoAction() {
-		comments.remove(c);
+		comments.remove(comment);
 	}
 }

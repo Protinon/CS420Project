@@ -2,19 +2,20 @@ package UML;
 
 import java.util.ArrayList;
 
-public class DeleteClassBoxAction implements Action{
-	Class c;
-	ArrayList<Class> classes;
+public class DeleteClassBoxAction implements Action {
+	private Class classBox;
+	private ArrayList<Class> classBoxes;
+
 	public DeleteClassBoxAction(Class c, ArrayList<Class> classes) {
-		this.c = c;
-		this.classes = classes;
+		this.classBox = c;
+		this.classBoxes = classes;
 	}
-	
+
 	public void doAction() {
-		classes.remove(c);
+		classBoxes.remove(classBox);
 	}
-	
+
 	public void undoAction() {
-		classes.add(c);
+		classBoxes.add(classBox);
 	}
 }

@@ -1,26 +1,24 @@
 package UML;
 
+public class SetClassNameAction implements Action {
+	private String newName;
 
-public class SetClassNameAction implements Action{
-	private String alt;
-	private Class clazz;
-	
+	private Class classBox;
 
 	public SetClassNameAction(Class cl, String text) {
-		clazz = cl;
-		alt = text;
+		classBox = cl;
+		newName = text;
 	}
-	
+
 	public void doAction() {
-		String temp = alt;
-		alt = clazz.getName();
-		clazz.setName(temp);
+		String temp = newName;
+		newName = classBox.getName();
+		classBox.setName(temp);
 	}
-	
+
 	public void undoAction() {
-		String temp = alt;
-		alt = clazz.getName();
-		clazz.setName(temp);
-		
+		String temp = newName;
+		newName = classBox.getName();
+		classBox.setName(temp);
 	}
 }

@@ -4,24 +4,27 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 public class AddClassAction implements Action {
-	Point p;
-	Class c;
-	ArrayList<Class> classes;
+	private Point p;
+	
+	private Class classBox;
+	
+	private ArrayList<Class> classes;
+	
 	public AddClassAction(Point p, ArrayList<Class> classes) {
 		this.p = p;
 		this.classes = classes;
 	}
 	
 	public Class getObject() {
-		return c;
+		return classBox;
 	}
 	
 	public void doAction() { 
-		c = new Class(p.x, p.y);
-		classes.add(c);
+		classBox = new Class(p.x, p.y);
+		classes.add(classBox);
 	}
 	
 	public void undoAction() {
-		classes.remove(c);
+		classes.remove(classBox);
 	}
 }

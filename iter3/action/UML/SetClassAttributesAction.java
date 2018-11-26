@@ -1,25 +1,24 @@
 package UML;
 
 public class SetClassAttributesAction implements Action {
-	private String alt;
-	private Class clazz;
-	
+	private String newAttributes;
+
+	private Class classBox;
 
 	public SetClassAttributesAction(Class cl, String text) {
-		clazz = cl;
-		alt = text;
+		classBox = cl;
+		newAttributes = text;
 	}
-	
+
 	public void doAction() {
-		String temp = alt;
-		alt = clazz.getAttributes();
-		clazz.setAttributes(temp);
+		String temp = newAttributes;
+		newAttributes = classBox.getAttributes();
+		classBox.setAttributes(temp);
 	}
-	
+
 	public void undoAction() {
-		String temp = alt;
-		alt = clazz.getAttributes();
-		clazz.setAttributes(temp);
-		
+		String temp = newAttributes;
+		newAttributes = classBox.getAttributes();
+		classBox.setAttributes(temp);
 	}
 }

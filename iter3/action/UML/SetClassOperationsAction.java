@@ -1,25 +1,24 @@
 package UML;
 
 public class SetClassOperationsAction implements Action {
-	private String alt;
-	private Class clazz;
-	
+	private String newOperations;
+
+	private Class classBox;
 
 	public SetClassOperationsAction(Class cl, String text) {
-		clazz = cl;
-		alt = text;
+		this.classBox = cl;
+		this.newOperations = text;
 	}
-	
+
 	public void doAction() {
-		String temp = alt;
-		alt = clazz.getOperations();
-		clazz.setOperations(temp);
+		String temp = newOperations;
+		newOperations = classBox.getOperations();
+		classBox.setOperations(temp);
 	}
-	
+
 	public void undoAction() {
-		String temp = alt;
-		alt = clazz.getOperations();
-		clazz.setOperations(temp);
-		
+		String temp = newOperations;
+		newOperations = classBox.getOperations();
+		classBox.setOperations(temp);
 	}
 }

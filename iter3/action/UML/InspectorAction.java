@@ -5,12 +5,21 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 public class InspectorAction implements Action {
-	JButton okay;
-	JTextField name, atts, ops;
-	JLabel nameLabel, attsLabel, opsLabel;
-	Class c;
-	View v;
-	public InspectorAction (Class c, View v) {
+	private JButton okay;
+
+	private JTextField name;
+	private JTextField atts;
+	private JTextField ops;
+
+	private JLabel nameLabel;
+	private JLabel attsLabel;
+	private JLabel opsLabel;
+
+	private Class c;
+
+	private View v;
+
+	public InspectorAction(Class c, View v) {
 		this.v = v;
 		this.okay = v.classOkayButton;
 		this.name = v.title;
@@ -20,9 +29,8 @@ public class InspectorAction implements Action {
 		this.ops = v.ops;
 		this.opsLabel = v.opsLabel;
 		this.c = c;
-		
 	}
-	
+
 	public void doAction() {
 		okay.setVisible(true);
 		nameLabel.setVisible(true);
@@ -35,7 +43,7 @@ public class InspectorAction implements Action {
 		ops.setText(c.getOperations());
 		ops.setVisible(true);
 	}
-	
+
 	public void undoAction() {
 		RemoveInspectorAction i = new RemoveInspectorAction(c, v);
 		i.doAction();
