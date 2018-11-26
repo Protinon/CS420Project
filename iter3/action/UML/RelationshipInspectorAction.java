@@ -39,7 +39,7 @@ public class RelationshipInspectorAction implements Action {
 
 		this.relationship = r;
 
-		this.relationshipTypes = vl.relationshipTypes;
+		this.relationships = vl.relationships;
 
 		this.directionChange = vl.directionChange;
 

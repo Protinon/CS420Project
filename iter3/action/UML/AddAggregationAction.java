@@ -1,35 +1,20 @@
 package UML;
 
-import java.awt.Point;
 import java.util.ArrayList;
 
 public class AddAggregationAction implements Action {
-	private Point p1;
-	private Point p2;
-	
 	private ArrayList<Aggregation> aggregations;
-	private ArrayList<Class> classes;
-	
+
 	private Class parent;
 	private Class child;
 
-	public AddAggregationAction(Point p1, Point p2, ArrayList<Aggregation> aggregations,
-			ArrayList<Class> classes) {
+	public AddAggregationAction (Class c1, Class c2, ArrayList<Aggregation> aggregations) {
 		this.aggregations = aggregations;
-		this.p1 = p1;
-		this.p2 = p2;
-		this.classes = classes;
+		this.parent = c1;
+		this.child = c2;
 	}
 
 	public void doAction() {
-		for (Class c : classes) {
-			if (c.contains(p1)) {
-				parent = c;
-			} else if (c.contains(p2)) {
-				child = c;
-			}
-		}
-		
 		if (parent != null && child != null) {
 			aggregations.add(new Aggregation(parent, child));
 			parent.setParentRelated(true);

@@ -1,31 +1,82 @@
 package UML;
 
-public class ChangeRelationshipTypeAction implements Action{
-	private Relationship relationship;
-	private String type;
-public ChangeRelationshipTypeAction(Relationship r, String type) {
-	this.relationship = r;
-	this.type = type;
-}
+public class ChangeRelationshipTypeAction implements Action {
+	private Controller c;
+	private View v;
+	private Relationship selectedRelationship;
+	String newRelationship;
 
-@Override
-public void doAction() {
-if (type == "Aggregation") {
-	
-} else if (type == "Association") {
-	
-} else if (type == "Composition") {
-	
-}else if (type == "Dependency") {
-	
-} else {
-	
-}
-}
+	public ChangeRelationshipTypeAction (Controller c, View v) {
+		this.c = c;
+		this.v = v;
+		this.selectedRelationship = c.getSelectedRelationship();
+		this.newRelationship = v.relationshipTypes.getSelectedItem().toString();
+	}
 
-@Override
-public void undoAction() {
-	// TODO Auto-generated method stub
+	public void doAction() {
+		if (selectedRelationship != null) {
+			if (selectedRelationship instanceof Association) {
+			} else if (selectedRelationship instanceof Aggregation) {
+				if (newRelationship == "Association") {
+					c.addAssociation(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getAggregations().remove(selectedRelationship);
+				} else if (newRelationship == "Composition") {
+					c.addComposition(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getAggregations().remove(selectedRelationship);
+				} else if (newRelationship == "Dependency") {
+					c.addDependency(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getAggregations().remove(selectedRelationship);
+				} else if (newRelationship == "Generalization") {
+					c.addGeneralization(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getAggregations().remove(selectedRelationship);
+				}
+			} else if (selectedRelationship instanceof Composition) {
+				if (newRelationship == "Association") {
+					c.addAssociation(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getCompositions().remove(selectedRelationship);
+				} else if (newRelationship == "Aggregation") {
+					c.addAggregation(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getCompositions().remove(selectedRelationship);
+				} else if (newRelationship == "Dependency") {
+					c.addDependency(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getCompositions().remove(selectedRelationship);
+				} else if (newRelationship == "Generalization") {
+					c.addGeneralization(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getCompositions().remove(selectedRelationship);
+				}
+			} else if (selectedRelationship instanceof Dependency) {
+				if (newRelationship == "Association") {
+					c.addAssociation(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getDependencies().remove(selectedRelationship);
+				} else if (newRelationship == "Aggregation") {
+					c.addAggregation(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getDependencies().remove(selectedRelationship);
+				} else if (newRelationship == "Composition") {
+					c.addComposition(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getDependencies().remove(selectedRelationship);
+				} else if (newRelationship == "Generalization") {
+					c.addGeneralization(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getDependencies().remove(selectedRelationship);
+				}
+			} else {
+				if (newRelationship == "Association") {
+					c.addAssociation(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getGeneralizations().remove(selectedRelationship);
+				} else if (newRelationship == "Aggregation") {
+					c.addAggregation(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getGeneralizations().remove(selectedRelationship);
+				} else if (newRelationship == "Composition") {
+					c.addComposition(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getGeneralizations().remove(selectedRelationship);
+				} else if (newRelationship == "Dependency") {
+					c.addDependency(selectedRelationship.getClass1(), selectedRelationship.getClass2());
+					c.getGeneralizations().remove(selectedRelationship);
+				}
+			}
+		}
+	}
 	
-}
+	public void undoAction() {
+		
+	}
 }
