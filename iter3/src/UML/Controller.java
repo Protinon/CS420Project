@@ -503,17 +503,34 @@ public class Controller {
 		v.rOkayButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
 				if (selectedRelationship != null) {
+					if (v.directionChange.isSelected()) {
+						SwitchRelationshipDirectionAction switchDirection = new SwitchRelationshipDirectionAction(c, v,
+								selectedRelationship);
+						switchDirection.doAction();
+						actions.push(switchDirection);
+						v.directionChange.setSelected(false);
+					}
+
 					ChangeRelationshipTypeAction change = new ChangeRelationshipTypeAction(c, v);
-					
 					change.doAction();
 					actions.push(change);
-					
-					v.editUndo.setEnabled(true);
-					
-					RemoveRelationshipInspectorAction a = new RemoveRelationshipInspectorAction(selectedRelationship.getClass1(), selectedRelationship.getClass2(),
-							selectedRelationship, v);
+
+					AddParentMultiplicityAction addPM = new AddParentMultiplicityAction(v.pMultiplicity.getText(),
+							selectedRelationship);
+					addPM.doAction();
+					actions.push(addPM);
+
+					AddChildMultiplicityAction addCM = new AddChildMultiplicityAction(v.pMultiplicity.getText(),
+							selectedRelationship);
+					addCM.doAction();
+					actions.push(addCM);
+
+					RemoveRelationshipInspectorAction a = new RemoveRelationshipInspectorAction(
+							selectedRelationship.getClass1(), selectedRelationship.getClass2(), selectedRelationship,
+							v);
 					a.doAction();
-					
+
+					v.editUndo.setEnabled(true);
 					rightPane.repaint();
 				}
 			}
@@ -612,7 +629,7 @@ public class Controller {
 						child = clazz;
 					}
 				}
-				AddAggregationAction a = new AddAggregationAction(parent, child, aggregations);
+				AddAggregationAction a = new AddAggregationAction(parent, child, selectedRelationship, aggregations, rightPane);
 				a.doAction();
 				actions.push(a);
 				v.editUndo.setEnabled(true);
@@ -624,7 +641,7 @@ public class Controller {
 	}
 	
 	public void addAggregation(Class c1, Class c2) {
-		AddAggregationAction a = new AddAggregationAction(c1, c2, aggregations);
+		AddAggregationAction a = new AddAggregationAction(c1, c2, selectedRelationship, aggregations,rightPane);
 		a.doAction();
 		actions.push(a);
 		v.editUndo.setEnabled(true);

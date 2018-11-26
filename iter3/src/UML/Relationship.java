@@ -13,4 +13,8 @@ public void setLocation();
 public Point getLocation1();
 public Point getLocation2();
 public Point getArrowEndLocation();
+public void setParentMultiplicity(String mult);
+public void setChildMultiplicity(String mult);
+public String getParentMultiplicity();
+public String getChildMultiplicity();
 }
