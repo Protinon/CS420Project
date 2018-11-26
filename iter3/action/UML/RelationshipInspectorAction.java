@@ -63,6 +63,9 @@ public class RelationshipInspectorAction implements Action {
 		} else {
 			relationshipTypes.setSelectedItem(relationships[4]);
 		}
+		
+		cMultiplicity.setText(relationship.getChildMultiplicity());
+		pMultiplicity.setText(relationship.getParentMultiplicity());
 		okayButton.setVisible(true);
 		directionChange.setVisible(true);
 		pMultiplicity.setVisible(true);
