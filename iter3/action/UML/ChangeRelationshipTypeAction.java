@@ -20,9 +20,22 @@ public class ChangeRelationshipTypeAction implements Action {
 		if (selectedRelationship != null) {
 
 			if (selectedRelationship instanceof Association) {
+				if (newRelationship == "Aggregation") {
+					c.addAggregation(selectedRelationship.getClass1(), selectedRelationship.getClass2(), selectedRelationship.getChildMultiplicity(), selectedRelationship.getParentMultiplicity());
+					c.getAssociations().remove(selectedRelationship);
+				} else if (newRelationship == "Composition") {
+					c.addComposition(selectedRelationship.getClass1(), selectedRelationship.getClass2(), selectedRelationship.getChildMultiplicity(), selectedRelationship.getParentMultiplicity());
+					c.getAssociations().remove(selectedRelationship);
+				} else if (newRelationship == "Dependency") {
+					c.addDependency(selectedRelationship.getClass1(), selectedRelationship.getClass2(), selectedRelationship.getChildMultiplicity(), selectedRelationship.getParentMultiplicity());
+					c.getAssociations().remove(selectedRelationship);
+				} else if (newRelationship == "Generalization") {
+					c.addGeneralization(selectedRelationship.getClass1(), selectedRelationship.getClass2(), selectedRelationship.getChildMultiplicity(), selectedRelationship.getParentMultiplicity());
+					c.getAssociations().remove(selectedRelationship);
+				}
 			} else if (selectedRelationship instanceof Aggregation) {
 				if (newRelationship == "Association") {
-					c.addAggregation(selectedRelationship.getClass1(), selectedRelationship.getClass2(), selectedRelationship.getChildMultiplicity(), selectedRelationship.getParentMultiplicity());
+					c.addAssociation(selectedRelationship.getClass1(), selectedRelationship.getClass2(), selectedRelationship.getChildMultiplicity(), selectedRelationship.getParentMultiplicity());
 					c.getAggregations().remove(selectedRelationship);
 				} else if (newRelationship == "Composition") {
 					c.addComposition(selectedRelationship.getClass1(), selectedRelationship.getClass2(), selectedRelationship.getChildMultiplicity(), selectedRelationship.getParentMultiplicity());
