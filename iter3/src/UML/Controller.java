@@ -802,8 +802,9 @@ public class Controller {
 	public void deleteObject(Point p1) {
 		Class classToRemove = null;
 		Comment commentToRemove = null;
+		Relationship relationshipToRemove = null;
 
-		for (Class classBox : classBoxes) {
+for (Class classBox : classBoxes) {
 			if (classBox.contains(p1.x, p1.y)) {
 				classToRemove = classBox;
 			}
@@ -814,6 +815,31 @@ public class Controller {
 				commentToRemove = commentBox;
 			}
 		}
+		
+		for (Aggregation a : aggregations) {
+			if(a.getArrow().contains(p1.x, p1.y)) {
+				relationshipToRemove = a;
+				}
+		}
+		
+		for (Composition c : compositions) {
+			if (c.getArrow().contains(p1.x, p1.y) ) {
+				relationshipToRemove = c;
+			}
+		}
+		
+		for(Dependency d : dependencies) {
+			if(d.getArrow().contains(p1.x,p1.y)) {
+				relationshipToRemove = d;
+			}
+		}
+		
+		for(Generalization g : generalizations) {
+			if(g.getArrow().contains(p1.x, p1.y)) {
+				relationshipToRemove = g;
+			}
+		}
+		
 		if (classToRemove != null) {
 			DeleteClassBoxAction deleteClassBoxAction = new DeleteClassBoxAction(classToRemove, classBoxes);
 			deleteClassBoxAction.doAction();
@@ -828,6 +854,14 @@ public class Controller {
 			actions.push(deleteCommentBoxAction);
 			v.editUndo.setEnabled(true);
 			commentToRemove = null;
+		}
+		
+		if(relationshipToRemove != null ) {
+			DeleteRelationshipAction deleteRelationshipAction = new DeleteRelationshipAction(relationshipToRemove, c);
+			deleteRelationshipAction.doAction();
+			actions.push(deleteRelationshipAction);
+			v.editUndo.setEnabled(true);
+			relationshipToRemove = null;
 		}
 		rightPane.repaint();
 	}
@@ -865,8 +899,29 @@ public class Controller {
 			}
 		}
 
+		for (Association co : associations) {
+			if (co.contains(p1.x, p1.y)) {
+				selectedRelationship = co;
+				aRelationshipIsSelected = true;
+				RelationshipInspectorAction relationshipInspectorAction = new RelationshipInspectorAction(
+						co.getClass1(), co.getClass2(), co, v);
+				relationshipInspectorAction.doAction();
+				v.editUndo.setEnabled(true);
+				rightPane.repaint();
+				return;
+			} else {
+				aRelationshipIsSelected = false;
+				selectedRelationship = null;
+				RemoveRelationshipInspectorAction relationshipInspectorAction = new RemoveRelationshipInspectorAction(
+						co.getClass1(), co.getClass2(), co, v);
+				relationshipInspectorAction.doAction();
+				v.editUndo.setEnabled(true);
+				rightPane.repaint();
+			}
+		}
+		
 		for (Composition co : compositions) {
-			if (co.getArrow().contains(p1.x, p1.y)) {
+			if (co.contains(p1.x, p1.y) ||co.getArrow().contains(p1.x, p1.y)) {
 				selectedRelationship = co;
 				aRelationshipIsSelected = true;
 				RelationshipInspectorAction relationshipInspectorAction = new RelationshipInspectorAction(
@@ -886,7 +941,7 @@ public class Controller {
 			}
 		}
 		for (Aggregation agg : aggregations) {
-			if (agg.getArrow().contains(p1.x, p1.y)) {
+			if(agg.contains(p1.x, p1.y) || (agg.getArrow().contains(p1.x, p1.y))) {
 				selectedRelationship = agg;
 				aRelationshipIsSelected = true;
 				RelationshipInspectorAction relationshipInspectorAction = new RelationshipInspectorAction(
@@ -907,7 +962,7 @@ public class Controller {
 		}
 
 		for (Generalization d : generalizations) {
-			if (d.getArrow().contains(p1.x, p1.y)) {
+			if (d.contains(p1.x, p1.y) || d.getArrow().contains(p1.x, p1.y)) {
 				selectedRelationship = d;
 				aRelationshipIsSelected = true;
 				RelationshipInspectorAction relationshipInspectorAction = new RelationshipInspectorAction(d.getClass1(),
@@ -928,7 +983,7 @@ public class Controller {
 		}
 
 		for (Dependency d : dependencies) {
-			if (d.getArrow().contains(p1.x, p1.y)) {
+			if (d.contains(p1.x, p1.y) || d.getArrow().contains(p1.x, p1.y)) {
 				selectedRelationship = d;
 				aRelationshipIsSelected = true;
 				RelationshipInspectorAction relationshipInspectorAction = new RelationshipInspectorAction(d.getClass1(),

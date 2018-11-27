@@ -18,4 +18,5 @@ public void setChildMultiplicity(String mult);
 public String getParentMultiplicity();
 public String getChildMultiplicity();
 public String toString();
+public boolean contains(int x, int y);
 }

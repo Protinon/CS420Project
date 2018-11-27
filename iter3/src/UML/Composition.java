@@ -2,6 +2,7 @@ package UML;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 
 public class Composition implements Relationship {
 	private Class parent;
@@ -30,6 +31,19 @@ public class Composition implements Relationship {
 
 	public String toString() {
 		return "Composition";
+	}
+	
+	public boolean contains(int x, int y) {
+		if (Point2D.distance(connectorStartPoint.x, connectorStartPoint.y, x, y)
+				+ Point2D.distance(connectorEndPoint.x, connectorEndPoint.y, x,
+						y) < (Point2D.distance(connectorStartPoint.x, connectorStartPoint.y, connectorEndPoint.x,
+								connectorEndPoint.y) + .1)
+				&& (Point2D.distance(connectorStartPoint.x, connectorStartPoint.y, x, y) + Point2D.distance(
+						connectorEndPoint.x, connectorEndPoint.y, x, y) > (Point2D.distance(connectorStartPoint.x,
+								connectorStartPoint.y, connectorEndPoint.x, connectorEndPoint.y) - .1))) {
+			return true;
+		}
+		return false;
 	}
 	public CompositionArrow getArrow() {
 		return arrow;

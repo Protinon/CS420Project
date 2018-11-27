@@ -1,3 +1,4 @@
+
 package UML;
 
 import java.awt.Color;
@@ -13,7 +14,7 @@ public class Class extends JComponent {
 	private int width = 126;
 	private int height = 72;
 	private int boxSize = 24;
-	private int stringMax = 25;
+	private int stringMax = 18;
 	
 	private String name = "Name";
 	private String attributes = "Attributes";
