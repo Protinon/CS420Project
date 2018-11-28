@@ -15,7 +15,7 @@ public class Class extends JComponent {
 	private int width = 126;
 	private int height = 72;
 	private int nameBoxSize = 24;
-	private int attsBoxSize = 0;
+	private int attsBoxSize = 24;
 	private int opsBoxSize = 24;
 	private int stringMax = 18;
 	
@@ -25,9 +25,7 @@ public class Class extends JComponent {
 	
 	private boolean parentRelated = false;
 	private boolean childRelated = false;
-	
-	private ArrayList<String> strings = new ArrayList<String> ();
-	
+		
 	private Class child = null;
 	private Class parent = null;
 
@@ -41,7 +39,6 @@ public class Class extends JComponent {
 	public Class(int x1, int y1) {
 		x = x1;
 		y = y1;
-		strings.add(attributes);
 	}
 
 	public int getWidth() {
@@ -108,15 +105,10 @@ public class Class extends JComponent {
 	 * @return void
 	 **/
 	public void setAttributes(String newAtts) {
-		while (newAtts.length() > stringMax) {
-			strings = null;
-			strings.add(newAtts.substring(0, stringMax));
-			newAtts = newAtts.substring(stringMax);
-		} 
-		if(newAtts.length() % stringMax != 0) {
-			String temp = newAtts.substring(newAtts.length() - newAtts.length() % stringMax);
-			strings.add(temp);
-		}attributes = newAtts;
+		if (newAtts.length() > stringMax) {
+			newAtts = newAtts.substring(0, stringMax);
+		}
+		name = newAtts;
 		repaint();
 	}
 
@@ -198,31 +190,23 @@ public class Class extends JComponent {
 		g.drawRect(x, y, width, nameBoxSize);
 		g.drawString(name, x + 2, y + nameBoxSize - 6);
 
-
-		int offset = y + nameBoxSize + nameBoxSize - 6;
-		for (String s : strings) {
-			g.drawString(s, x+2, offset);
-			offset += nameBoxSize;
-			attsBoxSize += nameBoxSize;
-		}
 		// draw attributes box
-		g.setColor(Color.WHITE);
-	//	g.fillRect(x, y + attsBoxSize, width, height - (attsBoxSize * 2));
-		g.setColor(Color.BLACK);
-		g.drawRect(x, y + nameBoxSize, width, attsBoxSize);
-		
-		/*	g.drawString(attributes, x + 2, y + attsBoxSize + attsBoxSize - 6);
-
-		// draw operations box
 		g.setColor(Color.WHITE);
 		g.fillRect(x, y + (attsBoxSize * 2), width, height - (attsBoxSize * 2));
 		g.setColor(Color.BLACK);
 		g.drawRect(x, y + (attsBoxSize * 2), width, height - (attsBoxSize * 2));
-		g.drawString(operations, x + 2, y + opsBoxSize + opsBoxSize + opsBoxSize- 6);
+		g.drawString(attributes, x + 2, y + attsBoxSize + attsBoxSize - 6);
+
+			// draw operations box
+		g.setColor(Color.WHITE);
+		g.fillRect(x, y + (opsBoxSize * 2), width, height - (opsBoxSize * 2));
+		g.setColor(Color.BLACK);
+		g.drawRect(x, y + (opsBoxSize * 2), width, height - (opsBoxSize * 2));
+		g.drawString(operations, x + 2, y + opsBoxSize + opsBoxSize + opsBoxSize - 6);
 
 		// draw box around 3 subboxes ^^
 		g.drawRect(x, y, width, height);
-*/	}
+	}
 	
 	public boolean isAParent() {
 		return parentRelated;
