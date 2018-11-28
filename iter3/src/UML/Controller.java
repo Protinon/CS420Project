@@ -8,6 +8,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 import java.util.Stack;
+import action.*;
 
 public class Controller {
 	private Stack<Action> actions = new Stack<Action>();

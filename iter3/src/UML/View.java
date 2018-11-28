@@ -40,37 +40,37 @@ public class View {
 	JMenuItem editDelete = new JMenuItem("Delete");
 	JMenuItem editSelectAll = new JMenuItem("Select All");
 
-	JLabel titleLabel = new JLabel("Enter Class Box Title: ");
-	JLabel attsLabel = new JLabel("Enter Class Attributes: ");
-	JLabel opsLabel = new JLabel("Enter Class Operations: ");
+	public JLabel titleLabel = new JLabel("Enter Class Box Title: ");
+	public JLabel attsLabel = new JLabel("Enter Class Attributes: ");
+	public JLabel opsLabel = new JLabel("Enter Class Operations: ");
 
-	JTextField title = new JTextField();
-	JTextField atts = new JTextField();
-	JTextField ops = new JTextField();
+	public JTextField title = new JTextField();
+	public JTextField atts = new JTextField();
+	public JTextField ops = new JTextField();
 
-	JTextField pMultiplicity = new JTextField("");
-	JTextField cMultiplicity = new JTextField("");
+	public JTextField pMultiplicity = new JTextField("");
+	public JTextField cMultiplicity = new JTextField("");
 
-	JLabel directionLabel = new JLabel("Change Direction: ");
-	JLabel pMultiplicityLabel = new JLabel("Parent Multiplicity: ");
-	JLabel cMultiplicityLabel = new JLabel("Child Multiplicity: ");
+	public JLabel directionLabel = new JLabel("Change Direction: ");
+	public JLabel pMultiplicityLabel = new JLabel("Parent Multiplicity: ");
+	public JLabel cMultiplicityLabel = new JLabel("Child Multiplicity: ");
 
-	JButton selectButton = new JButton("Select");
-	JButton deleteButton = new JButton("Delete");
-	JButton commentButton = new JButton("Comment");
-	JButton classButton = new JButton("Class Box");
-	JButton aggregationButton = new JButton("Aggregation");
-	JButton dependencyButton = new JButton("Dependency");
-	JButton generalizationButton = new JButton("Generalization");
-	JButton associationButton = new JButton("Association");
-	JButton compositionButton = new JButton("Composition");
-	JButton classOkayButton = new JButton("Okay");
-	JButton rOkayButton = new JButton("Okay");
+	public JButton selectButton = new JButton("Select");
+	public JButton deleteButton = new JButton("Delete");
+	public JButton commentButton = new JButton("Comment");
+	public JButton classButton = new JButton("Class Box");
+	public JButton aggregationButton = new JButton("Aggregation");
+	public JButton dependencyButton = new JButton("Dependency");
+	public JButton generalizationButton = new JButton("Generalization");
+	public JButton associationButton = new JButton("Association");
+	public JButton compositionButton = new JButton("Composition");
+	public JButton classOkayButton = new JButton("Okay");
+	public JButton rOkayButton = new JButton("Okay");
 
-	JCheckBox directionChange = new JCheckBox("Switch Direction");
-	String[] relationships = { "Association", "Aggregation", "Composition", "Dependency", "Generalization" };
+	public JCheckBox directionChange = new JCheckBox("Switch Direction");
+	public String[] relationships = { "Association", "Aggregation", "Composition", "Dependency", "Generalization" };
 
-	final JComboBox<String> relationshipTypes = new JComboBox<String>(relationships);
+	public final JComboBox<String> relationshipTypes = new JComboBox<String>(relationships);
 
 	/**
 	 * Initialize window and setup.
