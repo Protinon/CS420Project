@@ -33,6 +33,7 @@ public class Composition implements Relationship {
 		return "Composition";
 	}
 	
+	
 	public boolean contains(int x, int y) {
 		if (Point2D.distance(connectorStartPoint.x, connectorStartPoint.y, x, y)
 				+ Point2D.distance(connectorEndPoint.x, connectorEndPoint.y, x,
