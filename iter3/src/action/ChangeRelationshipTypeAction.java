@@ -1,4 +1,6 @@
-package UML;
+package action;
+
+import UML.*;
 
 public class ChangeRelationshipTypeAction implements Action {
 	private Controller c;

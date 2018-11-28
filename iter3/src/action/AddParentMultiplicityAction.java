@@ -1,4 +1,5 @@
-package UML;
+package action;
+import UML.Relationship;
 
 public class AddParentMultiplicityAction implements Action {
 	private String mult;

@@ -1,4 +1,6 @@
-package UML;
+package action;
+
+import UML.Class;
 
 public class SetClassNameAction implements Action {
 	private String newName;

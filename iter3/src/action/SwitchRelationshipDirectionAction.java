@@ -1,4 +1,9 @@
-package UML;
+package action;
+
+import UML.Controller;
+import UML.Class;
+import UML.View;
+import UML.Relationship;
 
 public class SwitchRelationshipDirectionAction implements Action {
 	private View v;

@@ -1,4 +1,6 @@
-package UML;
+package action;
+
+import UML.Class;
 
 public class SetClassOperationsAction implements Action {
 	private String newOperations;

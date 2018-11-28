@@ -1,10 +1,12 @@
-package UML;
+package action;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import UML.View;
+import UML.Class;
 
-public class RemoveInspectorAction implements Action {
+public class InspectorAction implements Action {
 	private JButton okay;
 
 	private JTextField name;
@@ -19,35 +21,33 @@ public class RemoveInspectorAction implements Action {
 
 	private View v;
 
-	public RemoveInspectorAction(Class c, View v) {
+	public InspectorAction(Class c, View v) {
 		this.v = v;
-
 		this.okay = v.classOkayButton;
-
 		this.name = v.title;
 		this.nameLabel = v.titleLabel;
-
 		this.atts = v.atts;
 		this.attsLabel = v.attsLabel;
-
 		this.ops = v.ops;
 		this.opsLabel = v.opsLabel;
-
 		this.c = c;
 	}
 
 	public void doAction() {
-		okay.setVisible(false);
-		nameLabel.setVisible(false);
-		name.setVisible(false);
-		attsLabel.setVisible(false);
-		atts.setVisible(false);
-		opsLabel.setVisible(false);
-		ops.setVisible(false);
+		okay.setVisible(true);
+		nameLabel.setVisible(true);
+		name.setText(c.getName());
+		name.setVisible(true);
+		attsLabel.setVisible(true);
+		atts.setText(c.getAttributes());
+		atts.setVisible(true);
+		opsLabel.setVisible(true);
+		ops.setText(c.getOperations());
+		ops.setVisible(true);
 	}
 
 	public void undoAction() {
-		InspectorAction i = new InspectorAction(c, v);
+		RemoveInspectorAction i = new RemoveInspectorAction(c, v);
 		i.doAction();
 	}
 }

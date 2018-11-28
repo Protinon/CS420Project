@@ -1,4 +1,6 @@
-package UML;
+package action;
+
+import UML.Class;
 
 public class SetClassAttributesAction implements Action {
 	private String newAttributes;

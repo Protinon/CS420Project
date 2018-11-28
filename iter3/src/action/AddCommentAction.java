@@ -1,7 +1,8 @@
-package UML;
+package action;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import UML.Comment;
 
 public class AddCommentAction implements Action {
 	private Comment comment;

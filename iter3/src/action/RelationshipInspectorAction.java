@@ -1,12 +1,13 @@
-package UML;
+package action;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import UML.*;
 
-public class RemoveRelationshipInspectorAction implements Action {
+public class RelationshipInspectorAction implements Action {
 	private JButton okayButton;
 
 	private Class parent;
@@ -27,7 +28,7 @@ public class RemoveRelationshipInspectorAction implements Action {
 	private JLabel pMultiplicityLabel;
 	private JLabel cMultiplicityLabel;
 
-	public RemoveRelationshipInspectorAction(Class parent, Class child, Relationship r, View vl) {
+	public RelationshipInspectorAction(Class parent, Class child, Relationship r, View vl) {
 		this.parent = parent;
 		this.child = child;
 
@@ -51,13 +52,27 @@ public class RemoveRelationshipInspectorAction implements Action {
 	}
 
 	public void doAction() {
-		relationshipTypes.setVisible(false);
-		okayButton.setVisible(false);
-		directionChange.setVisible(false);
-		pMultiplicityLabel.setVisible(false);
-		cMultiplicityLabel.setVisible(false);
-		pMultiplicity.setVisible(false);
-		cMultiplicity.setVisible(false);
+		relationshipTypes.setVisible(true);
+		if (relationship instanceof Association) {
+			relationshipTypes.setSelectedItem(relationships[0]);
+		} else if (relationship instanceof Aggregation) {
+			relationshipTypes.setSelectedItem(relationships[1]);
+		} else if (relationship instanceof Composition) {
+			relationshipTypes.setSelectedItem(relationships[2]);
+		} else if (relationship instanceof Dependency) {
+			relationshipTypes.setSelectedItem(relationships[3]);
+		} else {
+			relationshipTypes.setSelectedItem(relationships[4]);
+		}
+		
+		cMultiplicity.setText(relationship.getChildMultiplicity());
+		pMultiplicity.setText(relationship.getParentMultiplicity());
+		okayButton.setVisible(true);
+		directionChange.setVisible(true);
+		pMultiplicity.setVisible(true);
+		cMultiplicity.setVisible(true);
+		pMultiplicityLabel.setVisible(true);
+		cMultiplicityLabel.setVisible(true);
 	}
 
 	@Override

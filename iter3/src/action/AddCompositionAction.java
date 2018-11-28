@@ -1,6 +1,8 @@
-package UML;
+package action;
 
 import java.util.ArrayList;
+import UML.Composition;
+import UML.Class;
 
 public class AddCompositionAction implements Action {
 	private ArrayList<Composition> compositions;

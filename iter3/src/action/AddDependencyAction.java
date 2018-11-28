@@ -1,9 +1,11 @@
-package UML;
+package action;
 
 import java.util.ArrayList;
+import UML.Dependency;
+import UML.Class;
 
-public class AddGeneralizationAction implements Action {
-	private ArrayList<Generalization> generalizations;
+public class AddDependencyAction implements Action {
+	private ArrayList<Dependency> dependencies;
 
 	private Class parent;
 	private Class child;
@@ -11,9 +13,9 @@ public class AddGeneralizationAction implements Action {
 	private String childM;
 	private String parentM;
 
-	public AddGeneralizationAction(Class c1, Class c2, ArrayList<Generalization> generalizations, String childM,
+	public AddDependencyAction(Class c1, Class c2, ArrayList<Dependency> dependencies, String childM,
 			String parentM) {
-		this.generalizations = generalizations;
+		this.dependencies = dependencies;
 		this.parent = c1;
 		this.child = c2;
 		this.childM = childM;
@@ -22,8 +24,8 @@ public class AddGeneralizationAction implements Action {
 
 	public void doAction() {
 		if (parent != null && child != null) {
-			Generalization cl = new Generalization(parent, child);
-			generalizations.add(cl);
+			Dependency cl = new Dependency(parent, child);
+			dependencies.add(cl);
 			cl.setChildMultiplicity(childM);
 			cl.setParentMultiplicity(parentM);
 			parent.setParentRelated(true);
@@ -34,7 +36,7 @@ public class AddGeneralizationAction implements Action {
 	}
 
 	public void undoAction() {
-		generalizations.remove(parent);
-		generalizations.remove(child);
+		dependencies.remove(parent);
+		dependencies.remove(child);
 	}
 }

@@ -1,9 +1,11 @@
-package UML;
+package action;
 
 import java.util.ArrayList;
+import UML.Aggregation;
+import UML.Class;
 
-public class AddDependencyAction implements Action {
-	private ArrayList<Dependency> dependencies;
+public class AddAggregationAction implements Action {
+	private ArrayList<Aggregation> aggregations;
 
 	private Class parent;
 	private Class child;
@@ -11,9 +13,9 @@ public class AddDependencyAction implements Action {
 	private String childM;
 	private String parentM;
 
-	public AddDependencyAction(Class c1, Class c2, ArrayList<Dependency> dependencies, String childM,
+	public AddAggregationAction(Class c1, Class c2, ArrayList<Aggregation> aggregations, String childM,
 			String parentM) {
-		this.dependencies = dependencies;
+		this.aggregations = aggregations;
 		this.parent = c1;
 		this.child = c2;
 		this.childM = childM;
@@ -22,8 +24,8 @@ public class AddDependencyAction implements Action {
 
 	public void doAction() {
 		if (parent != null && child != null) {
-			Dependency cl = new Dependency(parent, child);
-			dependencies.add(cl);
+			Aggregation cl = new Aggregation(parent, child);
+			aggregations.add(cl);
 			cl.setChildMultiplicity(childM);
 			cl.setParentMultiplicity(parentM);
 			parent.setParentRelated(true);
@@ -34,7 +36,7 @@ public class AddDependencyAction implements Action {
 	}
 
 	public void undoAction() {
-		dependencies.remove(parent);
-		dependencies.remove(child);
+		aggregations.remove(parent);
+		aggregations.remove(child);
 	}
 }

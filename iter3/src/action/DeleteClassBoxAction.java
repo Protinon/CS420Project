@@ -1,6 +1,7 @@
-package UML;
+package action;
 
 import java.util.ArrayList;
+import UML.Class;
 
 public class DeleteClassBoxAction implements Action {
 	private Class classBox;

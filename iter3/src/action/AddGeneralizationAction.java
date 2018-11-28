@@ -1,9 +1,11 @@
-package UML;
+package action;
 
 import java.util.ArrayList;
+import UML.Generalization;
+import UML.Class;
 
-public class AddAggregationAction implements Action {
-	private ArrayList<Aggregation> aggregations;
+public class AddGeneralizationAction implements Action {
+	private ArrayList<Generalization> generalizations;
 
 	private Class parent;
 	private Class child;
@@ -11,9 +13,9 @@ public class AddAggregationAction implements Action {
 	private String childM;
 	private String parentM;
 
-	public AddAggregationAction(Class c1, Class c2, ArrayList<Aggregation> aggregations, String childM,
+	public AddGeneralizationAction(Class c1, Class c2, ArrayList<Generalization> generalizations, String childM,
 			String parentM) {
-		this.aggregations = aggregations;
+		this.generalizations = generalizations;
 		this.parent = c1;
 		this.child = c2;
 		this.childM = childM;
@@ -22,8 +24,8 @@ public class AddAggregationAction implements Action {
 
 	public void doAction() {
 		if (parent != null && child != null) {
-			Aggregation cl = new Aggregation(parent, child);
-			aggregations.add(cl);
+			Generalization cl = new Generalization(parent, child);
+			generalizations.add(cl);
 			cl.setChildMultiplicity(childM);
 			cl.setParentMultiplicity(parentM);
 			parent.setParentRelated(true);
@@ -34,7 +36,7 @@ public class AddAggregationAction implements Action {
 	}
 
 	public void undoAction() {
-		aggregations.remove(parent);
-		aggregations.remove(child);
+		generalizations.remove(parent);
+		generalizations.remove(child);
 	}
 }
