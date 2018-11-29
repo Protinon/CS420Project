@@ -7,7 +7,9 @@ import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -16,6 +18,10 @@ import javax.swing.JOptionPane;
 import action.*;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Controller {
 	private Stack<Action> actions = new Stack<Action>();
@@ -123,19 +129,38 @@ public class Controller {
 		/**
 		 * Opens a file explorer dialog box to open files in their default editors.
 		 * 
-		 * @author Bri Long
+		 * @author Lukas Deaton
 		 * @param e ActionEvent - fileOpen menu item was clicked by user
 		 * @return void
 		 **/
 		v.fileOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int returnVal = fc.showSaveDialog(null);
+				if (returnVal != JFileChooser.APPROVE_OPTION) {
+					return;
+				}
+				File openFile = fc.getSelectedFile();
+				try {
+					openData(openFile);
+					saveLocation = openFile.toString();
+					rightPane.repaint();
+				}
+				catch (FileNotFoundException ex) {
+					JOptionPane.showMessageDialog(null, "File not found " + openFile.getPath());
+				}
+				catch (IOException ex) {
+					JOptionPane.showMessageDialog(null, "Could not open file  " + openFile.getPath());
+				}
+				catch (ParseException ex) {
+					JOptionPane.showMessageDialog(null, "File data is incorrect - Likely modified externally");
+				}
 			}
 		});
 
 		/**
 		 * Skeleton for save functionality.
 		 * 
-		 * @author Bri Long
+		 * @author Lukas Deaton
 		 * @param e - ActionEvent - fileSave menu item was clicked by user
 		 * @return void
 		 **/
@@ -150,7 +175,7 @@ public class Controller {
 						saveData(f);
 					}
 					catch (IOException io) {
-						JOptionPane.showMessageDialog(null, "Could not save file " + f.getPath() + " - Save somewhere else.");
+						JOptionPane.showMessageDialog(null, "Could not save file " + f.getPath());
 						v.fileSaveAs.doClick();
 					}
 				}
@@ -635,6 +660,76 @@ public class Controller {
 		fw.write(obj.toJSONString());
 		fw.flush();
 		fw.close();
+	}
+	
+	/**
+	 * @author Lukas Deaton
+	 * @param file - File to save json data
+	 * @throws FileNotFoundException, IOException, ParseException
+	 */
+	public void openData(File file) throws FileNotFoundException, IOException, ParseException {
+		JSONParser parser = new JSONParser();
+		JSONObject obj = (JSONObject) parser.parse(new FileReader(file));
+		// Map hashcodes to classes, used when creating relationships
+		Map<Long, Class> newClasses = new HashMap<Long, Class>();
+		
+		JSONArray classes = (JSONArray) obj.get("Classes");
+		for (Object o : classes){
+			JSONObject c = (JSONObject) o;
+			int posX = ((Long)c.get("posX")).intValue();
+			int posY = ((Long)c.get("posY")).intValue();
+			String attributes = (String)c.get("Attributes");
+			String operations = (String)c.get("Operations");
+			String name = (String)c.get("Name");
+			Long hashcode = (Long)c.get("Hashcode");
+			Class newClass = new Class(posX, posY);
+			newClass.setName(name);
+			newClass.setAttributes(attributes);
+			newClass.setOperations(operations);
+			classBoxes.add(newClass);
+			newClasses.put(hashcode, newClass);
+		}
+		
+		JSONArray aggr = (JSONArray) obj.get("Aggregations");
+		for (Object o : aggr) {
+			JSONObject r = (JSONObject) o;
+			Long parent = (Long) r.get("Parent");
+			Long child = (Long) r.get("Child");
+			Aggregation newRel = new Aggregation(newClasses.get(parent), newClasses.get(child));
+			aggregations.add(newRel);
+		}
+		JSONArray ass = (JSONArray) obj.get("Associations");
+		for (Object o : ass) {
+			JSONObject r = (JSONObject) o;
+			Long parent = (Long) r.get("Parent");
+			Long child = (Long) r.get("Child");
+			Association newRel = new Association(newClasses.get(parent), newClasses.get(child));
+			associations.add(newRel);
+		}
+		JSONArray comp = (JSONArray) obj.get("Compositions");
+		for (Object o : comp) {
+			JSONObject r = (JSONObject) o;
+			Long parent = (Long) r.get("Parent");
+			Long child = (Long) r.get("Child");
+			Composition newRel = new Composition(newClasses.get(parent), newClasses.get(child));
+			compositions.add(newRel);
+		}
+		JSONArray dep = (JSONArray) obj.get("Dependencies");
+		for (Object o : dep) {
+			JSONObject r = (JSONObject) o;
+			Long parent = (Long) r.get("Parent");
+			Long child = (Long) r.get("Child");
+			Dependency newRel = new Dependency(newClasses.get(parent), newClasses.get(child));
+			dependencies.add(newRel);
+		}
+		JSONArray gen = (JSONArray) obj.get("Generalizations");
+		for (Object o : gen) {
+			JSONObject r = (JSONObject) o;
+			Long parent = (Long) r.get("Parent");
+			Long child = (Long) r.get("Child");
+			Generalization newRel = new Generalization(newClasses.get(parent), newClasses.get(child));
+			generalizations.add(newRel);
+		}
 	}
 
 	/**
