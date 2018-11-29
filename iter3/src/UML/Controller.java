@@ -6,9 +6,16 @@ import java.awt.event.ActionListener;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import action.*;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 
 public class Controller {
 	private Stack<Action> actions = new Stack<Action>();
@@ -60,6 +67,9 @@ public class Controller {
 	private Controller c;
 
 	private Canvas rightPane;
+	
+	private String saveLocation = "";
+	private final JFileChooser fc = new JFileChooser();
 
 	/**
 	 * Constructor for this controller
@@ -131,19 +141,44 @@ public class Controller {
 		 **/
 		v.fileSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (saveLocation == "") {
+					v.fileSaveAs.doClick();
+				}
+				else {
+					File f = new File(saveLocation);
+					try {
+						saveData(f);
+					}
+					catch (IOException io) {
+						JOptionPane.showMessageDialog(null, "Could not save file " + f.getPath() + " - Save somewhere else.");
+						v.fileSaveAs.doClick();
+					}
+				}
 			}
 		});
 
 		/**
 		 * Skeleton for Save As functionality.
 		 * 
-		 * @author Bri Long
+		 * @author Lukas Deaton
 		 * @param e - ActionEvent - fileSaveAs menu item was clicked by user
 		 * @return void
 		 **/
 		v.fileSaveAs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				int returnVal = fc.showSaveDialog(null);
+				if (returnVal != JFileChooser.APPROVE_OPTION) {
+					return;
+				}
+				File saveFile = fc.getSelectedFile();
+				try {
+					saveData(saveFile);
+					saveLocation = saveFile.toString();
+				}
+				catch (IOException io) {
+					JOptionPane.showMessageDialog(null, "An error occured when saving the file, try again.");
+					v.fileSaveAs.doClick();
+				}
 			}
 		});
 
@@ -551,6 +586,55 @@ public class Controller {
 				}
 			}
 		});
+	}
+	
+	/**
+	 * @author Lukas Deaton
+	 * @param rels - ArrayList - Array of relationships
+	 * @return JSONArray - Json array of json objects representing the input relationships
+	 */
+	public <T> JSONArray getRelationshipJson(ArrayList<T> rels) {
+		JSONArray arr = new JSONArray();
+		for (T x : rels) {
+			JSONObject obj = new JSONObject();
+			obj.put("Parent", ((Relationship) x).getClass1().hashCode());
+			obj.put("Child", ((Relationship) x).getClass2().hashCode());
+			arr.add(obj);
+		}
+		return arr;
+	}
+	
+	/**
+	 * @author Lukas Deaton
+	 * @param file - File to save json data
+	 * @throws IOException
+	 */
+	public void saveData(File file) throws IOException {
+		JSONObject obj = new JSONObject();
+		obj.put("Aggregations", getRelationshipJson(aggregations));
+		obj.put("Associations", getRelationshipJson(associations));
+		obj.put("Compositions", getRelationshipJson(compositions));
+		obj.put("Dependencies", getRelationshipJson(dependencies));
+		obj.put("Generalizations", getRelationshipJson(generalizations));
+		
+		JSONArray classes = new JSONArray();
+		for (Class x : classBoxes){
+			JSONObject cObj = new JSONObject();
+			Point p = x.getLocation();
+			cObj.put("posX", p.x);
+			cObj.put("posY", p.y);
+			cObj.put("Name", x.getName());
+			cObj.put("Attributes", x.getAttributes());
+			cObj.put("Operations", x.getOperations());
+			cObj.put("Hashcode", x.hashCode());
+			classes.add(cObj);
+		}
+		obj.put("Classes", classes);
+		
+		FileWriter fw = new FileWriter(file);
+		fw.write(obj.toJSONString());
+		fw.flush();
+		fw.close();
 	}
 
 	/**

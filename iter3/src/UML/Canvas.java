@@ -59,10 +59,10 @@ public class Canvas extends JPanel {
 			}
 		}
 
-		for (Composition c : c.getCompositions()) {
+		for (Composition co : c.getCompositions()) {
 
-			if (c.getClass1() != null && c.getClass2() != null) {
-				c.paintComposition(g);
+			if (co.getClass1() != null && co.getClass2() != null) {
+				co.paintComposition(g);
 			}
 		}
 	}
