@@ -1,4 +1,4 @@
-package UML;
+package object;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentCaptor.forClass;
@@ -11,7 +11,6 @@ import static org.mockito.Mockito.verify;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,12 +19,10 @@ import org.mockito.ArgumentCaptor;
 
 class ControllerTest {
 	
-	View v;
 	Controller c;
 
 	@BeforeEach
 	public void setup() {
-		v = new View();
 		c = new Controller();
 	}
 	
@@ -36,95 +33,95 @@ class ControllerTest {
 		for (String s1 : s) {
 			c.falsifyAllBut(s1);
 			if (s1 == "deleteMode") {
-				assertEquals(true, c.deleteMode);
-				assertEquals(false, c.classMode);
-				assertEquals(false, c.commentMode);
-				assertEquals(false, c.aggregationMode);
-				assertEquals(false, c.dependencyMode);
-				assertEquals(false, c.associationMode);
-				assertEquals(false, c.compositionMode);
-				assertEquals(false, c.generalizationMode);
-				assertEquals(false, c.selectMode);
+				assertEquals(true, c.deleteMode());
+				assertEquals(false, c.classMode());
+				assertEquals(false, c.commentMode());
+				assertEquals(false, c.aggregationMode());
+				assertEquals(false, c.dependencyMode());
+				assertEquals(false, c.associationMode());
+				assertEquals(false, c.compositionMode());
+				assertEquals(false, c.generalizationMode());
+				assertEquals(false, c.selectMode());
 			} else if (s1 == "classMode") {
-				assertEquals(false, c.deleteMode);
-				assertEquals(true, c.classMode);
-				assertEquals(false, c.commentMode);
-				assertEquals(false, c.aggregationMode);
-				assertEquals(false, c.dependencyMode);
-				assertEquals(false, c.associationMode);
-				assertEquals(false, c.compositionMode);
-				assertEquals(false, c.generalizationMode);
-				assertEquals(false, c.selectMode);
+				assertEquals(false, c.deleteMode());
+				assertEquals(true, c.classMode());
+				assertEquals(false, c.commentMode());
+				assertEquals(false, c.aggregationMode());
+				assertEquals(false, c.dependencyMode());
+				assertEquals(false, c.associationMode());
+				assertEquals(false, c.compositionMode());
+				assertEquals(false, c.generalizationMode());
+				assertEquals(false, c.selectMode());
 			} else if (s1 == "commentMode") {
-				assertEquals(false, c.deleteMode);
-				assertEquals(false, c.classMode);
-				assertEquals(true, c.commentMode);
-				assertEquals(false, c.aggregationMode);
-				assertEquals(false, c.dependencyMode);
-				assertEquals(false, c.associationMode);
-				assertEquals(false, c.compositionMode);
-				assertEquals(false, c.generalizationMode);
-				assertEquals(false, c.selectMode);
+				assertEquals(false, c.deleteMode());
+				assertEquals(false, c.classMode());
+				assertEquals(true, c.commentMode());
+				assertEquals(false, c.aggregationMode());
+				assertEquals(false, c.dependencyMode());
+				assertEquals(false, c.associationMode());
+				assertEquals(false, c.compositionMode());
+				assertEquals(false, c.generalizationMode());
+				assertEquals(false, c.selectMode());
 			} else if (s1 == "aggregationMode") {
-				assertEquals(false, c.deleteMode);
-				assertEquals(false, c.classMode);
-				assertEquals(false, c.commentMode);
-				assertEquals(true, c.aggregationMode);
-				assertEquals(false, c.dependencyMode);
-				assertEquals(false, c.associationMode);
-				assertEquals(false, c.compositionMode);
-				assertEquals(false, c.generalizationMode);
-				assertEquals(false, c.selectMode);
+				assertEquals(false, c.deleteMode());
+				assertEquals(false, c.classMode());
+				assertEquals(false, c.commentMode());
+				assertEquals(true, c.aggregationMode());
+				assertEquals(false, c.dependencyMode());
+				assertEquals(false, c.associationMode());
+				assertEquals(false, c.compositionMode());
+				assertEquals(false, c.generalizationMode());
+				assertEquals(false, c.selectMode());
 			} else if (s1 == "dependencyMode") {
-				assertEquals(false, c.deleteMode);
-				assertEquals(false, c.classMode);
-				assertEquals(false, c.commentMode);
-				assertEquals(false, c.aggregationMode);
-				assertEquals(true, c.dependencyMode);
-				assertEquals(false, c.associationMode);
-				assertEquals(false, c.compositionMode);
-				assertEquals(false, c.generalizationMode);
-				assertEquals(false, c.selectMode);
+				assertEquals(false, c.deleteMode());
+				assertEquals(false, c.classMode());
+				assertEquals(false, c.commentMode());
+				assertEquals(false, c.aggregationMode());
+				assertEquals(true, c.dependencyMode());
+				assertEquals(false, c.associationMode());
+				assertEquals(false, c.compositionMode());
+				assertEquals(false, c.generalizationMode());
+				assertEquals(false, c.selectMode());
 			} else if (s1 == "associationMode") {
-				assertEquals(false, c.deleteMode);
-				assertEquals(false, c.classMode);
-				assertEquals(false, c.commentMode);
-				assertEquals(false, c.aggregationMode);
-				assertEquals(false, c.dependencyMode);
-				assertEquals(true, c.associationMode);
-				assertEquals(false, c.compositionMode);
-				assertEquals(false, c.generalizationMode);
-				assertEquals(false, c.selectMode);
+				assertEquals(false, c.deleteMode());
+				assertEquals(false, c.classMode());
+				assertEquals(false, c.commentMode());
+				assertEquals(false, c.aggregationMode());
+				assertEquals(false, c.dependencyMode());
+				assertEquals(true, c.associationMode());
+				assertEquals(false, c.compositionMode());
+				assertEquals(false, c.generalizationMode());
+				assertEquals(false, c.selectMode());
 			} else if (s1 == "compositionMode") {
-				assertEquals(false, c.deleteMode);
-				assertEquals(false, c.classMode);
-				assertEquals(false, c.commentMode);
-				assertEquals(false, c.aggregationMode);
-				assertEquals(false, c.dependencyMode);
-				assertEquals(false, c.associationMode);
-				assertEquals(true, c.compositionMode);
-				assertEquals(false, c.generalizationMode);
-				assertEquals(false, c.selectMode);
+				assertEquals(false, c.deleteMode());
+				assertEquals(false, c.classMode());
+				assertEquals(false, c.commentMode());
+				assertEquals(false, c.aggregationMode());
+				assertEquals(false, c.dependencyMode());
+				assertEquals(false, c.associationMode());
+				assertEquals(true, c.compositionMode());
+				assertEquals(false, c.generalizationMode());
+				assertEquals(false, c.selectMode());
 			} else if (s1 == "generalizationMode") {
-				assertEquals(false, c.deleteMode);
-				assertEquals(false, c.classMode);
-				assertEquals(false, c.commentMode);
-				assertEquals(false, c.aggregationMode);
-				assertEquals(false, c.dependencyMode);
-				assertEquals(false, c.associationMode);
-				assertEquals(false, c.compositionMode);
-				assertEquals(true, c.generalizationMode);
-				assertEquals(false, c.selectMode);
+				assertEquals(false, c.deleteMode());
+				assertEquals(false, c.classMode());
+				assertEquals(false, c.commentMode());
+				assertEquals(false, c.aggregationMode());
+				assertEquals(false, c.dependencyMode());
+				assertEquals(false, c.associationMode());
+				assertEquals(false, c.compositionMode());
+				assertEquals(true, c.generalizationMode());
+				assertEquals(false, c.selectMode());
 			} else if (s1 == "selectMode") {
-				assertEquals(false, c.deleteMode);
-				assertEquals(false, c.classMode);
-				assertEquals(false, c.commentMode);
-				assertEquals(false, c.aggregationMode);
-				assertEquals(false, c.dependencyMode);
-				assertEquals(false, c.associationMode);
-				assertEquals(false, c.compositionMode);
-				assertEquals(false, c.generalizationMode);
-				assertEquals(true, c.selectMode);
+				assertEquals(false, c.deleteMode());
+				assertEquals(false, c.classMode());
+				assertEquals(false, c.commentMode());
+				assertEquals(false, c.aggregationMode());
+				assertEquals(false, c.dependencyMode());
+				assertEquals(false, c.associationMode());
+				assertEquals(false, c.compositionMode());
+				assertEquals(false, c.generalizationMode());
+				assertEquals(true, c.selectMode());
 			}
 		}
 	}
@@ -136,40 +133,40 @@ class ControllerTest {
 
 		ActionListener fileMock = mock(ActionListener.class);
 		
-		c.v.fileNew.addActionListener(fileMock);
-		c.v.fileNew.doClick();
+		c.getView().fileNew.addActionListener(fileMock);
+		c.getView().fileNew.doClick();
 		verify(fileMock, times(1)).actionPerformed(captor.capture());
-		assertEquals(captor.getValue().getSource(), c.v.fileNew.getComponent());
+		assertEquals(captor.getValue().getSource(), c.getView().fileNew.getComponent());
 
-		c.v.fileOpen.addActionListener(fileMock);
-		c.v.fileOpen.doClick();
+		c.getView().fileOpen.addActionListener(fileMock);
+		c.getView().fileOpen.doClick();
 		verify(fileMock, times(2)).actionPerformed(captor.capture());
-		assertEquals(captor.getValue().getSource(), c.v.fileOpen.getComponent());
+		assertEquals(captor.getValue().getSource(), c.getView().fileOpen.getComponent());
 		
-		c.v.fileSave.addActionListener(fileMock);
-		c.v.fileSave.doClick();
+		c.getView().fileSave.addActionListener(fileMock);
+		c.getView().fileSave.doClick();
 		verify(fileMock, times(3)).actionPerformed(captor.capture());
-		assertEquals(captor.getValue().getSource(), c.v.fileSave.getComponent());
+		assertEquals(captor.getValue().getSource(), c.getView().fileSave.getComponent());
 
-		c.v.fileSaveAs.addActionListener(fileMock);
-		c.v.fileSaveAs.doClick();
+		c.getView().fileSaveAs.addActionListener(fileMock);
+		c.getView().fileSaveAs.doClick();
 		verify(fileMock, times(4)).actionPerformed(captor.capture());
-		assertEquals(captor.getValue().getSource(), c.v.fileSaveAs.getComponent());
+		assertEquals(captor.getValue().getSource(), c.getView().fileSaveAs.getComponent());
 
-		c.v.filePageSetup.addActionListener(fileMock);
-		c.v.filePageSetup.doClick();
+		c.getView().filePageSetup.addActionListener(fileMock);
+		c.getView().filePageSetup.doClick();
 		verify(fileMock, times(5)).actionPerformed(captor.capture());
-		assertEquals(captor.getValue().getSource(), c.v.filePageSetup.getComponent());
+		assertEquals(captor.getValue().getSource(), c.getView().filePageSetup.getComponent());
 
-		c.v.filePrint.addActionListener(fileMock);
-		c.v.filePrint.doClick();
+		c.getView().filePrint.addActionListener(fileMock);
+		c.getView().filePrint.doClick();
 		verify(fileMock, times(6)).actionPerformed(captor.capture());
-		assertEquals(captor.getValue().getSource(), c.v.filePrint.getComponent());
+		assertEquals(captor.getValue().getSource(), c.getView().filePrint.getComponent());
 		
-		c.v.fileClose.addActionListener(fileMock);
-		c.v.fileClose.doClick();
+		c.getView().fileClose.addActionListener(fileMock);
+		c.getView().fileClose.doClick();
 		verify(fileMock, times(7)).actionPerformed(captor.capture());
-		assertEquals(captor.getValue().getSource(), c.v.fileClose.getComponent());
+		assertEquals(captor.getValue().getSource(), c.getView().fileClose.getComponent());
 
 	}
 
@@ -186,40 +183,40 @@ class ControllerTest {
 		ActionListener editDeleteClicked = mock(ActionListener.class);
 		ActionListener editSelectAllClicked = mock(ActionListener.class);
 
-		c.v.editUndo.addActionListener(editUndoClicked);
-		c.v.editUndo.doClick();
+		c.getView().editUndo.addActionListener(editUndoClicked);
+		c.getView().editUndo.doClick();
 		verify(editUndoClicked).actionPerformed(captor.capture());
-		assertEquals(captor.getValue().getSource(), c.v.editUndo.getComponent());
+		assertEquals(captor.getValue().getSource(), c.getView().editUndo.getComponent());
 
-		c.v.editRedo.addActionListener(editRedoClicked);
-		c.v.editRedo.doClick();
+		c.getView().editRedo.addActionListener(editRedoClicked);
+		c.getView().editRedo.doClick();
 		verify(editRedoClicked).actionPerformed(captor.capture());
-		assertEquals(captor.getValue().getSource(), c.v.editRedo.getComponent());
+		assertEquals(captor.getValue().getSource(), c.getView().editRedo.getComponent());
 
-		c.v.editCut.addActionListener(editCutClicked);
-		c.v.editCut.doClick();
+		c.getView().editCut.addActionListener(editCutClicked);
+		c.getView().editCut.doClick();
 		verify(editCutClicked).actionPerformed(captor.capture());
-		assertEquals(captor.getValue().getSource(), c.v.editCut.getComponent());
+		assertEquals(captor.getValue().getSource(), c.getView().editCut.getComponent());
 
-		c.v.editCopy.addActionListener(editCopyClicked);
-		c.v.editCopy.doClick();
+		c.getView().editCopy.addActionListener(editCopyClicked);
+		c.getView().editCopy.doClick();
 		verify(editCopyClicked).actionPerformed(captor.capture());
-		assertEquals(captor.getValue().getSource(), c.v.editCopy.getComponent());
+		assertEquals(captor.getValue().getSource(), c.getView().editCopy.getComponent());
 
-		c.v.editPaste.addActionListener(editPasteClicked);
-		c.v.editPaste.doClick();
+		c.getView().editPaste.addActionListener(editPasteClicked);
+		c.getView().editPaste.doClick();
 		verify(editPasteClicked).actionPerformed(captor.capture());
-		assertEquals(captor.getValue().getSource(), c.v.editPaste.getComponent());
+		assertEquals(captor.getValue().getSource(), c.getView().editPaste.getComponent());
 
-		c.v.editDelete.addActionListener(editDeleteClicked);
-		c.v.editDelete.doClick();
+		c.getView().editDelete.addActionListener(editDeleteClicked);
+		c.getView().editDelete.doClick();
 		verify(editDeleteClicked).actionPerformed(captor.capture());
-		assertEquals(captor.getValue().getSource(), c.v.editDelete.getComponent());
+		assertEquals(captor.getValue().getSource(), c.getView().editDelete.getComponent());
 
-		c.v.editSelectAll.addActionListener(editSelectAllClicked);
-		c.v.editSelectAll.doClick();
+		c.getView().editSelectAll.addActionListener(editSelectAllClicked);
+		c.getView().editSelectAll.doClick();
 		verify(editSelectAllClicked).actionPerformed(captor.capture());
-		assertEquals(captor.getValue().getSource(), c.v.editSelectAll.getComponent());
+		assertEquals(captor.getValue().getSource(), c.getView().editSelectAll.getComponent());
 	}
 
 	@Test
@@ -247,83 +244,53 @@ class ControllerTest {
 		ActionListener deleteButtonClicked = mock(ActionListener.class);
 		ActionListener okayButtonClicked = mock(ActionListener.class);
 
-		c.v.selectButton.addActionListener(selectButtonClicked);
-		c.v.selectButton.doClick();
+		c.getView().selectButton.addActionListener(selectButtonClicked);
+		c.getView().selectButton.doClick();
 		verify(selectButtonClicked).actionPerformed(captor1.capture());
-		assertEquals(true, c.selectMode);
+		assertEquals(true, c.selectMode());
 
-		c.v.classButton.addActionListener(classButtonClicked);
-		c.v.classButton.doClick();
+		c.getView().classButton.addActionListener(classButtonClicked);
+		c.getView().classButton.doClick();
 		verify(classButtonClicked).actionPerformed(captor2.capture());
-		assertEquals(true, c.classMode);
-		c.v.commentButton.addActionListener(commentButtonClicked);
-		c.v.commentButton.doClick();
+		assertEquals(true, c.classMode());
+		c.getView().commentButton.addActionListener(commentButtonClicked);
+		c.getView().commentButton.doClick();
 		verify(classButtonClicked).actionPerformed(captor3.capture());
-		assertEquals(true, c.commentMode);
+		assertEquals(true, c.commentMode());
 
-		c.v.aggregationButton.addActionListener(aggregationButtonClicked);
-		c.v.aggregationButton.doClick();
+		c.getView().aggregationButton.addActionListener(aggregationButtonClicked);
+		c.getView().aggregationButton.doClick();
 		verify(aggregationButtonClicked).actionPerformed(captor4.capture());
-		assertEquals(true, c.aggregationMode);
+		assertEquals(true, c.aggregationMode());
 
-		c.v.generalizationButton.addActionListener(generalizationButtonClicked);
-		c.v.generalizationButton.doClick();
+		c.getView().generalizationButton.addActionListener(generalizationButtonClicked);
+		c.getView().generalizationButton.doClick();
 		verify(generalizationButtonClicked).actionPerformed(captor5.capture());
-		assertEquals(true, c.generalizationMode);
+		assertEquals(true, c.generalizationMode());
 
-		c.v.dependencyButton.addActionListener(dependencyButtonClicked);
-		c.v.dependencyButton.doClick();
+		c.getView().dependencyButton.addActionListener(dependencyButtonClicked);
+		c.getView().dependencyButton.doClick();
 		verify(dependencyButtonClicked).actionPerformed(captor6.capture());
-		assertEquals(true, c.dependencyMode);
+		assertEquals(true, c.dependencyMode());
 
-		c.v.associationButton.addActionListener(associationButtonClicked);
-		c.v.associationButton.doClick();
+		c.getView().associationButton.addActionListener(associationButtonClicked);
+		c.getView().associationButton.doClick();
 		verify(associationButtonClicked).actionPerformed(captor7.capture());
-		assertEquals(true, c.associationMode);
+		assertEquals(true, c.associationMode());
 
-		c.v.compositionButton.addActionListener(compositionButtonClicked);
-		c.v.compositionButton.doClick();
+		c.getView().compositionButton.addActionListener(compositionButtonClicked);
+		c.getView().compositionButton.doClick();
 		verify(compositionButtonClicked).actionPerformed(captor8.capture());
-		assertEquals(true, c.compositionMode);
+		assertEquals(true, c.compositionMode());
 
-		c.v.deleteButton.addActionListener(deleteButtonClicked);
-		c.v.deleteButton.doClick();
+		c.getView().deleteButton.addActionListener(deleteButtonClicked);
+		c.getView().deleteButton.doClick();
 		verify(deleteButtonClicked).actionPerformed(captor9.capture());
-		assertEquals(true, c.deleteMode);
+		assertEquals(true, c.deleteMode());
 
 	}
 	
 	
-	@Test
-	public void testPaintComponent() {
-		
-		Graphics g = mock (Graphics.class);
-		c = spy(c);
-		doNothing().when(c).overriddenPaintComponent(g);
-		
-		c.classBoxes.add(new Class(50,50));
-		
-		c.commentBoxes.add(new Comment(60,60));
-		
-		c.associatedClasses.add(new Class(80,80));
-		c.associatedClasses.add(new Class(100,100));
-		
-		c.generalizedClasses.add(new Class(80,80));
-		c.generalizedClasses.add(new Class(100,100));
-		
-		c.dependedClasses.add(new Class(80,80));
-		c.dependedClasses.add(new Class(100,100));
-		
-		c.aggregatedClasses.add(new Class(80,80));
-		c.aggregatedClasses.add(new Class(100,100));
-		
-		c.compositedClasses.add(new Class(80,80));
-		c.compositedClasses.add(new Class(100,100));
-		c.paintComponent(g);
-		
-		verify(c, times(1)).paintComponent(g);
-
-	}
 	
 	
 }

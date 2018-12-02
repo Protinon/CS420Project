@@ -1,10 +1,11 @@
-package UML;
+package object;
 
 import static org.junit.Assert.assertEquals;
 
 import java.awt.Point;
 
 import org.junit.jupiter.api.Test;
+//65.2% Coverage 
 
 class CommentTest {
 
@@ -40,4 +41,13 @@ class CommentTest {
 
 	}
 
+	@Test
+	public void testGetHeight() {
+		assertEquals(50, comment.getHeight());
+	}
+	
+	@Test
+	public void testGetWidth() {
+		assertEquals(125, comment.getWidth());
+	}
 }

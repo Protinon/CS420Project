@@ -1,4 +1,4 @@
-package UML;
+package object;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,14 +6,15 @@ import java.awt.Point;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+//75% Coverage
 
 class ClassTest {
-	
+
 	public Class clazz;
-	
+
 	@BeforeEach
 	public void setup() {
-		clazz = new Class(50,50);
+		clazz = new Class(50, 50);
 	}
 
 	@Test
@@ -22,18 +23,18 @@ class ClassTest {
 				veryLongName = "This is a very long name for a class, especially one being represented as a UML Diagram";
 
 		assertEquals(defaultName, clazz.getName());
-		
+
 		clazz.setName(normalName);
 		assertEquals(normalName, clazz.getName());
-		
+
 		clazz.setName(emptyName);
 		assertEquals(emptyName, clazz.getName());
-		
+
 		clazz.setName(longName);
-		assertEquals(longName.substring(0, 25), clazz.getName());
-		
+		assertEquals(longName.substring(0, 21), clazz.getName());
+
 		clazz.setName(veryLongName);
-		assertEquals(veryLongName.substring(0, 25), clazz.getName());
+		assertEquals(veryLongName.substring(0, 21), clazz.getName());
 	}
 
 	@Test
@@ -42,20 +43,20 @@ class ClassTest {
 		String defaultAtts = "Attributes", normalAtts = "Attributes Test", emptyAtts = "",
 				longAtts = "This is a sentence with more than 25 characters.",
 				veryLongAtts = "Attributes will probably be long in the future, but right now that is not allowed because the code doesn't support it.";
-		
+
 		assertEquals(defaultAtts, clazz.getAttributes());
 
 		clazz.setAttributes(normalAtts);
 		assertEquals(normalAtts, clazz.getAttributes());
-		
+
 		clazz.setAttributes(emptyAtts);
 		assertEquals(emptyAtts, clazz.getAttributes());
-		
+
 		clazz.setAttributes(longAtts);
-		assertEquals(longAtts.substring(0, 25), clazz.getAttributes());
-		
+		assertEquals(longAtts, clazz.getAttributes());
+
 		clazz.setAttributes(veryLongAtts);
-		assertEquals(veryLongAtts.substring(0, 25), clazz.getAttributes());
+		assertEquals(veryLongAtts.substring(0, 63), clazz.getAttributes());
 	}
 
 	@Test
@@ -72,12 +73,12 @@ class ClassTest {
 
 		clazz.setOperations(emptyOps);
 		assertEquals(emptyOps, clazz.getOperations());
-		
+
 		clazz.setOperations(longOps);
-		assertEquals(longOps.substring(0, 25), clazz.getOperations());
-		
+		assertEquals(longOps, clazz.getOperations());
+
 		clazz.setOperations(veryLongOps);
-		assertEquals(veryLongOps.substring(0, 25), clazz.getOperations());
+		assertEquals(veryLongOps.substring(0, 63), clazz.getOperations());
 	}
 
 	@Test
@@ -102,11 +103,45 @@ class ClassTest {
 
 		clazz.setLocation(negativeLocation);
 		assertEquals(negativeLocation, clazz.getLocation());
-		
+
 		clazz.setLocation(normalLocation);
 		assertEquals(normalLocation, clazz.getLocation());
-		
+
 		clazz.setLocation(outsideScreen);
 		assertEquals(outsideScreen, clazz.getLocation());
+	}
+	
+	@Test
+	public void testGetHeight() {
+		assertEquals(72, clazz.getHeight());
+		
+		clazz.setAttributes("This will use two lines.");
+		assertEquals(96, clazz.getHeight());
+		
+		clazz.setOperations("This will use three lines, so let's see if the height updates.");
+		assertEquals(144, clazz.getHeight());
+	}
+	
+	@Test
+	public void testGetWidth() {
+		assertEquals(150, clazz.getWidth());
+	}
+	
+	@Test
+	public void testSetGetRelated() {
+		Class p = new Class(100,100);
+		clazz.setParent(p);
+		clazz.setChildRelated(true);
+		
+		p.setChild(clazz);
+		p.setParentRelated(true);
+		
+		assertEquals(p, clazz.getParent());
+		assertEquals(p.isAChild(), false);
+		assertEquals(p.isAParent(), true);
+		
+		assertEquals(clazz, p.getChild());
+		assertEquals(clazz.isAParent(), false);
+		assertEquals(clazz.isAChild(), true);
 	}
 }
