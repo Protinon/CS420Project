@@ -1,7 +1,7 @@
 package action;
 
 import java.util.ArrayList;
-import UML.Comment;
+import object.Comment;
 
 public class DeleteCommentBoxAction implements Action {
 	private Comment comment;

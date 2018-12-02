@@ -5,13 +5,13 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import UML.Class;
-import UML.View;
-import UML.Relationship;
-import UML.Association;
-import UML.Aggregation;
-import UML.Composition;
-import UML.Dependency;
+import object.Class;
+import object.View;
+import object.Relationship;
+import object.Association;
+import object.Aggregation;
+import object.Composition;
+import object.Dependency;
 
 public class RelationshipInspectorAction implements Action {
 	private JButton okayButton;

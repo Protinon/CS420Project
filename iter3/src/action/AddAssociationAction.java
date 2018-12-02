@@ -1,8 +1,8 @@
 package action;
 
 import java.util.ArrayList;
-import UML.Association;
-import UML.Class;
+import object.Association;
+import object.Class;
 
 public class AddAssociationAction implements Action {
 	private ArrayList<Association> associations;

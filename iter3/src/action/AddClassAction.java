@@ -2,7 +2,7 @@ package action;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import UML.Class;
+import object.Class;
 
 public class AddClassAction implements Action {
 	private Point p;

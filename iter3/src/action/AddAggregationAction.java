@@ -1,8 +1,8 @@
 package action;
 
 import java.util.ArrayList;
-import UML.Aggregation;
-import UML.Class;
+import object.Aggregation;
+import object.Class;
 
 public class AddAggregationAction implements Action {
 	private ArrayList<Aggregation> aggregations;

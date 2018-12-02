@@ -1,8 +1,8 @@
 package action;
 
 import java.util.ArrayList;
-import UML.Generalization;
-import UML.Class;
+import object.Generalization;
+import object.Class;
 
 public class AddGeneralizationAction implements Action {
 	private ArrayList<Generalization> generalizations;

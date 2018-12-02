@@ -2,16 +2,17 @@ package action;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-import UML.View;
-import UML.Class;
+import javax.swing.JTextArea;
+
+import object.Class;
+import object.View;
 
 public class InspectorAction implements Action {
 	private JButton okay;
 
-	private JTextField name;
-	private JTextField atts;
-	private JTextField ops;
+	private JTextArea name;
+	private JTextArea atts;
+	private JTextArea ops;
 
 	private JLabel nameLabel;
 	private JLabel attsLabel;

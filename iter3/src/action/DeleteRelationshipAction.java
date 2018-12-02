@@ -1,6 +1,6 @@
 package action;
 
-import UML.*;
+import object.*;
 
 public class DeleteRelationshipAction implements Action {
 	private Relationship relationshipToDelete;

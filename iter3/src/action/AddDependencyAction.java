@@ -1,8 +1,8 @@
 package action;
 
 import java.util.ArrayList;
-import UML.Dependency;
-import UML.Class;
+import object.Dependency;
+import object.Class;
 
 public class AddDependencyAction implements Action {
 	private ArrayList<Dependency> dependencies;
