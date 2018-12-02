@@ -1,8 +1,9 @@
 package action;
 
 import java.util.ArrayList;
-import object.Generalization;
+
 import object.Class;
+import object.Generalization;
 
 public class AddGeneralizationAction implements Action {
 	private ArrayList<Generalization> generalizations;

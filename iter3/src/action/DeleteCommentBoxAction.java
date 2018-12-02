@@ -1,6 +1,7 @@
 package action;
 
 import java.util.ArrayList;
+
 import object.Comment;
 
 public class DeleteCommentBoxAction implements Action {

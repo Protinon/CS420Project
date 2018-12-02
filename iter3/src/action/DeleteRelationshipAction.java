@@ -1,6 +1,12 @@
 package action;
 
-import object.*;
+import object.Aggregation;
+import object.Association;
+import object.Composition;
+import object.Controller;
+import object.Dependency;
+import object.Generalization;
+import object.Relationship;
 
 public class DeleteRelationshipAction implements Action {
 	private Relationship relationshipToDelete;

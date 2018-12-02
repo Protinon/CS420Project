@@ -1,9 +1,9 @@
 package action;
 
-import object.Controller;
 import object.Class;
-import object.View;
+import object.Controller;
 import object.Relationship;
+import object.View;
 
 public class SwitchRelationshipDirectionAction implements Action {
 	private View v;

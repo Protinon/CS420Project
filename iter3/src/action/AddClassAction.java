@@ -2,6 +2,7 @@ package action;
 
 import java.awt.Point;
 import java.util.ArrayList;
+
 import object.Class;
 
 public class AddClassAction implements Action {

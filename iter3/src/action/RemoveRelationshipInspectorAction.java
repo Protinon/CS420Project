@@ -5,9 +5,10 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
 import object.Class;
-import object.View;
 import object.Relationship;
+import object.View;
 
 public class RemoveRelationshipInspectorAction implements Action {
 	private JButton okayButton;

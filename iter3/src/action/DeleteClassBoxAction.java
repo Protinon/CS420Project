@@ -1,6 +1,7 @@
 package action;
 
 import java.util.ArrayList;
+
 import object.Class;
 
 public class DeleteClassBoxAction implements Action {

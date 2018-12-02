@@ -2,6 +2,7 @@ package action;
 
 import java.awt.Point;
 import java.util.ArrayList;
+
 import object.Comment;
 
 public class AddCommentAction implements Action {

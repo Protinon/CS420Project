@@ -1,8 +1,9 @@
 package action;
 
 import java.util.ArrayList;
-import object.Dependency;
+
 import object.Class;
+import object.Dependency;
 
 public class AddDependencyAction implements Action {
 	private ArrayList<Dependency> dependencies;

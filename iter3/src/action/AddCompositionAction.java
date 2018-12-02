@@ -1,8 +1,9 @@
 package action;
 
 import java.util.ArrayList;
-import object.Composition;
+
 import object.Class;
+import object.Composition;
 
 public class AddCompositionAction implements Action {
 	private ArrayList<Composition> compositions;

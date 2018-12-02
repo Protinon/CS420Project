@@ -1,6 +1,12 @@
 package action;
 
-import object.*;
+import object.Aggregation;
+import object.Association;
+import object.Composition;
+import object.Controller;
+import object.Dependency;
+import object.Relationship;
+import object.View;
 
 public class ChangeRelationshipTypeAction implements Action {
 	private Controller c;
