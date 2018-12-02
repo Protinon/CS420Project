@@ -29,13 +29,13 @@ public class Aggregation implements Relationship {
 		setLocation();
 	}
 
-	public boolean contains(int x, int y) {
-		if (Point2D.distance(connectorStartPoint.x, connectorStartPoint.y, x, y)
-				+ Point2D.distance(connectorEndPoint.x, connectorEndPoint.y, x,
-						y) < (Point2D.distance(connectorStartPoint.x, connectorStartPoint.y, connectorEndPoint.x,
+	public boolean contains(Point x) {
+		if (Point2D.distance(connectorStartPoint.x, connectorStartPoint.y, x.x, x.y)
+				+ Point2D.distance(connectorEndPoint.x, connectorEndPoint.y, x.x,
+						x.y) < (Point2D.distance(connectorStartPoint.x, connectorStartPoint.y, connectorEndPoint.x,
 								connectorEndPoint.y) + .1)
-				&& (Point2D.distance(connectorStartPoint.x, connectorStartPoint.y, x, y) + Point2D.distance(
-						connectorEndPoint.x, connectorEndPoint.y, x, y) > (Point2D.distance(connectorStartPoint.x,
+				&& (Point2D.distance(connectorStartPoint.x, connectorStartPoint.y, x.x, x.y) + Point2D.distance(
+						connectorEndPoint.x, connectorEndPoint.y, x.x, x.y) > (Point2D.distance(connectorStartPoint.x,
 								connectorStartPoint.y, connectorEndPoint.x, connectorEndPoint.y) - .1))) {
 			return true;
 		}

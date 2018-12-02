@@ -1,6 +1,7 @@
 package object;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Polygon;
 
 public class CompositionArrow implements Arrow {
@@ -73,11 +74,11 @@ public class CompositionArrow implements Arrow {
 		}
 	}
 
-	public boolean contains(int x, int y) {
+	public boolean contains(Point x5) {
 		int[] pointsX = { x1, x2, x3, x4 };
 		int[] pointsY = { y1, y2, y3, y4 };
 		Polygon r = new Polygon(pointsX, pointsY, 4);
-		if (r.contains(x, y)) {
+		if (r.contains(x5.x, x5.y)) {
 			return true;
 		}
 		return false;

@@ -82,7 +82,7 @@ public class MouseListener extends MouseAdapter {
 		 * from the user's mouse's position, and repaint
 		 */
 		if (c.commentSelected() == true) {
-			if (c.getSelectedComment().contains(e.getX(), e.getY())) {
+			if (c.getSelectedComment().contains(e.getPoint())) {
 				int dx = e.getX() - p1.x;
 				int dy = e.getY() - p1.y;
 				if (c.getSelectedComment().getLocation().x + dx >= 0 && c.getSelectedComment().getLocation().y + dy >= 0

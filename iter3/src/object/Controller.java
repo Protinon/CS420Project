@@ -97,7 +97,7 @@ public class Controller {
 	private Controller c;
 
 	private Canvas rightPane;
-	
+
 	private String saveLocation = "";
 	private final JFileChooser fc = new JFileChooser();
 
@@ -168,14 +168,11 @@ public class Controller {
 					openData(openFile);
 					saveLocation = openFile.toString();
 					rightPane.repaint();
-				}
-				catch (FileNotFoundException ex) {
+				} catch (FileNotFoundException ex) {
 					JOptionPane.showMessageDialog(null, "File not found " + openFile.getPath());
-				}
-				catch (IOException ex) {
+				} catch (IOException ex) {
 					JOptionPane.showMessageDialog(null, "Could not open file  " + openFile.getPath());
-				}
-				catch (ParseException ex) {
+				} catch (ParseException ex) {
 					JOptionPane.showMessageDialog(null, "File data is incorrect - Likely modified externally");
 				}
 			}
@@ -192,13 +189,11 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 				if (saveLocation == "") {
 					v.fileSaveAs.doClick();
-				}
-				else {
+				} else {
 					File f = new File(saveLocation);
 					try {
 						saveData(f);
-					}
-					catch (IOException io) {
+					} catch (IOException io) {
 						JOptionPane.showMessageDialog(null, "Could not save file " + f.getPath());
 						v.fileSaveAs.doClick();
 					}
@@ -223,8 +218,7 @@ public class Controller {
 				try {
 					saveData(saveFile);
 					saveLocation = saveFile.toString();
-				}
-				catch (IOException io) {
+				} catch (IOException io) {
 					JOptionPane.showMessageDialog(null, "An error occured when saving the file, try again.");
 					v.fileSaveAs.doClick();
 				}
@@ -636,11 +630,12 @@ public class Controller {
 			}
 		});
 	}
-	
+
 	/**
 	 * @author Lukas Deaton
 	 * @param rels - ArrayList - Array of relationships
-	 * @return JSONArray - Json array of json objects representing the input relationships
+	 * @return JSONArray - Json array of json objects representing the input
+	 *         relationships
 	 */
 	public <T> JSONArray getRelationshipJson(ArrayList<T> rels) {
 		JSONArray arr = new JSONArray();
@@ -652,7 +647,7 @@ public class Controller {
 		}
 		return arr;
 	}
-	
+
 	/**
 	 * @author Lukas Deaton
 	 * @param file - File to save json data
@@ -665,9 +660,9 @@ public class Controller {
 		obj.put("Compositions", getRelationshipJson(compositions));
 		obj.put("Dependencies", getRelationshipJson(dependencies));
 		obj.put("Generalizations", getRelationshipJson(generalizations));
-		
+
 		JSONArray classes = new JSONArray();
-		for (Class x : classBoxes){
+		for (Class x : classBoxes) {
 			JSONObject cObj = new JSONObject();
 			Point p = x.getLocation();
 			cObj.put("posX", p.x);
@@ -679,13 +674,13 @@ public class Controller {
 			classes.add(cObj);
 		}
 		obj.put("Classes", classes);
-		
+
 		FileWriter fw = new FileWriter(file);
 		fw.write(obj.toJSONString());
 		fw.flush();
 		fw.close();
 	}
-	
+
 	/**
 	 * @author Lukas Deaton
 	 * @param file - File to save json data
@@ -696,16 +691,16 @@ public class Controller {
 		JSONObject obj = (JSONObject) parser.parse(new FileReader(file));
 		// Map hashcodes to classes, used when creating relationships
 		Map<Long, Class> newClasses = new HashMap<Long, Class>();
-		
+
 		JSONArray classes = (JSONArray) obj.get("Classes");
-		for (Object o : classes){
+		for (Object o : classes) {
 			JSONObject c = (JSONObject) o;
-			int posX = ((Long)c.get("posX")).intValue();
-			int posY = ((Long)c.get("posY")).intValue();
-			String attributes = (String)c.get("Attributes");
-			String operations = (String)c.get("Operations");
-			String name = (String)c.get("Name");
-			Long hashcode = (Long)c.get("Hashcode");
+			int posX = ((Long) c.get("posX")).intValue();
+			int posY = ((Long) c.get("posY")).intValue();
+			String attributes = (String) c.get("Attributes");
+			String operations = (String) c.get("Operations");
+			String name = (String) c.get("Name");
+			Long hashcode = (Long) c.get("Hashcode");
 			Class newClass = new Class(posX, posY);
 			newClass.setName(name);
 			newClass.setAttributes(attributes);
@@ -713,7 +708,7 @@ public class Controller {
 			classBoxes.add(newClass);
 			newClasses.put(hashcode, newClass);
 		}
-		
+
 		JSONArray aggr = (JSONArray) obj.get("Aggregations");
 		for (Object o : aggr) {
 			JSONObject r = (JSONObject) o;
@@ -793,7 +788,9 @@ public class Controller {
 		} else {
 			preformat = postformat;
 		}
-		postformat = pjob.pageDialog(preformat);
+		if (postformat != null) {
+			postformat = pjob.pageDialog(preformat);
+		}
 		return pjob;
 	}
 
@@ -1008,42 +1005,47 @@ public class Controller {
 		Comment commentToRemove = null;
 		Relationship relationshipToRemove = null;
 
-for (Class classBox : classBoxes) {
+		for (Class classBox : classBoxes) {
 			if (classBox.contains(p1.x, p1.y)) {
 				classToRemove = classBox;
 			}
 		}
 
 		for (Comment commentBox : commentBoxes) {
-			if (commentBox.contains(p1.x, p1.y)) {
+			if (commentBox.contains(p1)) {
 				commentToRemove = commentBox;
 			}
 		}
-		
-		for (Aggregation a : aggregations) {
-			if(a.getArrow().contains(p1.x, p1.y)) {
+
+		for(Association a: associations) {
+			if(a.contains(p1)) {
 				relationshipToRemove = a;
-				}
+			}
 		}
-		
+		for (Aggregation a : aggregations) {
+			if (a.getArrow().contains(p1) || a.contains(p1)) {
+				relationshipToRemove = a;
+			}
+		}
+
 		for (Composition c : compositions) {
-			if (c.getArrow().contains(p1.x, p1.y) ) {
+			if (c.getArrow().contains(p1) || c.contains(p1)) {
 				relationshipToRemove = c;
 			}
 		}
-		
-		for(Dependency d : dependencies) {
-			if(d.getArrow().contains(p1.x,p1.y)) {
+
+		for (Dependency d : dependencies) {
+			if (d.getArrow().contains(p1) || d.contains(p1)) {
 				relationshipToRemove = d;
 			}
 		}
-		
-		for(Generalization g : generalizations) {
-			if(g.getArrow().contains(p1.x, p1.y)) {
+
+		for (Generalization g : generalizations) {
+			if (g.getArrow().contains(p1) || g.contains(p1)) {
 				relationshipToRemove = g;
 			}
 		}
-		
+
 		if (classToRemove != null) {
 			DeleteClassBoxAction deleteClassBoxAction = new DeleteClassBoxAction(classToRemove, classBoxes);
 			deleteClassBoxAction.doAction();
@@ -1059,8 +1061,8 @@ for (Class classBox : classBoxes) {
 			v.editUndo.setEnabled(true);
 			commentToRemove = null;
 		}
-		
-		if(relationshipToRemove != null ) {
+
+		if (relationshipToRemove != null) {
 			DeleteRelationshipAction deleteRelationshipAction = new DeleteRelationshipAction(relationshipToRemove, c);
 			deleteRelationshipAction.doAction();
 			actions.push(deleteRelationshipAction);
@@ -1092,7 +1094,7 @@ for (Class classBox : classBoxes) {
 		}
 
 		for (Comment commentBox : commentBoxes) {
-			if (commentBox.contains(p1.x, p1.y)) {
+			if (commentBox.contains(p1)) {
 				selectedComment = commentBox;
 				aCommentIsSelected = true;
 				rightPane.repaint();
@@ -1104,7 +1106,7 @@ for (Class classBox : classBoxes) {
 		}
 
 		for (Association co : associations) {
-			if (co.contains(p1.x, p1.y)) {
+			if (co.contains(p1)) {
 				selectedRelationship = co;
 				aRelationshipIsSelected = true;
 				RelationshipInspectorAction relationshipInspectorAction = new RelationshipInspectorAction(
@@ -1123,9 +1125,9 @@ for (Class classBox : classBoxes) {
 				rightPane.repaint();
 			}
 		}
-		
+
 		for (Composition co : compositions) {
-			if (co.contains(p1.x, p1.y) ||co.getArrow().contains(p1.x, p1.y)) {
+			if (co.contains(p1) || co.getArrow().contains(p1)) {
 				selectedRelationship = co;
 				aRelationshipIsSelected = true;
 				RelationshipInspectorAction relationshipInspectorAction = new RelationshipInspectorAction(
@@ -1145,7 +1147,7 @@ for (Class classBox : classBoxes) {
 			}
 		}
 		for (Aggregation agg : aggregations) {
-			if(agg.contains(p1.x, p1.y) || (agg.getArrow().contains(p1.x, p1.y))) {
+			if (agg.contains(p1) || (agg.getArrow().contains(p1))) {
 				selectedRelationship = agg;
 				aRelationshipIsSelected = true;
 				RelationshipInspectorAction relationshipInspectorAction = new RelationshipInspectorAction(
@@ -1166,7 +1168,7 @@ for (Class classBox : classBoxes) {
 		}
 
 		for (Generalization d : generalizations) {
-			if (d.contains(p1.x, p1.y) || d.getArrow().contains(p1.x, p1.y)) {
+			if (d.contains(p1) || d.getArrow().contains(p1)) {
 				selectedRelationship = d;
 				aRelationshipIsSelected = true;
 				RelationshipInspectorAction relationshipInspectorAction = new RelationshipInspectorAction(d.getClass1(),
@@ -1187,7 +1189,7 @@ for (Class classBox : classBoxes) {
 		}
 
 		for (Dependency d : dependencies) {
-			if (d.contains(p1.x, p1.y) || d.getArrow().contains(p1.x, p1.y)) {
+			if (d.contains(p1) || d.getArrow().contains(p1)) {
 				selectedRelationship = d;
 				aRelationshipIsSelected = true;
 				RelationshipInspectorAction relationshipInspectorAction = new RelationshipInspectorAction(d.getClass1(),
@@ -1328,7 +1330,7 @@ for (Class classBox : classBoxes) {
 	public Relationship getSelectedRelationship() {
 		return selectedRelationship;
 	}
-	
+
 	public View getView() {
 		return v;
 	}

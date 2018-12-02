@@ -51,9 +51,9 @@ public class Comment {
 	 * @return boolean true if the (x,y) coordinate is contained within the bounds
 	 *         of this object, otherwise false
 	 **/
-	public boolean contains(int x2, int y2) {
+	public boolean contains(Point p) {
 		Rectangle r = new Rectangle(x, y, 125, 50);
-		if (r.contains(x2, y2)) {
+		if (r.contains(p.x, p.y)) {
 			return true;
 		}
 		return false;

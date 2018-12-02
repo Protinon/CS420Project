@@ -1,6 +1,7 @@
 package object;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Polygon;
 
 public class DependencyArrow implements Arrow{
@@ -33,11 +34,11 @@ public class DependencyArrow implements Arrow{
 		}
 	}
 
-	public boolean contains(int x, int y) {
+	public boolean contains(Point x5) {
 		int[] pointsX = { x1, x2, x3 };
 		int[] pointsY = { y1, y2, y3 };
 		Polygon r = new Polygon(pointsX, pointsY, 3);
-		if (r.contains(x, y)) {
+		if (r.contains(x5.x, x5.y)) {
 			return true;
 		}
 		return false;
