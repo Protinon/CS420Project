@@ -71,7 +71,8 @@ public class Class extends JComponent {
 	 * @return this class box's attributes
 	 **/
 	public String getAttributes() {
-		return attributes;
+		String temp = attributes + attributes2 + attributes3;
+		return temp;
 	}
 
 	/**
@@ -82,7 +83,7 @@ public class Class extends JComponent {
 	 * @return this class box's operations
 	 **/
 	public String getOperations() {
-		return operations;
+		return operations + operations2 + operations3;
 	}
 
 	/**
@@ -94,17 +95,17 @@ public class Class extends JComponent {
 	 **/
 	public void setName(String newName) {
 		int index = 0;
+		if (newName.length() == 0) {
+			name = newName;
+			return;
+		}
 		for (int i = 0; i < newName.length(); ++i) {
 			index = index + 1;
-			if (index > stringMax * 2) {
-				break;
-			} else {
-				if (i == newName.length() - 1) {
-					if (index <= stringMax) {
-						name = newName;
-					} else {
-						name = newName.substring(0, stringMax);
-					}
+			if (i == newName.length() - 1) {
+				if (index <= stringMax) {
+					name = newName;
+				} else {
+					name = newName.substring(0, stringMax);
 				}
 			}
 		}
@@ -121,27 +122,33 @@ public class Class extends JComponent {
 	 **/
 	public void setAttributes(String newAtts) {
 		int index = 0;
+		if (newAtts.length() == 0) {
+			attributes = newAtts;
+			return;
+		}
+
+		if (newAtts.length() > stringMax * 3) {
+			newAtts = newAtts.substring(0, stringMax * 3);
+		}
+
 		for (int i = 0; i < newAtts.length(); ++i) {
 			index = index + 1;
-			if (index > stringMax * 3) {
-				break;
-			} else {
-				if (i == newAtts.length() - 1) {
-					if (index <= stringMax) {
-						attributes = newAtts;
-						attributes2 = "";
-						attributes3 = "";
-					} else if (index <= stringMax * 2) {
-						attributes = newAtts.substring(0, stringMax);
-						attributes2 = newAtts.substring(stringMax);
-						attributes3 = "";
-						attsBoxSize = nameBoxSize * 2;
-					} else if (index <= stringMax * 3) {
-						attributes = newAtts.substring(0, stringMax);
-						attributes2 = newAtts.substring(stringMax, stringMax * 2);
-						attributes3 = newAtts.substring(stringMax * 2);
-						attsBoxSize = nameBoxSize * 3;
-					}
+			if (i == newAtts.length() - 1) {
+				if (index <= stringMax) {
+					attributes = newAtts;
+					attributes2 = "";
+					attributes3 = "";
+				} else if (index <= stringMax * 2) {
+					attributes = newAtts.substring(0, stringMax);
+					attributes2 = newAtts.substring(stringMax);
+					attsBoxSize = nameBoxSize * 2;
+					attributes3 = "";
+				} else if (index <= stringMax * 3) {
+					attributes = newAtts.substring(0, stringMax);
+					attributes2 = newAtts.substring(stringMax, stringMax * 2);
+					attributes3 = newAtts.substring(stringMax * 2);
+					attsBoxSize = nameBoxSize * 3;
+
 				}
 			}
 		}
@@ -157,33 +164,38 @@ public class Class extends JComponent {
 	 **/
 	public void setOperations(String newOps) {
 		int index = 0;
+		if (newOps.length() == 0) {
+			operations = newOps;
+			return;
+		}
+
+		if (newOps.length() > stringMax * 3) {
+			newOps = newOps.substring(0, stringMax * 3);
+		}
+
 		for (int i = 0; i < newOps.length(); ++i) {
 			index = index + 1;
-			if (index > stringMax * 3) {
-				break;
-			} else {
-				if (i == newOps.length() - 1) {
-					if (index <= stringMax) {
-						operations = newOps;
-						operations2 = "";
-						operations3 = "";
-					} else if (index <= stringMax * 2) {
-						operations = newOps.substring(0, stringMax);
-						operations2 = newOps.substring(stringMax);
-						opsBoxSize = nameBoxSize * 2;
-						operations3 = "";
-					} else if (index <= stringMax * 3) {
-						operations = newOps.substring(0, stringMax);
-						operations2 = newOps.substring(stringMax, stringMax * 2);
-						operations3 = newOps.substring(stringMax * 2);
-						opsBoxSize = nameBoxSize * 3;
-					}
+			if (i == newOps.length() - 1) {
+				if (index <= stringMax) {
+					operations = newOps;
+					operations2 = "";
+					operations3 = "";
+				} else if (index <= stringMax * 2) {
+					operations = newOps.substring(0, stringMax);
+					operations2 = newOps.substring(stringMax);
+					opsBoxSize = nameBoxSize * 2;
+					operations3 = "";
+				} else if (index <= stringMax * 3) {
+					operations = newOps.substring(0, stringMax);
+					operations2 = newOps.substring(stringMax, stringMax * 2);
+					operations3 = newOps.substring(stringMax * 2);
+					opsBoxSize = nameBoxSize * 3;
+
 				}
 			}
 		}
 		repaint();
 	}
-
 	/**
 	 * Check to see if this object contains the (x,y) coordinate formed from
 	 * parameters.
@@ -242,39 +254,40 @@ public class Class extends JComponent {
 
 		g.drawString(name, x + 2, y + nameBoxSize - 6);
 		g.drawRect(x, y, width, nameBoxSize);
-		
-		if (attsBoxSize == nameBoxSize ) {
+
+		if (attsBoxSize == nameBoxSize) {
 			g.drawString(attributes, x + 2, y + nameBoxSize + attsBoxSize - 6);
 		}
-		
+
 		if (attsBoxSize == nameBoxSize * 2) {
 			g.drawString(attributes, x + 2, y + nameBoxSize + nameBoxSize - 6);
 			g.drawString(attributes2, x + 2, y + nameBoxSize + attsBoxSize - 6);
 		}
-		
-		if (attsBoxSize == nameBoxSize*3) {
-			g.drawString(attributes, x+2, y + nameBoxSize + nameBoxSize - 6);
+
+		if (attsBoxSize == nameBoxSize * 3) {
+			g.drawString(attributes, x + 2, y + nameBoxSize + nameBoxSize - 6);
 			g.drawString(attributes2, x + 2, y + nameBoxSize + nameBoxSize + nameBoxSize - 6);
-			g.drawString(attributes3, x + 2, y + nameBoxSize + nameBoxSize + nameBoxSize + nameBoxSize- 6);
+			g.drawString(attributes3, x + 2, y + nameBoxSize + nameBoxSize + nameBoxSize + nameBoxSize - 6);
 		}
-		
+
 		g.drawRect(x, y + nameBoxSize, width, attsBoxSize);
-		
-		if (opsBoxSize == nameBoxSize ) {
+
+		if (opsBoxSize == nameBoxSize) {
 			g.drawString(operations, x + 2, y + nameBoxSize + attsBoxSize + opsBoxSize - 6);
 		}
-		
+
 		if (opsBoxSize == nameBoxSize * 2) {
 			g.drawString(operations, x + 2, y + nameBoxSize + attsBoxSize + nameBoxSize - 6);
-			g.drawString(operations2, x + 2, y + nameBoxSize + attsBoxSize + nameBoxSize + nameBoxSize- 6);
-		}
-		
-		if (opsBoxSize == nameBoxSize*3) {
-			g.drawString(operations, x+2, y + nameBoxSize + attsBoxSize + nameBoxSize - 6);
 			g.drawString(operations2, x + 2, y + nameBoxSize + attsBoxSize + nameBoxSize + nameBoxSize - 6);
-			g.drawString(operations3, x + 2, y + nameBoxSize + attsBoxSize + nameBoxSize + nameBoxSize + nameBoxSize- 6);
 		}
-		
+
+		if (opsBoxSize == nameBoxSize * 3) {
+			g.drawString(operations, x + 2, y + nameBoxSize + attsBoxSize + nameBoxSize - 6);
+			g.drawString(operations2, x + 2, y + nameBoxSize + attsBoxSize + nameBoxSize + nameBoxSize - 6);
+			g.drawString(operations3, x + 2,
+					y + nameBoxSize + attsBoxSize + nameBoxSize + nameBoxSize + nameBoxSize - 6);
+		}
+
 		g.drawRect(x, y + nameBoxSize + attsBoxSize, width, opsBoxSize);
 
 	}

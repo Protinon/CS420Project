@@ -8,20 +8,44 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import action.*;
-import org.json.simple.JSONObject;
+
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import java.util.Map;
-import java.util.HashMap;
+
+import action.Action;
+import action.AddAggregationAction;
+import action.AddAssociationAction;
+import action.AddChildMultiplicityAction;
+import action.AddClassAction;
+import action.AddCommentAction;
+import action.AddCompositionAction;
+import action.AddDependencyAction;
+import action.AddGeneralizationAction;
+import action.AddParentMultiplicityAction;
+import action.ChangeRelationshipTypeAction;
+import action.DeleteClassBoxAction;
+import action.DeleteCommentBoxAction;
+import action.DeleteRelationshipAction;
+import action.InspectorAction;
+import action.RelationshipInspectorAction;
+import action.RemoveInspectorAction;
+import action.RemoveRelationshipInspectorAction;
+import action.SetClassAttributesAction;
+import action.SetClassNameAction;
+import action.SetClassOperationsAction;
+import action.SwitchRelationshipDirectionAction;
 
 public class Controller {
 	private Stack<Action> actions = new Stack<Action>();
@@ -1303,5 +1327,9 @@ for (Class classBox : classBoxes) {
 
 	public Relationship getSelectedRelationship() {
 		return selectedRelationship;
+	}
+	
+	public View getView() {
+		return v;
 	}
 }

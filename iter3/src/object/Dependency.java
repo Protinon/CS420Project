@@ -1,7 +1,10 @@
 package object;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Stroke;
 import java.awt.geom.Point2D;
 
 public class Dependency implements Relationship {
@@ -215,8 +218,38 @@ public class Dependency implements Relationship {
 	}
 
 	public void paintDependency(Graphics g) {
-		Connector cl = new Connector(parent, child, arrowLength);
-		cl.paintConnector(g);
+		int x1 = parent.getLocation().x, x2 = child.getLocation().x, y1 = parent.getLocation().y, y2 = child.getLocation().y;
+		int width = parent.getWidth();
+		int height = parent.getHeight();
+		Graphics2D g2d = (Graphics2D) g.create();
+		
+		Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+        g2d.setStroke(dashed);
+
+
+        
+		if (x1 < x2) {
+			if (x1 + width + arrowLength <= x2) {
+				g2d.drawLine(x1 + width, y1 + height / 2, x2 - arrowLength, y2 + height / 2);
+			} else {
+				if (y1 >= y2 + height + arrowLength) {
+					g2d.drawLine(x1 + width / 2, y1, x2 + width / 2, y2 + height + arrowLength);
+				} else if (y1 + height + arrowLength <= y2) {
+					g2d.drawLine(x1 + width / 2, y1 + height, x2 + width / 2, y2 - arrowLength);
+				}
+			}
+		} else {
+			if (x1 >= x2 + width + arrowLength) {
+				g2d.drawLine(x1, y1 + height / 2, x2 + width + arrowLength, y2 + height / 2);
+			} else {
+				if (y1 >= y2 + height + arrowLength) {
+					g2d.drawLine(x1 + width / 2, y1, x2 + width / 2, y2 + height + arrowLength);
+				} else if (y1 + height + arrowLength <= y2) {
+					g2d.drawLine(x1 + width / 2, y1 + height, x2 + width / 2, y2 - arrowLength);
+				}
+			}
+		}
+		g2d.dispose();
 		arrow.paintDependencyArrow(g);
 		if (getParentMultiplicity() != "") {
 			g.drawString(parentMultiplicity, getParentMultiplicityPoint().x, getParentMultiplicityPoint().y);

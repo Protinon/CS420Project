@@ -144,6 +144,7 @@ public class View {
 		title.setVisible(false);
 		title.setWrapStyleWord(true);
 		title.setLineWrap(true);
+		
 		atts.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 		attsLabel.setVisible(false);
 		atts.setVisible(false);

@@ -18,7 +18,7 @@ public class Connector {
 		int x1 = parent.getLocation().x, x2 = child.getLocation().x, y1 = parent.getLocation().y, y2 = child.getLocation().y;
 		int width = parent.getWidth();
 		int height = parent.getHeight();
-
+		
 		if (x1 < x2) {
 			if (x1 + width + arrowLength <= x2) {
 				g.drawLine(x1 + width, y1 + height / 2, x2 - arrowLength, y2 + height / 2);
