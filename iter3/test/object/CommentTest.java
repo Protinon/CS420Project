@@ -16,10 +16,10 @@ class CommentTest {
 		Point upperLeftCorner = new Point(50, 50), insideObject = new Point(54, 60), aboveObject = new Point(49, 50),
 				notNearObject = new Point(200, 300);
 
-		assertEquals(true, comment.contains(upperLeftCorner.x, upperLeftCorner.y));
-		assertEquals(true, comment.contains(insideObject.x, insideObject.y));
-		assertEquals(false, comment.contains(aboveObject.x, aboveObject.y));
-		assertEquals(false, comment.contains(notNearObject.x, notNearObject.y));
+		assertEquals(true, comment.contains(upperLeftCorner));
+		assertEquals(true, comment.contains(insideObject));
+		assertEquals(false, comment.contains(aboveObject));
+		assertEquals(false, comment.contains(notNearObject));
 
 	}
 
