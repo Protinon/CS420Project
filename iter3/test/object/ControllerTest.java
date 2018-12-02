@@ -2,30 +2,29 @@ package object;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentCaptor.forClass;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PageFormat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-
+//83.8% Coverage
 class ControllerTest {
-	
+
 	Controller c;
 
 	@BeforeEach
 	public void setup() {
 		c = new Controller();
 	}
-	
+
 	@Test
 	void testFalsifyAllBut() {
 		String[] s = { "deleteMode", "classMode", "commentMode", "aggregationMode", "dependencyMode", "associationMode",
@@ -132,7 +131,7 @@ class ControllerTest {
 		ArgumentCaptor<ActionEvent> captor = forClass(ActionEvent.class);
 
 		ActionListener fileMock = mock(ActionListener.class);
-		
+
 		c.getView().fileNew.addActionListener(fileMock);
 		c.getView().fileNew.doClick();
 		verify(fileMock, times(1)).actionPerformed(captor.capture());
@@ -142,7 +141,7 @@ class ControllerTest {
 		c.getView().fileOpen.doClick();
 		verify(fileMock, times(2)).actionPerformed(captor.capture());
 		assertEquals(captor.getValue().getSource(), c.getView().fileOpen.getComponent());
-		
+
 		c.getView().fileSave.addActionListener(fileMock);
 		c.getView().fileSave.doClick();
 		verify(fileMock, times(3)).actionPerformed(captor.capture());
@@ -158,11 +157,13 @@ class ControllerTest {
 		verify(fileMock, times(5)).actionPerformed(captor.capture());
 		assertEquals(captor.getValue().getSource(), c.getView().filePageSetup.getComponent());
 
+		c.pageSetUp(new PageFormat(), new PageFormat());
+
 		c.getView().filePrint.addActionListener(fileMock);
 		c.getView().filePrint.doClick();
 		verify(fileMock, times(6)).actionPerformed(captor.capture());
 		assertEquals(captor.getValue().getSource(), c.getView().filePrint.getComponent());
-		
+
 		c.getView().fileClose.addActionListener(fileMock);
 		c.getView().fileClose.doClick();
 		verify(fileMock, times(7)).actionPerformed(captor.capture());
@@ -182,6 +183,8 @@ class ControllerTest {
 		ActionListener editPasteClicked = mock(ActionListener.class);
 		ActionListener editDeleteClicked = mock(ActionListener.class);
 		ActionListener editSelectAllClicked = mock(ActionListener.class);
+
+		c.addAggregation(new Class(50, 50), new Class(30, 30), "", "");
 
 		c.getView().editUndo.addActionListener(editUndoClicked);
 		c.getView().editUndo.doClick();
@@ -289,8 +292,210 @@ class ControllerTest {
 		assertEquals(true, c.deleteMode());
 
 	}
-	
-	
-	
-	
+
+	@Test
+	public void testLeftOverGetters() {
+		Canvas cc = c.getCanvas();
+		assertEquals(c.getCanvas(), cc);
+
+		c.addClass(new Point(0, 60));
+		Class x = c.getClasses().get(0);
+		c.selectObject(new Point(5, 63));
+		assertEquals(x, c.getSelectedClass());
+
+		c.addComment(new Point(30, 30));
+		Comment y = c.getComments().get(0);
+		c.selectObject(new Point(35, 35));
+		assertEquals(y, c.getSelectedComment());
+
+	}
+
+	@Test
+	public void testSelectObject() {
+		Class x = new Class(800, 800);
+
+		c.addDependency(new Class(200, 50), new Class(400, 50), "", "");
+		c.selectObject(new Point(395, 50 + x.getHeight() / 2));
+		assertEquals(c.getDependencies().get(0), c.getSelectedRelationship());
+
+		c.selectObject(new Point(355, 50 + x.getHeight() / 2));
+		assertEquals(c.getDependencies().get(0), c.getSelectedRelationship());
+
+		c.selectObject(new Point(800, 800));
+		assertEquals(null, c.getSelectedRelationship());
+
+		c.addGeneralization(new Class(0, 300), new Class(200, 300), "", "");
+		c.selectObject(new Point(195, 300 + x.getHeight() / 2));
+		assertEquals(c.getGeneralizations().get(0), c.getSelectedRelationship());
+
+		c.selectObject(new Point(160, 300 + x.getHeight() / 2));
+		assertEquals(c.getGeneralizations().get(0), c.getSelectedRelationship());
+
+		c.selectObject(new Point(800, 800));
+		assertEquals(null, c.getSelectedRelationship());
+
+		c.addAggregation(new Class(0, 0), new Class(200, 0), "", "");
+		c.selectObject(new Point(195, 0 + x.getHeight() / 2));
+		assertEquals(c.getAggregations().get(0), c.getSelectedRelationship());
+
+		c.selectObject(new Point(160, 0 + x.getHeight() / 2));
+		assertEquals(c.getAggregations().get(0), c.getSelectedRelationship());
+
+		c.selectObject(new Point(800, 800));
+		assertEquals(null, c.getSelectedRelationship());
+
+		c.addAssociation(new Class(200, 0), new Class(400, 0), "", "");
+		c.selectObject(new Point(395, 0 + x.getHeight() / 2));
+		assertEquals(c.getAssociations().get(0), c.getSelectedRelationship());
+
+		c.selectObject(new Point(800, 800));
+		assertEquals(null, c.getSelectedRelationship());
+
+		c.addComposition(new Class(0, 50), new Class(200, 50), "", "");
+		c.selectObject(new Point(195, 50 + x.getHeight() / 2));
+		assertEquals(c.getCompositions().get(0), c.getSelectedRelationship());
+
+		c.selectObject(new Point(160, 50 + x.getHeight() / 2));
+		assertEquals(c.getCompositions().get(0), c.getSelectedRelationship());
+
+		c.selectObject(new Point(800, 800));
+		assertEquals(null, c.getSelectedRelationship());
+
+	}
+
+	@Test
+	public void testDeleteObject() {
+		c.addClass(new Point(0, 0));
+		Class z = c.getClasses().get(0);
+		c.deleteObject(new Point(5, 5));
+		assertEquals(0, c.getClasses().size());
+
+		c.addComment(new Point(200, 0));
+		Comment x = c.getComments().get(0);
+		c.deleteObject(new Point(205, 5));
+		assertEquals(0, c.getComments().size());
+
+		c.addAggregation(new Class(100, 100), new Class(300, 100), "", "");
+		c.deleteObject(new Point(260, 100 + z.getHeight() / 2));
+		assertEquals(0, c.getAggregations().size());
+
+		c.addAssociation(new Class(100, 300), new Class(300, 300), "", "");
+		c.deleteObject(new Point(260, 300 + z.getHeight() / 2));
+		assertEquals(0, c.getAssociations().size());
+
+		c.addDependency(new Class(300, 300), new Class(600, 300), "", "");
+		c.deleteObject(new Point(560, 300 + z.getHeight() / 2));
+		assertEquals(0, c.getDependencies().size());
+
+		c.addComposition(new Class(0, 500), new Class(300, 500), "", "");
+		c.deleteObject(new Point(260, 500 + z.getHeight() / 2));
+		assertEquals(0, c.getCompositions().size());
+
+		c.addGeneralization(new Class(600, 700), new Class(800, 700), "", "");
+		c.deleteObject(new Point(760, 700 + z.getHeight() / 2));
+		assertEquals(0, c.getGeneralizations().size());
+	}
+
+	@Test
+	public void testAddAggregationByPoint() {
+		c.addClass(new Point(0, 0));
+		c.addClass(new Point(200, 0));
+		c.addAggregation(new Point(0, 0));
+		c.addAggregation(new Point(200, 0));
+
+		System.out.println(c.getAggregations());
+		assertEquals(1, c.getAggregations().size());
+	}
+
+	@Test
+	public void testAddAssociationByPoint() {
+		c.addClass(new Point(0, 0));
+		c.addClass(new Point(200, 0));
+		c.addAssociation(new Point(0, 0));
+		c.addAssociation(new Point(200, 0));
+
+		System.out.println(c.getAssociations());
+		assertEquals(1, c.getAssociations().size());
+	}
+
+	@Test
+	public void testAddCompositionByPoint() {
+		c.addClass(new Point(0, 0));
+		c.addClass(new Point(200, 0));
+		c.addComposition(new Point(0, 0));
+		c.addComposition(new Point(200, 0));
+
+		System.out.println(c.getCompositions());
+		assertEquals(1, c.getCompositions().size());
+	}
+
+	@Test
+	public void testAddGeneralizationByPoint() {
+		c.addClass(new Point(0, 0));
+		c.addClass(new Point(200, 0));
+		c.addGeneralization(new Point(0, 0));
+		c.addGeneralization(new Point(200, 0));
+
+		System.out.println(c.getGeneralizations());
+		assertEquals(1, c.getGeneralizations().size());
+	}
+
+	@Test
+	public void testAddDependencyByPoint() {
+		c.addClass(new Point(0, 0));
+		c.addClass(new Point(200, 0));
+		c.addDependency(new Point(0, 0));
+		c.addDependency(new Point(200, 0));
+
+		System.out.println(c.getDependencies());
+		assertEquals(1, c.getDependencies().size());
+	}
+
+	@Test
+	public void testReplicateClass() {
+		c.addClass(new Point(0, 0));
+		Class x = c.getClasses().get(0);
+		x.setName("HELLO");
+		c.addClass(x, new Point(100, 100));
+		assertEquals(x.getName(), c.getClasses().get(1).getName());
+	}
+
+	@Test
+	public void testBooleans() {
+		c.addClass(new Point(0, 0));
+		c.selectObject(new Point(5, 5));
+		assertEquals(true, c.classSelected());
+
+		c.addComment(new Point(100, 100));
+		c.selectObject(new Point(105, 105));
+		assertEquals(true, c.commentSelected());
+
+		c.addClass(new Point(300, 0));
+		c.addAggregation(c.getClasses().get(0), c.getClasses().get(1), "", "");
+		c.selectObject(new Point(280, 0 + c.getClasses().get(0).getHeight() / 2));
+		assertEquals(true, c.relationshipSelected());
+	}
+
+	@Test
+	public void testHasARelationship() {
+		c.addClass(new Point(200, 0));
+		c.addClass(new Point(0, 0));
+
+		c.addAggregation(new Point(5, 5));
+		c.addAggregation(new Point(205, 5));
+
+		c.addClass(new Point(400, 0));
+
+		c.addAssociation(new Point(205, 5));
+		c.addAssociation(new Point(405, 5));
+
+		c.addAssociation(new Point(205, 5));
+		c.addAssociation(new Point(5, 5));
+
+		c.addAssociation(new Point(5, 5));
+		c.addAssociation(new Point(205, 5));
+
+		c.addDependency(new Point(405, 5));
+		c.addDependency(new Point(205, 5));
+	}
 }
