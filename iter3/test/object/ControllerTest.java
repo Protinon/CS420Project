@@ -403,7 +403,6 @@ class ControllerTest {
 		c.addAggregation(new Point(0, 0));
 		c.addAggregation(new Point(200, 0));
 
-		System.out.println(c.getAggregations());
 		assertEquals(1, c.getAggregations().size());
 	}
 
@@ -414,7 +413,6 @@ class ControllerTest {
 		c.addAssociation(new Point(0, 0));
 		c.addAssociation(new Point(200, 0));
 
-		System.out.println(c.getAssociations());
 		assertEquals(1, c.getAssociations().size());
 	}
 
@@ -425,7 +423,6 @@ class ControllerTest {
 		c.addComposition(new Point(0, 0));
 		c.addComposition(new Point(200, 0));
 
-		System.out.println(c.getCompositions());
 		assertEquals(1, c.getCompositions().size());
 	}
 
@@ -436,7 +433,6 @@ class ControllerTest {
 		c.addGeneralization(new Point(0, 0));
 		c.addGeneralization(new Point(200, 0));
 
-		System.out.println(c.getGeneralizations());
 		assertEquals(1, c.getGeneralizations().size());
 	}
 
@@ -447,7 +443,6 @@ class ControllerTest {
 		c.addDependency(new Point(0, 0));
 		c.addDependency(new Point(200, 0));
 
-		System.out.println(c.getDependencies());
 		assertEquals(1, c.getDependencies().size());
 	}
 
