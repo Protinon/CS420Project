@@ -1,6 +1,7 @@
 package object;
 
 import java.awt.Point;
+//100% Coverage
 
 import org.junit.jupiter.api.Test;
 

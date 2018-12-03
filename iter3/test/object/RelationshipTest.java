@@ -1,6 +1,7 @@
 package object;
 
 import static org.junit.Assert.assertEquals;
+//100% Coverage
 
 import java.awt.Point;
 

@@ -110,38 +110,49 @@ class ClassTest {
 		clazz.setLocation(outsideScreen);
 		assertEquals(outsideScreen, clazz.getLocation());
 	}
-	
+
 	@Test
 	public void testGetHeight() {
 		assertEquals(72, clazz.getHeight());
-		
+
 		clazz.setAttributes("This will use two lines.");
 		assertEquals(96, clazz.getHeight());
-		
+
 		clazz.setOperations("This will use three lines, so let's see if the height updates.");
 		assertEquals(144, clazz.getHeight());
 	}
-	
+
 	@Test
 	public void testGetWidth() {
 		assertEquals(150, clazz.getWidth());
 	}
-	
+
 	@Test
 	public void testSetGetRelated() {
-		Class p = new Class(100,100);
+		Class p = new Class(100, 100);
 		clazz.setParent(p);
 		clazz.setChildRelated(true);
-		
+
 		p.setChild(clazz);
 		p.setParentRelated(true);
-		
+
 		assertEquals(p, clazz.getParent());
 		assertEquals(p.isAChild(), false);
 		assertEquals(p.isAParent(), true);
-		
+
 		assertEquals(clazz, p.getChild());
 		assertEquals(clazz.isAParent(), false);
 		assertEquals(clazz.isAChild(), true);
+	}
+
+	@Test
+	public void testPaintComponent() {
+		Controller c = new Controller();
+		c.addClass(new Point(0, 0));
+		c.getClasses().get(0).setAttributes("123456789112345678901234567");
+		c.getClasses().get(0).setAttributes("12345678911234567890123456789012345678901234");
+		c.getClasses().get(0).setOperations("123456789112345678901234567");
+		c.getClasses().get(0).setOperations("12345678911234567890123456789012345678901234");
+
 	}
 }
