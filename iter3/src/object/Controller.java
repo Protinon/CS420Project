@@ -294,9 +294,6 @@ public class Controller {
 		 **/
 		v.editUndo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				for (Action a : actions) {
-					System.out.println(a);
-				}
 				Action actionToUndo = actions.pop();
 				undoActions.add(actionToUndo);
 				actionToUndo.undoAction();
