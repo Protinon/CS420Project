@@ -132,12 +132,12 @@ public class View {
 
 //CLASS BOX INSPECTOR-LIKE FUNCTIONS INITIALIZATION-------------------------------
 		titleLabel.setBounds(2, 230, 150, 25);
-		title.setBounds(0, 255, 150, 18);
-		attsLabel.setBounds(2, 273, 150, 25);
-		atts.setBounds(0, 298, 150, 54);
-		opsLabel.setBounds(2, 352, 150, 25);
-		ops.setBounds(0, 377, 150, 54);
-		classOkayButton.setBounds(0, 431, 150, 25);
+		title.setBounds(0, 255, 150, 25);
+		attsLabel.setBounds(2, 285, 150, 25);
+		atts.setBounds(0, 310, 150, 54);
+		opsLabel.setBounds(2, 369, 150, 25);
+		ops.setBounds(0, 394, 150, 54);
+		classOkayButton.setBounds(0, 453, 150, 25);
 
 		title.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 		titleLabel.setVisible(false);

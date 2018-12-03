@@ -124,6 +124,9 @@ public class Class extends JComponent {
 		int index = 0;
 		if (newAtts.length() == 0) {
 			attributes = newAtts;
+			attributes2 = "";
+			attributes3 = "";
+			attsBoxSize = 0;
 			return;
 		}
 
@@ -133,11 +136,12 @@ public class Class extends JComponent {
 
 		for (int i = 0; i < newAtts.length(); ++i) {
 			index = index + 1;
-			if (i == newAtts.length() - 1) {
+			if (i == newAtts.length() - 2) {
 				if (index <= stringMax) {
 					attributes = newAtts;
 					attributes2 = "";
 					attributes3 = "";
+					attsBoxSize = nameBoxSize;
 				} else if (index <= stringMax * 2) {
 					attributes = newAtts.substring(0, stringMax);
 					attributes2 = newAtts.substring(stringMax);
@@ -165,7 +169,13 @@ public class Class extends JComponent {
 	public void setOperations(String newOps) {
 		int index = 0;
 		if (newOps.length() == 0) {
+			if (attributes == "" ) {
+				attsBoxSize = 0;
+			}
 			operations = newOps;
+			operations2 = "";
+			operations3 = "";
+			opsBoxSize = 0;
 			return;
 		}
 
@@ -177,15 +187,25 @@ public class Class extends JComponent {
 			index = index + 1;
 			if (i == newOps.length() - 1) {
 				if (index <= stringMax) {
+					if(attsBoxSize == 0) {
+						attsBoxSize = nameBoxSize;
+						}
 					operations = newOps;
 					operations2 = "";
 					operations3 = "";
+					opsBoxSize = nameBoxSize;
 				} else if (index <= stringMax * 2) {
 					operations = newOps.substring(0, stringMax);
 					operations2 = newOps.substring(stringMax);
+					if(attsBoxSize == 0) {
+					attsBoxSize = nameBoxSize;
+					}
 					opsBoxSize = nameBoxSize * 2;
 					operations3 = "";
 				} else if (index <= stringMax * 3) {
+					if(attsBoxSize == 0) {
+						attsBoxSize = nameBoxSize;
+						}
 					operations = newOps.substring(0, stringMax);
 					operations2 = newOps.substring(stringMax, stringMax * 2);
 					operations3 = newOps.substring(stringMax * 2);
@@ -209,7 +229,7 @@ public class Class extends JComponent {
 	 *         of this object, otherwise false
 	 **/
 	public boolean contains(int x2, int y2) {
-		Rectangle r = new Rectangle(x, y, width, height);
+		Rectangle r = new Rectangle(x, y, getWidth(), getHeight());
 		if (r.contains(x2, y2)) {
 			return true;
 		}
@@ -253,7 +273,7 @@ public class Class extends JComponent {
 		super.paintComponent(g);
 
 		g.drawString(name, x + 2, y + nameBoxSize - 6);
-		g.drawRect(x, y, width, nameBoxSize);
+		g.drawRect(x, y, getWidth(), nameBoxSize);
 
 		if (attsBoxSize == nameBoxSize) {
 			g.drawString(attributes, x + 2, y + nameBoxSize + attsBoxSize - 6);
@@ -270,7 +290,7 @@ public class Class extends JComponent {
 			g.drawString(attributes3, x + 2, y + nameBoxSize + nameBoxSize + nameBoxSize + nameBoxSize - 6);
 		}
 
-		g.drawRect(x, y + nameBoxSize, width, attsBoxSize);
+		g.drawRect(x, y + nameBoxSize, getWidth(), attsBoxSize);
 
 		if (opsBoxSize == nameBoxSize) {
 			g.drawString(operations, x + 2, y + nameBoxSize + attsBoxSize + opsBoxSize - 6);
@@ -288,7 +308,7 @@ public class Class extends JComponent {
 					y + nameBoxSize + attsBoxSize + nameBoxSize + nameBoxSize + nameBoxSize - 6);
 		}
 
-		g.drawRect(x, y + nameBoxSize + attsBoxSize, width, opsBoxSize);
+		g.drawRect(x, y + nameBoxSize + attsBoxSize, getWidth(), opsBoxSize);
 
 	}
 
