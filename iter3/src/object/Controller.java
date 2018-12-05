@@ -38,9 +38,7 @@ import action.ChangeRelationshipTypeAction;
 import action.DeleteClassBoxAction;
 import action.DeleteCommentBoxAction;
 import action.DeleteRelationshipAction;
-import action.InspectorAction;
 import action.RelationshipInspectorAction;
-import action.RemoveInspectorAction;
 import action.RemoveRelationshipInspectorAction;
 import action.SetClassAttributesAction;
 import action.SetClassNameAction;
@@ -66,6 +64,7 @@ public class Controller {
 
 	private Class copiedClass;
 	private Comment copiedComment;
+	private Relationship copiedRelationship;
 
 	private boolean aClassIsSelected = false;
 	private boolean aCommentIsSelected = false;
@@ -286,7 +285,7 @@ public class Controller {
 	 **/
 	public void editActionListeners() {
 		/**
-		 * Skeleton for undo functionality.
+		 * Undos the last performed action.
 		 * 
 		 * @author Bri Long
 		 * @param e - ActionEvent - editUndo menu item was clicked by user
@@ -297,16 +296,16 @@ public class Controller {
 				Action actionToUndo = actions.pop();
 				undoActions.add(actionToUndo);
 				actionToUndo.undoAction();
-				v.editRedo.setEnabled(true);
-				if (actions.isEmpty())
+				if (actions.isEmpty()) {
 					v.editUndo.setEnabled(false);
-
+				}
+				v.editRedo.setEnabled(true);				
 				rightPane.repaint();
 			}
 		});
 
 		/**
-		 * Skeleton for redo functionality.
+		 * Repeats the action that was most recently undone.
 		 * 
 		 * @author Bri Long
 		 * @param e - ActionEvent - editRedo menu item was clicked by user
@@ -327,7 +326,7 @@ public class Controller {
 		});
 
 		/**
-		 * Skeleton for cut functionality.
+		 * Deletes the currently selected item.
 		 * 
 		 * @author Bri Long
 		 * @param e - ActionEvent - editCut menu item was clicked by user
@@ -338,14 +337,20 @@ public class Controller {
 				if (classSelected()) {
 					copiedClass = getSelectedClass();
 					copiedComment = null;
-					InspectorAction i = new InspectorAction(getSelectedClass(), v);
-					i.undoAction();
-					deleteObject(new Point(0, 0));
+					copiedRelationship = null;
+					deleteObject(new Point(getSelectedClass().getLocation().x + 5, getSelectedClass().getLocation().y + 5));
 					rightPane.repaint();
 				} else if (commentSelected()) {
 					copiedComment = getSelectedComment();
 					copiedClass = null;
-					deleteObject(new Point(0, 0));
+					copiedRelationship = null;
+					deleteObject(new Point(getSelectedComment().getLocation().x + 5, getSelectedComment().getLocation().y + 5));
+					rightPane.repaint();
+				} else if(relationshipSelected()) {
+					copiedRelationship = getSelectedRelationship();
+					copiedComment = null;
+					copiedClass = null;
+					deleteObject(new Point(getSelectedRelationship().getLocation1()));
 					rightPane.repaint();
 				}
 			}
@@ -363,15 +368,21 @@ public class Controller {
 				if (classSelected()) {
 					copiedClass = getSelectedClass();
 					copiedComment = null;
+					copiedRelationship = null;
 				} else if (commentSelected()) {
 					copiedComment = getSelectedComment();
 					copiedClass = null;
+					copiedRelationship = null;
+				} else if (relationshipSelected()) {
+					copiedRelationship = getSelectedRelationship();
+					copiedClass = null;
+					copiedComment = null;
 				}
 			}
 		});
 
 		/**
-		 * Skeleton for paste functionality.
+		 * If an object has been copied, an identical version of this object will be drawn.
 		 * 
 		 * @author Bri Long
 		 * @param e - ActionEvent - editPaste menu item was clicked by user
@@ -382,6 +393,10 @@ public class Controller {
 				if (copiedClass != null) {
 					addClass(copiedClass, new Point(copiedClass.getLocation().x + copiedClass.getWidth(),
 							copiedClass.getLocation().y + copiedClass.getHeight()));
+				} else if(copiedComment != null) {
+					addComment(new Point(copiedComment.getLocation().x + copiedComment.getWidth(), copiedComment.getLocation().y + copiedComment.getHeight()));
+				} else if(copiedRelationship != null) {
+					copiedRelationship = null;
 				}
 			}
 		});
@@ -396,25 +411,14 @@ public class Controller {
 		v.editDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (classSelected()) {
-					InspectorAction a = new InspectorAction(getSelectedClass(), v);
-					a.undoAction();
-					deleteObject(new Point(0, 0));
+					deleteObject(new Point(selectedClass.getLocation().x + 5, selectedClass.getLocation().y + 5));
 					rightPane.repaint();
+				} else if (commentSelected()) {
+					deleteObject(new Point(selectedComment.getLocation().x + 5, selectedComment.getLocation().y + 5));
 				}
 			}
 		});
 
-		/**
-		 * Skeleton for selectAll functionality.
-		 * 
-		 * @author Bri Long
-		 * @param e - ActionEvent - editSelectAll menu item was clicked by user
-		 * @return void
-		 **/
-		v.editSelectAll.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 	}
 
 	/**
@@ -551,42 +555,13 @@ public class Controller {
 		});
 
 		/**
-		 * The selected class box's name, attributes, and operations are updated.
+		 * The selected relationship's arrow direction, multiplicites, and type of arrow are updated.
 		 * 
 		 * @author Bri Long
-		 * @param e - ActionEvent - aggregation button was clicked by user
+		 * @param e - ActionEvent - user clicked the relationship inspector okay button
 		 * @return void
 		 **/
-		v.classOkayButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ex) {
-				if (selectedClass != null) {
-					if (!v.title.getText().equals(selectedClass.getName())) {
-						SetClassNameAction setName = new SetClassNameAction(selectedClass, v.title.getText());
-						setName.doAction();
-						actions.push(setName);
-					}
-
-					if (!v.atts.getText().equals(selectedClass.getAttributes())) {
-						SetClassAttributesAction setAtts = new SetClassAttributesAction(selectedClass,
-								v.atts.getText());
-						selectedClass.setAttributes(v.atts.getText());
-						setAtts.doAction();
-						actions.push(setAtts);
-					}
-
-					if (!v.ops.getText().equals(selectedClass.getOperations())) {
-						SetClassOperationsAction setOps = new SetClassOperationsAction(selectedClass, v.ops.getText());
-						selectedClass.setOperations(v.ops.getText());
-						setOps.doAction();
-						actions.push(setOps);
-					}
-					v.editUndo.setEnabled(true);
-					rightPane.repaint();
-				}
-			}
-		});
-
-		v.rOkayButton.addActionListener(new ActionListener() {
+		v.okayButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ex) {
 				if (selectedRelationship != null) {
 					if (!v.pMultiplicity.getText().equals(selectedRelationship.getParentMultiplicity())) {
@@ -616,6 +591,7 @@ public class Controller {
 						change.doAction();
 						actions.push(change);
 					}
+					
 					RemoveRelationshipInspectorAction a = new RemoveRelationshipInspectorAction(
 							selectedRelationship.getClass1(), selectedRelationship.getClass2(), selectedRelationship,
 							v);
@@ -775,7 +751,7 @@ public class Controller {
 	 * 
 	 * @author Bri Long
 	 * @param N/A
-	 * @return PrinterJob
+	 * @return void
 	 **/
 	public PrinterJob pageSetUp(PageFormat preformat, PageFormat postformat) {
 		PrinterJob pjob = PrinterJob.getPrinterJob();
@@ -791,6 +767,13 @@ public class Controller {
 		return pjob;
 	}
 
+	/**
+	 * Adds a classbox to the canvas.
+	 * 
+	 * @author Bri Long
+	 * @param p1 - the point where the upper left hand corner of the class box will be located
+	 * @return void
+	 **/
 	public void addClass(Point p1) {
 		int classBoxLimit = 20;
 		if (classBoxes.size() < classBoxLimit) {
@@ -801,25 +784,40 @@ public class Controller {
 			rightPane.repaint();
 		}
 	}
-
-	public void addClass(Class c, Point p1) {
+	
+	/**
+	 * Adds a copy of a classbox to the canvas with the upper left hand corner of the copy located at the lower right hand corner of the original.
+	 * 
+	 * @author Bri Long
+	 * @param clazz - the class that will be copied
+	 * @param p1 - the point where the upper left hand corner of the class box will be located
+	 * @return void
+	 **/
+	public void addClass(Class clazz, Point p1) {
 		int classBoxLimit = 20;
 		if (classBoxes.size() < classBoxLimit) {
 			AddClassAction addClassAction = new AddClassAction(p1, classBoxes, rightPane);
 			addClassAction.doAction();
-			addClassAction.getObject().setName(c.getName());
-			addClassAction.getObject().setAttributes(c.getAttributes());
-			addClassAction.getObject().setOperations(c.getOperations());
+			addClassAction.getObject().setName(clazz.getName());
+			addClassAction.getObject().setAttributes(clazz.getAttributes());
+			addClassAction.getObject().setOperations(clazz.getOperations());
 			actions.push(addClassAction);
 			v.editUndo.setEnabled(true);
 			rightPane.repaint();
 		}
 	}
 
+	/**
+	 * Adds a comment to the canvas
+	 * 
+	 * @author Bri Long
+	 * @param p1 - the point where the upper left hand corner of the comment will be located
+	 * @return void
+	 **/
 	public void addComment(Point p1) {
 		int commentBoxLimit = 20;
 		if (commentBoxes.size() < commentBoxLimit) {
-			AddCommentAction addCommentAction = new AddCommentAction(p1, commentBoxes);
+			AddCommentAction addCommentAction = new AddCommentAction(p1, commentBoxes, rightPane);
 			addCommentAction.doAction();
 			actions.push(addCommentAction);
 			v.editUndo.setEnabled(true);
@@ -827,6 +825,13 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Draws an aggregation relationship between two classes.
+	 * 
+	 * @author Bri Long
+	 * @param p1 - the point used to determine if the user's mouse click was in a classbox
+	 * @return void
+	 **/
 	public void addAggregation(Point p1) {
 		Class parent = null, child = null;
 		if (aggregationPoint1 == null) {
@@ -853,6 +858,16 @@ public class Controller {
 		rightPane.repaint();
 	}
 
+	/**
+	 * Draws an aggregation relationship between two classes with multiplicities already specified.
+	 * 
+	 * @author Bri Long
+	 * @param c1 - the parent class for the aggregation relationship
+	 * @param c2 - the child class for the aggregation relationship
+	 * @param c - the multiplicity string for the child
+	 * @param p - the multiplicity string for the parent 
+	 * @return void
+	 **/
 	public void addAggregation(Class c1, Class c2, String c, String p) {
 		AddAggregationAction a = new AddAggregationAction(c1, c2, aggregations, c, p);
 		a.doAction();
@@ -860,7 +875,14 @@ public class Controller {
 		v.editUndo.setEnabled(true);
 		rightPane.repaint();
 	}
-
+	
+	/**
+	 * Draws an association relationship between two classes.
+	 * 
+	 * @author Bri Long
+	 * @param p1 - the point used to determine if the user's mouse click was in a classbox
+	 * @return void
+	 **/
 	public void addAssociation(Point p1) {
 		Class parent = null, child = null;
 		if (associationPoint1 == null) {
@@ -887,6 +909,16 @@ public class Controller {
 		rightPane.repaint();
 	}
 
+	/**
+	 * Draws an association relationship between two classes with multiplicities already specified.
+	 * 
+	 * @author Bri Long
+	 * @param c1 - the parent class for the association relationship
+	 * @param c2 - the child class for the association relationship
+	 * @param c - the multiplicity string for the child
+	 * @param p - the multiplicity string for the parent 
+	 * @return void
+	 **/
 	public void addAssociation(Class c1, Class c2, String c, String p) {
 		AddAssociationAction a = new AddAssociationAction(c1, c2, associations, c, p);
 		a.doAction();
@@ -895,6 +927,13 @@ public class Controller {
 		rightPane.repaint();
 	}
 
+	/**
+	 * Draws an generalization relationship between two classes.
+	 * 
+	 * @author Bri Long
+	 * @param p1 - the point used to determine if the user's mouse click was in a classbox
+	 * @return void
+	 **/
 	public void addGeneralization(Point p1) {
 		Class parent = null, child = null;
 		if (generalizationPoint1 == null) {
@@ -921,6 +960,16 @@ public class Controller {
 		rightPane.repaint();
 	}
 
+	/**
+	 * Draws an generalization relationship between two classes with multiplicities already specified.
+	 * 
+	 * @author Bri Long
+	 * @param c1 - the parent class for the generalization relationship
+	 * @param c2 - the child class for the generalization relationship
+	 * @param c - the multiplicity string for the child
+	 * @param p - the multiplicity string for the parent 
+	 * @return void
+	 **/
 	public void addGeneralization(Class c1, Class c2, String c, String p) {
 		AddGeneralizationAction a = new AddGeneralizationAction(c1, c2, generalizations, c, p);
 		a.doAction();
@@ -928,7 +977,14 @@ public class Controller {
 		v.editUndo.setEnabled(true);
 		rightPane.repaint();
 	}
-
+	
+	/**
+	 * Draws an dependency relationship between two classes.
+	 * 
+	 * @author Bri Long
+	 * @param p1 - the point used to determine if the user's mouse click was in a classbox
+	 * @return void
+	 **/
 	public void addDependency(Point p1) {
 		Class parent = null, child = null;
 		if (dependencyPoint1 == null) {
@@ -955,6 +1011,16 @@ public class Controller {
 		rightPane.repaint();
 	}
 
+	/**
+	 * Draws an dependency relationship between two classes with multiplicities already specified.
+	 * 
+	 * @author Bri Long
+	 * @param c1 - the parent class for the dependency relationship
+	 * @param c2 - the child class for the dependency relationship
+	 * @param c - the multiplicity string for the child
+	 * @param p - the multiplicity string for the parent 
+	 * @return void
+	 **/
 	public void addDependency(Class c1, Class c2, String c, String p) {
 		AddDependencyAction a = new AddDependencyAction(c1, c2, dependencies, c, p);
 		a.doAction();
@@ -963,6 +1029,13 @@ public class Controller {
 		rightPane.repaint();
 	}
 
+	/**
+	 * Draws an composition relationship between two classes.
+	 * 
+	 * @author Bri Long
+	 * @param p1 - the point used to determine if the user's mouse click was in a classbox
+	 * @return void
+	 **/
 	public void addComposition(Point p1) {
 		Class parent = null, child = null;
 		if (compositionPoint1 == null) {
@@ -989,6 +1062,16 @@ public class Controller {
 		rightPane.repaint();
 	}
 
+	/**
+	 * Draws an composition relationship between two classes with multiplicities already specified.
+	 * 
+	 * @author Bri Long
+	 * @param c1 - the parent class for the composition relationship
+	 * @param c2 - the child class for the composition relationship
+	 * @param c - the multiplicity string for the child
+	 * @param p - the multiplicity string for the parent 
+	 * @return void
+	 **/
 	public void addComposition(Class c1, Class c2, String c, String p) {
 		AddCompositionAction a = new AddCompositionAction(c1, c2, compositions, c, p);
 		a.doAction();
@@ -997,6 +1080,13 @@ public class Controller {
 		rightPane.repaint();
 	}
 
+	/**
+	 * Deletes an object.
+	 * 
+	 * @author Bri Long
+	 * @param p1 - the point used to see which object if any is to be deleted
+	 * @return void
+	 **/
 	public void deleteObject(Point p1) {
 		Class classToRemove = null;
 		Comment commentToRemove = null;
@@ -1068,24 +1158,25 @@ public class Controller {
 		}
 		rightPane.repaint();
 	}
-
+	
+	/**
+	 * Selects an object.
+	 * 
+	 * @author Bri Long
+	 * @param p1 - the point used to determine which objct if any will be selected
+	 * @return void
+	 **/
 	public void selectObject(Point p1) {
 
 		for (Class classBox : classBoxes) {
 			if (classBox.contains(p1)) {
 				selectedClass = classBox;
 				aClassIsSelected = true;
-				InspectorAction Action = new InspectorAction(selectedClass, v);
-				Action.doAction();
-				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 				break;
 			} else {
 				selectedClass = null;
 				aClassIsSelected = false;
-				RemoveInspectorAction removeInspectorAction = new RemoveInspectorAction(null, v);
-				removeInspectorAction.doAction();
-				v.editUndo.setEnabled(true);
 				rightPane.repaint();
 			}
 		}
@@ -1207,94 +1298,267 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * Returns whether a classbox object is currently selected.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return boolean - true if a classbox is selected/false if a classbox is not selected
+	 **/
 	public boolean classSelected() {
 		return aClassIsSelected;
 	}
 
+	/**
+	 * Returns whether a comment object is currently selected.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return boolean - true if a comment is selected/false if a comment is not selected
+	 **/
 	public boolean commentSelected() {
 		return aCommentIsSelected;
 	}
 
+	/**
+	 * Returns whether a relationship object is currently selected.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return boolean - true if a relationship is selected/false if a relationship is not selected
+	 **/
 	public boolean relationshipSelected() {
 		return aRelationshipIsSelected;
 	}
 
+	/**
+	 * Returns the selected classbox.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return Class - the classbox object that is currently selected
+	 **/
 	public Class getSelectedClass() {
 		return selectedClass;
 	}
 
+	/**
+	 * Returns the selected comment.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return Class - the comment object that is currently selected
+	 **/
 	public Comment getSelectedComment() {
 		return selectedComment;
 	}
 
+	/**
+	 * Returns the selected relationship.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return Class - the relationship object that is currently selected
+	 **/
+	public Relationship getSelectedRelationship() {
+		return selectedRelationship;
+	}
+	
+	/**
+	 * Returns whether the editor is in delete mode.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return boolean - true if the editor is in delete mode/false if the editor is not in delete mode
+	 **/
 	public boolean deleteMode() {
 		return deleteMode;
 	}
 
+	/**
+	 * Returns whether the editor is in class mode.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return boolean - true if the editor is in class mode/false if the editor is not in class mode
+	 **/
 	public boolean classMode() {
 		return classMode;
 	}
 
+	/**
+	 * Returns whether the editor is in comment mode.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return boolean - true if the editor is in comment mode/false if the editor is not in comment mode
+	 **/
 	public boolean commentMode() {
 		return commentMode;
 	}
 
+	/**
+	 * Returns whether the editor is in aggregation mode.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return boolean - true if the editor is in aggregation mode/false if the editor is not in aggregation mode
+	 **/
 	public boolean aggregationMode() {
 		return aggregationMode;
 	}
 
+	/**
+	 * Returns whether the editor is in dependency mode.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return boolean - true if the editor is in dependency mode/false if the editor is not in dependency mode
+	 **/
 	public boolean dependencyMode() {
 		return dependencyMode;
 	}
 
+	/**
+	 * Returns whether the editor is in association mode.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return boolean - true if the editor is in association mode/false if the editor is not in association mode
+	 **/
 	public boolean associationMode() {
 		return associationMode;
 	}
 
+	/**
+	 * Returns whether the editor is in composition mode.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return boolean - true if the editor is in composition mode/false if the editor is not in composition mode
+	 **/
 	public boolean compositionMode() {
 		return compositionMode;
 	}
 
+	/**
+	 * Returns whether the editor is in generalization mode.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return boolean - true if the editor is in generalization mode/false if the editor is not in generalization mode
+	 **/
 	public boolean generalizationMode() {
 		return generalizationMode;
 	}
 
+	/**
+	 * Returns whether the editor is in select mode.
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return boolean - true if the editor is in select mode/false if the editor is not in select mode
+	 **/
 	public boolean selectMode() {
 		return selectMode;
 	}
 
+	/**
+	 * Returns all the classboxes in this instance of the editor
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return ArrayList<Class> - list of classbox objects currently drawn on the panel
+	 **/
 	public ArrayList<Class> getClasses() {
 		return classBoxes;
 	}
 
+	/**
+	 * Returns all the comments in this instance of the editor
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return ArrayList<Comment> - list of comment objects currently drawn on the panel
+	 **/
 	public ArrayList<Comment> getComments() {
 		return commentBoxes;
 	}
 
+	/**
+	 * Returns all the associations in this instance of the editor
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return ArrayList<Association> - list of association objects currently drawn on the panel
+	 **/
 	public ArrayList<Association> getAssociations() {
 		return associations;
 	}
 
+	/**
+	 * Returns all the generalizations in this instance of the editor
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return ArrayList<Generlization> - list of generalization objects currently drawn on the panel
+	 **/
 	public ArrayList<Generalization> getGeneralizations() {
 		return generalizations;
 	}
 
+	/**
+	 * Returns all the dependencies in this instance of the editor
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return ArrayList<Dependency> - list of dependency objects currently drawn on the panel
+	 **/
 	public ArrayList<Dependency> getDependencies() {
 		return dependencies;
 	}
 
+	/**
+	 * Returns all the aggregations in this instance of the editor
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return ArrayList<Aggregation> - list of aggregations objects currently drawn on the panel
+	 **/
 	public ArrayList<Aggregation> getAggregations() {
 		return aggregations;
 	}
 
+	/**
+	 * Returns all the compositions in this instance of the editor
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return ArrayList<Composition> - list of composition objects currently drawn on the panel
+	 **/
 	public ArrayList<Composition> getCompositions() {
 		return compositions;
 	}
 
+	/**
+	 * Returns this editor's canvas panel
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return Canvas - the panel all objects are being drawn on
+	 **/
 	public Canvas getCanvas() {
 		return rightPane;
 	}
 
+	/**
+	 * Returns whether a relationship can be drawn between the objects that contain two points.
+	 * 
+	 * @author Bri Long
+	 * @param p1 - a point that a classbox must contain to be the parent in a relationship
+	 * @param p2 - a point that a classbox must contain to be the child in a relationship
+	 * @return boolean - false if there is not a relationship already drawn between the two classes that contain the two point parameters/true if there is already a relationship drawn between them
+	 **/
 	public boolean hasARelationship(Point p1, Point p2) {
 		Class c1 = null, c2 = null;
 
@@ -1324,10 +1588,13 @@ public class Controller {
 		return false;
 	}
 
-	public Relationship getSelectedRelationship() {
-		return selectedRelationship;
-	}
-
+	/**
+	 * Returns the view
+	 * 
+	 * @author Bri Long
+	 * @param N/A
+	 * @return View 
+	 **/
 	public View getView() {
 		return v;
 	}

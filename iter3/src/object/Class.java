@@ -34,6 +34,8 @@ public class Class extends JComponent {
 
 	private Class child = null;
 	private Class parent = null;
+	
+	Canvas rightPane;
 	JPanel j = new JPanel();
 
 	/**
@@ -46,10 +48,10 @@ public class Class extends JComponent {
 	public Class(int x1, int y1, Canvas rightPane) {
 		x = x1;
 		y = y1;
+		this.rightPane = rightPane;
 		rightPane.setLayout(null);
 		name = new JTextArea(nameText);
 		j.setLayout(null);
-		j.setBackground(Color.RED);
 		j.setBounds(x, y, width, height - 10);
 		name.setBounds(0, 0, width, 18);
 		name.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
@@ -274,6 +276,13 @@ public class Class extends JComponent {
 		this.parent = parent;
 	}
 
+	public void delete() {
+		name = null;
+		attributes = null;
+		operations = null;
+		rightPane.remove(j);
+		
+	}
 	public void paintClass(Graphics g) {
 		super.paintComponent(g);
 

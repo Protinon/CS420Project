@@ -42,7 +42,6 @@ public class View {
 	JMenuItem editCopy = new JMenuItem("Copy");
 	JMenuItem editPaste = new JMenuItem("Paste");
 	JMenuItem editDelete = new JMenuItem("Delete");
-	JMenuItem editSelectAll = new JMenuItem("Select All");
 
 	public JLabel titleLabel = new JLabel("Enter Class Box Title: ");
 	public JLabel attsLabel = new JLabel("Enter Class Attributes: ");
@@ -68,8 +67,7 @@ public class View {
 	public JButton generalizationButton = new JButton("Generalization");
 	public JButton associationButton = new JButton("Association");
 	public JButton compositionButton = new JButton("Composition");
-	public JButton classOkayButton = new JButton("Okay");
-	public JButton rOkayButton = new JButton("Okay");
+	public JButton okayButton = new JButton("Okay");
 
 	public JCheckBox directionChange = new JCheckBox("Switch Direction");
 	public String[] relationships = { "Association", "Aggregation", "Composition", "Dependency", "Generalization" };
@@ -130,41 +128,6 @@ public class View {
 		leftPane.add(sep);
 //--------------------------------------------------------------------------------
 
-//CLASS BOX INSPECTOR-LIKE FUNCTIONS INITIALIZATION-------------------------------
-		titleLabel.setBounds(2, 230, 150, 25);
-		title.setBounds(0, 255, 150, 25);
-		attsLabel.setBounds(2, 285, 150, 25);
-		atts.setBounds(0, 310, 150, 54);
-		opsLabel.setBounds(2, 369, 150, 25);
-		ops.setBounds(0, 394, 150, 54);
-		classOkayButton.setBounds(0, 453, 150, 25);
-
-		title.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
-		titleLabel.setVisible(false);
-		title.setVisible(false);
-		title.setWrapStyleWord(true);
-		title.setLineWrap(true);
-		
-		atts.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
-		attsLabel.setVisible(false);
-		atts.setVisible(false);
-		atts.setWrapStyleWord(true);
-		atts.setLineWrap(true);
-		ops.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
-		opsLabel.setVisible(false);
-		ops.setVisible(false);
-		ops.setWrapStyleWord(true);
-		ops.setLineWrap(true);
-		classOkayButton.setVisible(false);
-
-		leftPane.add(titleLabel);
-		leftPane.add(title);
-		leftPane.add(attsLabel);
-		leftPane.add(atts);
-		leftPane.add(opsLabel);
-		leftPane.add(ops);
-		leftPane.add(classOkayButton);
-
 //RELATIONSHIP INSPECTOR-LIKE FUNCTIONS INITIALIZATION----------------------------	
 		relationshipTypes.setBounds(0, 240, 150, 25);
 		pMultiplicityLabel.setBounds(2, 265, 150, 25);
@@ -172,15 +135,15 @@ public class View {
 		cMultiplicityLabel.setBounds(2, 315, 150, 25);
 		cMultiplicity.setBounds(0, 340, 150, 25);
 		directionChange.setBounds(0, 365, 150, 25);
-		rOkayButton.setBounds(0, 395, 150, 25);
-
+		okayButton.setBounds(0, 395, 150, 25);
+		
 		directionChange.setVisible(false);
 		relationshipTypes.setVisible(false);
 		pMultiplicityLabel.setVisible(false);
 		pMultiplicity.setVisible(false);
 		cMultiplicityLabel.setVisible(false);
 		cMultiplicity.setVisible(false);
-		rOkayButton.setVisible(false);
+		okayButton.setVisible(false);
 
 		leftPane.add(relationshipTypes);
 		leftPane.add(directionChange);
@@ -188,7 +151,7 @@ public class View {
 		leftPane.add(cMultiplicityLabel);
 		leftPane.add(cMultiplicity);
 		leftPane.add(pMultiplicity);
-		leftPane.add(rOkayButton);
+		leftPane.add(okayButton);
 
 //MENU BAR INITIALIZATION---------------------------------------------------------
 
@@ -238,8 +201,6 @@ public class View {
 
 		editDelete.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK));
 
-		editSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-
 		edit.add(editUndo);
 		edit.add(editRedo);
 		edit.addSeparator();
@@ -248,7 +209,6 @@ public class View {
 		edit.add(editPaste);
 		edit.add(editDelete);
 		edit.addSeparator();
-		edit.add(editSelectAll);
 
 // -------------------------------------------------------------------------------
 
