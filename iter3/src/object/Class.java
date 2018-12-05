@@ -1,36 +1,40 @@
 
 package object;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 public class Class extends JComponent {
 
 	private int x, y;
-	private int width = 150;
-	private int height = 72;
-	private int nameBoxSize = 24;
-	private int attsBoxSize = 24;
-	private int opsBoxSize = 24;
-	private int stringMax = 21;
+	private int width = 130;
+	private int nameBoxSize = 16;
+	private int height = 64;
 
-	private String name = "Name";
-	private String attributes = "Attributes";
-	private String attributes2 = "";
-	private String attributes3 = "";
+	private JTextArea name;
+	private JTextArea attributes;
+	private JTextArea operations;
 
-	private String operations = "Operations";
-	private String operations2 = "";
-	private String operations3 = "";
+	private String nameText = "Name";
+	private String attributesText = "+ Attrributes";
+	private String operationsText = "- Operations";
 
 	private boolean parentRelated = false;
 	private boolean childRelated = false;
 
 	private Class child = null;
 	private Class parent = null;
+	JPanel j = new JPanel();
 
 	/**
 	 * Initialize class box's left-hand corner x/y coordinates.
@@ -39,9 +43,111 @@ public class Class extends JComponent {
 	 * @param x1 will be used as this classbox's left hand corner x coordinate
 	 * @param y1 will be used as this class box's left hand corner y coordinate
 	 **/
-	public Class(int x1, int y1) {
+	public Class(int x1, int y1, Canvas rightPane) {
 		x = x1;
 		y = y1;
+		rightPane.setLayout(null);
+		name = new JTextArea(nameText);
+		j.setLayout(null);
+		j.setBackground(Color.RED);
+		j.setBounds(x, y, width, height - 10);
+		name.setBounds(0, 0, width, 18);
+		name.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
+
+		attributes = new JTextArea(attributesText);
+		attributes.setBounds(name.getX(), name.getY() + name.getHeight(), width, 18);
+		attributes.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.BLACK));
+
+		operations = new JTextArea(operationsText);
+		operations.setBounds(attributes.getX(), attributes.getY() + attributes.getHeight(), width, 18);
+		operations.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.BLACK));
+		j.add(name);
+		j.add(attributes);
+		j.add(operations);
+
+		name.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+					name.setBounds(name.getX(), name.getY(), name.getWidth(), name.getHeight() + nameBoxSize);
+					attributes.setBounds(attributes.getX(), name.getY() + name.getHeight(), attributes.getWidth(),
+							attributes.getHeight());
+					operations.setBounds(operations.getX(), attributes.getY() + attributes.getHeight(),
+							operations.getWidth(), operations.getHeight());
+					j.setSize(new Dimension(j.getWidth(), j.getHeight() + 16));
+					height += 16;
+					repaint();
+				}
+			}
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		attributes.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+					attributes.setBounds(attributes.getX(), attributes.getY(), attributes.getWidth(),
+							attributes.getHeight() + nameBoxSize);
+					attributes.append("+ ");
+
+					operations.setBounds(operations.getX(), attributes.getY() + attributes.getHeight(),
+							operations.getWidth(), operations.getHeight());
+					j.setSize(new Dimension(j.getWidth(), j.getHeight() + 16));
+					height+=16;
+					repaint();
+				}
+			}
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		operations.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+					operations.setBounds(operations.getX(), operations.getY(), operations.getWidth(),
+							operations.getHeight() + nameBoxSize);
+					operations.append("- ");
+					j.setSize(new Dimension(j.getWidth(), j.getHeight() + 16));
+					height += 16;
+					repaint();
+				}
+			}
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		rightPane.add(j);
 	}
 
 	public int getWidth() {
@@ -49,7 +155,7 @@ public class Class extends JComponent {
 	}
 
 	public int getHeight() {
-		return nameBoxSize + attsBoxSize + opsBoxSize;
+		return height;
 	}
 
 	/**
@@ -60,7 +166,7 @@ public class Class extends JComponent {
 	 * @return this class box's name
 	 **/
 	public String getName() {
-		return name;
+		return name.getText();
 	}
 
 	/**
@@ -71,8 +177,7 @@ public class Class extends JComponent {
 	 * @return this class box's attributes
 	 **/
 	public String getAttributes() {
-		String temp = attributes + attributes2 + attributes3;
-		return temp;
+		return attributes.getText();
 	}
 
 	/**
@@ -83,139 +188,24 @@ public class Class extends JComponent {
 	 * @return this class box's operations
 	 **/
 	public String getOperations() {
-		return operations + operations2 + operations3;
+		return operations.getText();
 	}
 
-	/**
-	 * Change this class box's name to a string of max length - 25.
-	 * 
-	 * @author Bri Long
-	 * @param newName will be class box's new name
-	 * @return void
-	 **/
-	public void setName(String newName) {
-		int index = 0;
-		if (newName.length() == 0) {
-			name = newName;
-			return;
-		}
-		for (int i = 0; i < newName.length(); ++i) {
-			index = index + 1;
-			if (i == newName.length() - 1) {
-				if (index <= stringMax) {
-					name = newName;
-				} else {
-					name = newName.substring(0, stringMax);
-				}
-			}
-		}
-
-		repaint();
+	public void setName(String name) {
+		nameText = name;
+		this.name.setText(nameText);
 	}
 
-	/**
-	 * Change this class box's attributes to a string of max length - 25.
-	 * 
-	 * @author Bri Long
-	 * @param newAtts will be class box's new attributes
-	 * @return void
-	 **/
-	public void setAttributes(String newAtts) {
-		int index = 0;
-		if (newAtts.length() == 0) {
-			attributes = newAtts;
-			attributes2 = "";
-			attributes3 = "";
-			attsBoxSize = 0;
-			return;
-		}
-
-		if (newAtts.length() > stringMax * 3) {
-			newAtts = newAtts.substring(0, stringMax * 3);
-		}
-
-		for (int i = 0; i < newAtts.length(); ++i) {
-			index = index + 1;
-			if (i == newAtts.length() - 2) {
-				if (index <= stringMax) {
-					attributes = newAtts;
-					attributes2 = "";
-					attributes3 = "";
-					attsBoxSize = nameBoxSize;
-				} else if (index <= stringMax * 2) {
-					attributes = newAtts.substring(0, stringMax);
-					attributes2 = newAtts.substring(stringMax);
-					attsBoxSize = nameBoxSize * 2;
-					attributes3 = "";
-				} else if (index <= stringMax * 3) {
-					attributes = newAtts.substring(0, stringMax);
-					attributes2 = newAtts.substring(stringMax, stringMax * 2);
-					attributes3 = newAtts.substring(stringMax * 2);
-					attsBoxSize = nameBoxSize * 3;
-
-				}
-			}
-		}
-		repaint();
+	public void setAttributes(String attributes) {
+		attributesText = attributes;
+		this.attributes.setText(attributesText);
 	}
 
-	/**
-	 * Change this class box's operations to a string of max length - 25.
-	 * 
-	 * @author Bri Long
-	 * @param newOps will be class box's new operations
-	 * @return void
-	 **/
-	public void setOperations(String newOps) {
-		int index = 0;
-		if (newOps.length() == 0) {
-			if (attributes == "" ) {
-				attsBoxSize = 0;
-			}
-			operations = newOps;
-			operations2 = "";
-			operations3 = "";
-			opsBoxSize = 0;
-			return;
-		}
-
-		if (newOps.length() > stringMax * 3) {
-			newOps = newOps.substring(0, stringMax * 3);
-		}
-
-		for (int i = 0; i < newOps.length(); ++i) {
-			index = index + 1;
-			if (i == newOps.length() - 1) {
-				if (index <= stringMax) {
-					if(attsBoxSize == 0) {
-						attsBoxSize = nameBoxSize;
-						}
-					operations = newOps;
-					operations2 = "";
-					operations3 = "";
-					opsBoxSize = nameBoxSize;
-				} else if (index <= stringMax * 2) {
-					operations = newOps.substring(0, stringMax);
-					operations2 = newOps.substring(stringMax);
-					if(attsBoxSize == 0) {
-					attsBoxSize = nameBoxSize;
-					}
-					opsBoxSize = nameBoxSize * 2;
-					operations3 = "";
-				} else if (index <= stringMax * 3) {
-					if(attsBoxSize == 0) {
-						attsBoxSize = nameBoxSize;
-						}
-					operations = newOps.substring(0, stringMax);
-					operations2 = newOps.substring(stringMax, stringMax * 2);
-					operations3 = newOps.substring(stringMax * 2);
-					opsBoxSize = nameBoxSize * 3;
-
-				}
-			}
-		}
-		repaint();
+	public void setOperations(String operations) {
+		operationsText = operations;
+		this.operations.setText(operationsText);
 	}
+
 	/**
 	 * Check to see if this object contains the (x,y) coordinate formed from
 	 * parameters.
@@ -229,27 +219,11 @@ public class Class extends JComponent {
 	 *         of this object, otherwise false
 	 **/
 	public boolean contains(int x2, int y2) {
-		Rectangle r = new Rectangle(x, y, getWidth(), getHeight());
+		Rectangle r = new Rectangle(x, y, width, height);
 		if (r.contains(x2, y2)) {
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Updates this class box's location so that the left-hand corner is now at the
-	 * (x,y) coordinate givem by parameters.
-	 * 
-	 * @author Bri Long
-	 * @param i will be used as x in (x,y) coordinate for object's left-hand corner
-	 *          to be moved too
-	 * @param j will be used as y in (x,y) coordinate for object's left hand corner
-	 *          to be moved too
-	 * @return void
-	 **/
-	public void setLocation(int i, int j) {
-		x = i;
-		y = j;
 	}
 
 	/**
@@ -262,54 +236,10 @@ public class Class extends JComponent {
 		return new Point(x, y);
 	}
 
-	/**
-	 * Paint method for this class box, overwrites paintComponent.
-	 * 
-	 * @author Bri Long
-	 * @param g Graphics object
-	 * @return void
-	 **/
-	protected void paintClass(Graphics g) {
-		super.paintComponent(g);
-
-		g.drawString(name, x + 2, y + nameBoxSize - 6);
-		g.drawRect(x, y, getWidth(), nameBoxSize);
-
-		if (attsBoxSize == nameBoxSize) {
-			g.drawString(attributes, x + 2, y + nameBoxSize + attsBoxSize - 6);
-		}
-
-		if (attsBoxSize == nameBoxSize * 2) {
-			g.drawString(attributes, x + 2, y + nameBoxSize + nameBoxSize - 6);
-			g.drawString(attributes2, x + 2, y + nameBoxSize + attsBoxSize - 6);
-		}
-
-		if (attsBoxSize == nameBoxSize * 3) {
-			g.drawString(attributes, x + 2, y + nameBoxSize + nameBoxSize - 6);
-			g.drawString(attributes2, x + 2, y + nameBoxSize + nameBoxSize + nameBoxSize - 6);
-			g.drawString(attributes3, x + 2, y + nameBoxSize + nameBoxSize + nameBoxSize + nameBoxSize - 6);
-		}
-
-		g.drawRect(x, y + nameBoxSize, getWidth(), attsBoxSize);
-
-		if (opsBoxSize == nameBoxSize) {
-			g.drawString(operations, x + 2, y + nameBoxSize + attsBoxSize + opsBoxSize - 6);
-		}
-
-		if (opsBoxSize == nameBoxSize * 2) {
-			g.drawString(operations, x + 2, y + nameBoxSize + attsBoxSize + nameBoxSize - 6);
-			g.drawString(operations2, x + 2, y + nameBoxSize + attsBoxSize + nameBoxSize + nameBoxSize - 6);
-		}
-
-		if (opsBoxSize == nameBoxSize * 3) {
-			g.drawString(operations, x + 2, y + nameBoxSize + attsBoxSize + nameBoxSize - 6);
-			g.drawString(operations2, x + 2, y + nameBoxSize + attsBoxSize + nameBoxSize + nameBoxSize - 6);
-			g.drawString(operations3, x + 2,
-					y + nameBoxSize + attsBoxSize + nameBoxSize + nameBoxSize + nameBoxSize - 6);
-		}
-
-		g.drawRect(x, y + nameBoxSize + attsBoxSize, getWidth(), opsBoxSize);
-
+	public void setLocation(int i, int z) {
+		x = i;
+		y = z;
+		j.setLocation(x, y);
 	}
 
 	public boolean isAParent() {
@@ -343,4 +273,15 @@ public class Class extends JComponent {
 	public void setParent(Class parent) {
 		this.parent = parent;
 	}
+
+	public void paintClass(Graphics g) {
+		super.paintComponent(g);
+
+		g.drawRect(x, y + j.getHeight(), width - 1,
+				height - name.getHeight() - attributes.getHeight() - operations.getHeight());
+		g.setColor(Color.GRAY);
+		g.fillRect(x, y + name.getHeight() + attributes.getHeight() + operations.getHeight(), width - 1,
+				height - name.getHeight() - attributes.getHeight() - operations.getHeight());
+	}
+
 }

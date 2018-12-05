@@ -92,7 +92,7 @@ public class View {
 		frame.setVisible(true);
 		frame.setSize(800, 600);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+		
 // ---------------------------------------------------------------------------------
 
 //SPLIT-PANE INITIALIZATION--------------------------------------------------------

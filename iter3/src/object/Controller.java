@@ -698,7 +698,7 @@ public class Controller {
 			String operations = (String) c.get("Operations");
 			String name = (String) c.get("Name");
 			Long hashcode = (Long) c.get("Hashcode");
-			Class newClass = new Class(posX, posY);
+			Class newClass = new Class(posX, posY, rightPane);
 			newClass.setName(name);
 			newClass.setAttributes(attributes);
 			newClass.setOperations(operations);
@@ -794,7 +794,7 @@ public class Controller {
 	public void addClass(Point p1) {
 		int classBoxLimit = 20;
 		if (classBoxes.size() < classBoxLimit) {
-			AddClassAction addClassAction = new AddClassAction(p1, classBoxes);
+			AddClassAction addClassAction = new AddClassAction(p1, classBoxes, rightPane);
 			addClassAction.doAction();
 			actions.push(addClassAction);
 			v.editUndo.setEnabled(true);
@@ -805,7 +805,7 @@ public class Controller {
 	public void addClass(Class c, Point p1) {
 		int classBoxLimit = 20;
 		if (classBoxes.size() < classBoxLimit) {
-			AddClassAction addClassAction = new AddClassAction(p1, classBoxes);
+			AddClassAction addClassAction = new AddClassAction(p1, classBoxes, rightPane);
 			addClassAction.doAction();
 			addClassAction.getObject().setName(c.getName());
 			addClassAction.getObject().setAttributes(c.getAttributes());
