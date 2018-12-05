@@ -14,6 +14,7 @@ public class DeleteClassBoxAction implements Action {
 	}
 
 	public void doAction() {
+		classBox.delete();
 		classBoxes.remove(classBox);
 	}
 
