@@ -31,5 +31,6 @@ public class AddClassAction implements Action {
 	
 	public void undoAction() {
 		classes.remove(classBox);
+		classBox.delete();
 	}
 }
