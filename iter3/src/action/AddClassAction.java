@@ -3,6 +3,7 @@ package action;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import object.Canvas;
 import object.Class;
 
 public class AddClassAction implements Action {
@@ -11,10 +12,12 @@ public class AddClassAction implements Action {
 	private Class classBox;
 	
 	private ArrayList<Class> classes;
+	private Canvas rightPane;
 	
-	public AddClassAction(Point p, ArrayList<Class> classes) {
+	public AddClassAction(Point p, ArrayList<Class> classes, Canvas rightPane) {
 		this.p = p;
 		this.classes = classes;
+		this.rightPane = rightPane;
 	}
 	
 	public Class getObject() {
@@ -22,7 +25,7 @@ public class AddClassAction implements Action {
 	}
 	
 	public void doAction() { 
-		classBox = new Class(p.x, p.y);
+		classBox = new Class(p.x, p.y, rightPane);
 		classes.add(classBox);
 	}
 	

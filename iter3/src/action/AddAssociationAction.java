@@ -21,10 +21,10 @@ public class AddAssociationAction implements Action {
 		this.child = c2;
 		this.childM = childM;
 		this.parentM = parentM;
+
 	}
 
 	public void doAction() {
-		if (parent != null && child != null) {
 			Association cl = new Association(parent, child);
 			associations.add(cl);
 			cl.setChildMultiplicity(childM);
@@ -33,7 +33,6 @@ public class AddAssociationAction implements Action {
 			parent.setChild(child);
 			child.setChildRelated(true);
 			child.setParent(parent);
-		}
 	}
 
 	public void undoAction() {
