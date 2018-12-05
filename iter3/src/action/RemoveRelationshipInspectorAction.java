@@ -39,7 +39,7 @@ public class RemoveRelationshipInspectorAction implements Action {
 
 		this.relationshipTypes = vl.relationshipTypes;
 
-		this.okayButton = vl.rOkayButton;
+		this.okayButton = vl.okayButton;
 
 		this.relationship = r;
 
