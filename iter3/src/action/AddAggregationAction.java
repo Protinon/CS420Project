@@ -13,6 +13,8 @@ public class AddAggregationAction implements Action {
 
 	private String childM;
 	private String parentM;
+	
+	private Aggregation agg;
 
 	public AddAggregationAction(Class c1, Class c2, ArrayList<Aggregation> aggregations, String childM,
 			String parentM) {
@@ -25,19 +27,25 @@ public class AddAggregationAction implements Action {
 
 	public void doAction() {
 		if (parent != null && child != null) {
-			Aggregation cl = new Aggregation(parent, child);
-			aggregations.add(cl);
-			cl.setChildMultiplicity(childM);
-			cl.setParentMultiplicity(parentM);
-			parent.setParentRelated(true);
+			agg = new Aggregation(parent, child);
+			aggregations.add(agg);
+			
+			agg.setChildMultiplicity(childM);
+			agg.setParentMultiplicity(parentM);
+	
 			parent.setChild(child);
-			child.setChildRelated(true);
 			child.setParent(parent);
+			
+			parent.setParentRelated();
+			child.setChildRelated();
 		}
 	}
 
 	public void undoAction() {
-		aggregations.remove(parent);
-		aggregations.remove(child);
+		aggregations.remove(agg);
+		agg.setChildMultiplicity("");
+		agg.setParentMultiplicity("");
+		parent.removeChild(child);
+		child.removeParent(parent);
 	}
 }

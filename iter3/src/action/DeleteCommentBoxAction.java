@@ -14,6 +14,7 @@ public class DeleteCommentBoxAction implements Action {
 	}
 
 	public void doAction() {
+		comment.delete();
 		comments.remove(comment);
 	}
 

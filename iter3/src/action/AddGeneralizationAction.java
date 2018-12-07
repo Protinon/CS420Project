@@ -2,8 +2,8 @@ package action;
 
 import java.util.ArrayList;
 
-import object.Class;
 import object.Generalization;
+import object.Class;
 
 public class AddGeneralizationAction implements Action {
 	private ArrayList<Generalization> generalizations;
@@ -13,6 +13,8 @@ public class AddGeneralizationAction implements Action {
 
 	private String childM;
 	private String parentM;
+	
+	private Generalization gen;
 
 	public AddGeneralizationAction(Class c1, Class c2, ArrayList<Generalization> generalizations, String childM,
 			String parentM) {
@@ -25,19 +27,25 @@ public class AddGeneralizationAction implements Action {
 
 	public void doAction() {
 		if (parent != null && child != null) {
-			Generalization cl = new Generalization(parent, child);
-			generalizations.add(cl);
-			cl.setChildMultiplicity(childM);
-			cl.setParentMultiplicity(parentM);
-			parent.setParentRelated(true);
+			gen = new Generalization(parent, child);
+			generalizations.add(gen);
+			
+			gen.setChildMultiplicity(childM);
+			gen.setParentMultiplicity(parentM);
+	
 			parent.setChild(child);
-			child.setChildRelated(true);
 			child.setParent(parent);
+			
+			parent.setParentRelated();
+			child.setChildRelated();
 		}
 	}
 
 	public void undoAction() {
-		generalizations.remove(parent);
-		generalizations.remove(child);
+		generalizations.remove(gen);
+		gen.setChildMultiplicity("");
+		gen.setParentMultiplicity("");
+		parent.removeChild(child);
+		child.removeParent(parent);
 	}
 }

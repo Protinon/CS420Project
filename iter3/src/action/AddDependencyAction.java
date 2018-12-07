@@ -2,8 +2,8 @@ package action;
 
 import java.util.ArrayList;
 
-import object.Class;
 import object.Dependency;
+import object.Class;
 
 public class AddDependencyAction implements Action {
 	private ArrayList<Dependency> dependencies;
@@ -13,6 +13,8 @@ public class AddDependencyAction implements Action {
 
 	private String childM;
 	private String parentM;
+	
+	private Dependency dep;
 
 	public AddDependencyAction(Class c1, Class c2, ArrayList<Dependency> dependencies, String childM,
 			String parentM) {
@@ -25,19 +27,25 @@ public class AddDependencyAction implements Action {
 
 	public void doAction() {
 		if (parent != null && child != null) {
-			Dependency cl = new Dependency(parent, child);
-			dependencies.add(cl);
-			cl.setChildMultiplicity(childM);
-			cl.setParentMultiplicity(parentM);
-			parent.setParentRelated(true);
+			dep = new Dependency(parent, child);
+			dependencies.add(dep);
+			
+			dep.setChildMultiplicity(childM);
+			dep.setParentMultiplicity(parentM);
+	
 			parent.setChild(child);
-			child.setChildRelated(true);
 			child.setParent(parent);
+			
+			parent.setParentRelated();
+			child.setChildRelated();
 		}
 	}
 
 	public void undoAction() {
-		dependencies.remove(parent);
-		dependencies.remove(child);
+		dependencies.remove(dep);
+		dep.setChildMultiplicity("");
+		dep.setParentMultiplicity("");
+		parent.removeChild(child);
+		child.removeParent(parent);
 	}
 }

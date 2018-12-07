@@ -5,7 +5,6 @@ import object.Association;
 import object.Composition;
 import object.Controller;
 import object.Dependency;
-import object.Generalization;
 import object.Relationship;
 
 public class DeleteRelationshipAction implements Action {
@@ -19,10 +18,8 @@ public class DeleteRelationshipAction implements Action {
 	}
 
 	public void doAction() {
-		relationshipToDelete.getClass1().setParentRelated(false);
-		relationshipToDelete.getClass1().setChild(null);
-		relationshipToDelete.getClass2().setChildRelated(false);
-		relationshipToDelete.getClass2().setParent(null);
+		relationshipToDelete.getClass1().removeChild(relationshipToDelete.getClass2());
+		relationshipToDelete.getClass2().removeParent (relationshipToDelete.getClass1());
 
 		if (relationshipToDelete instanceof Association) {
 			c.getAssociations().remove(relationshipToDelete);
@@ -38,27 +35,27 @@ public class DeleteRelationshipAction implements Action {
 		} else {
 			c.getGeneralizations().remove(relationshipToDelete);
 		}
+		
+		relationshipToDelete.getClass1().setParentRelated();
+		relationshipToDelete.getClass2().setChildRelated();
 	}
 
 	public void undoAction() {
-		relationshipToDelete.getClass1().setParentRelated(true);
 		relationshipToDelete.getClass1().setChild(relationshipToDelete.getClass2());
-		relationshipToDelete.getClass2().setChildRelated(true);
 		relationshipToDelete.getClass2().setParent(relationshipToDelete.getClass1());
+		relationshipToDelete.getClass1().setParentRelated();
+		relationshipToDelete.getClass2().setChildRelated();
 
 		if (relationshipToDelete instanceof Association) {
-			c.getAssociations().add((Association) relationshipToDelete);
+			c.addAssociation(relationshipToDelete.getClass1(), relationshipToDelete.getClass2(), relationshipToDelete.getChildMultiplicity(), relationshipToDelete.getParentMultiplicity());
 		} else if (relationshipToDelete instanceof Aggregation) {
-			c.getAggregations().add((Aggregation) relationshipToDelete);
-
+			c.addAggregation(relationshipToDelete.getClass1(), relationshipToDelete.getClass2(), relationshipToDelete.getChildMultiplicity(), relationshipToDelete.getParentMultiplicity());
 		} else if (relationshipToDelete instanceof Composition) {
-			c.getCompositions().add((Composition) relationshipToDelete);
-
+			c.addComposition(relationshipToDelete.getClass1(), relationshipToDelete.getClass2(), relationshipToDelete.getChildMultiplicity(), relationshipToDelete.getParentMultiplicity());
 		} else if (relationshipToDelete instanceof Dependency) {
-			c.getDependencies().add((Dependency) relationshipToDelete);
-
+			c.addDependency(relationshipToDelete.getClass1(), relationshipToDelete.getClass2(), relationshipToDelete.getChildMultiplicity(), relationshipToDelete.getParentMultiplicity());
 		} else {
-			c.getGeneralizations().add((Generalization) relationshipToDelete);
+			c.addGeneralization(relationshipToDelete.getClass1(), relationshipToDelete.getClass2(), relationshipToDelete.getChildMultiplicity(), relationshipToDelete.getParentMultiplicity());
 		}
 	}
 }

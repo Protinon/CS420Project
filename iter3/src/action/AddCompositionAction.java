@@ -2,8 +2,8 @@ package action;
 
 import java.util.ArrayList;
 
-import object.Class;
 import object.Composition;
+import object.Class;
 
 public class AddCompositionAction implements Action {
 	private ArrayList<Composition> compositions;
@@ -13,6 +13,8 @@ public class AddCompositionAction implements Action {
 
 	private String childM;
 	private String parentM;
+	
+	private Composition comp;
 
 	public AddCompositionAction(Class c1, Class c2, ArrayList<Composition> compositions, String childM,
 			String parentM) {
@@ -25,19 +27,25 @@ public class AddCompositionAction implements Action {
 
 	public void doAction() {
 		if (parent != null && child != null) {
-			Composition cl = new Composition(parent, child);
-			compositions.add(cl);
-			cl.setChildMultiplicity(childM);
-			cl.setParentMultiplicity(parentM);
-			parent.setParentRelated(true);
+			comp = new Composition(parent, child);
+			compositions.add(comp);
+			
+			comp.setChildMultiplicity(childM);
+			comp.setParentMultiplicity(parentM);
+	
 			parent.setChild(child);
-			child.setChildRelated(true);
 			child.setParent(parent);
+			
+			parent.setParentRelated();
+			child.setChildRelated();
 		}
 	}
 
 	public void undoAction() {
-		compositions.remove(parent);
-		compositions.remove(child);
+		compositions.remove(comp);
+		comp.setChildMultiplicity("");
+		comp.setParentMultiplicity("");
+		parent.removeChild(child);
+		child.removeParent(parent);
 	}
 }
