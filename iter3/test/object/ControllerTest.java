@@ -160,8 +160,6 @@ class ControllerTest {
 		verify(fileMock, times(5)).actionPerformed(captor.capture());
 		assertEquals(captor.getValue().getSource(), c.getView().filePageSetup.getComponent());
 
-		c.pageSetUp(new PageFormat(), new PageFormat());
-
 		c.getView().filePrint.addActionListener(fileMock);
 		c.getView().filePrint.doClick();
 		verify(fileMock, times(6)).actionPerformed(captor.capture());
