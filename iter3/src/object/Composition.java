@@ -29,11 +29,6 @@ public class Composition implements Relationship {
 		setLocation();
 	}
 
-	public String toString() {
-		return "Composition";
-	}
-	
-	
 	public boolean contains(Point x) {
 		if (Point2D.distance(connectorStartPoint.x, connectorStartPoint.y, x.x, x.y)
 				+ Point2D.distance(connectorEndPoint.x, connectorEndPoint.y, x.x,
@@ -46,6 +41,11 @@ public class Composition implements Relationship {
 		}
 		return false;
 	}
+
+	public String toString() {
+		return "Composition";
+	}
+
 	public CompositionArrow getArrow() {
 		return arrow;
 	}
@@ -55,7 +55,7 @@ public class Composition implements Relationship {
 				y2 = child.getLocation().y;
 		int width = parent.getWidth();
 		int height = parent.getHeight();
-		int height2 = child.getHeight();
+		int height2 =child.getHeight();
 
 		if (x1 < x2) {
 			if (x1 + width + arrowLength <= x2) {
@@ -122,7 +122,8 @@ public class Composition implements Relationship {
 				y2 = child.getLocation().y;
 		int width = parent.getWidth();
 		int height = parent.getHeight();
-int height2 = child.getWidth();		int offset = 10;
+		int height2 = child.getHeight();
+		int offset = 10;
 		if (x1 < x2) {
 			if (x1 + width + arrowLength <= x2) {
 				connectorStartPoint = new Point(x1 + width, y1 + height / 2);
@@ -187,7 +188,7 @@ int height2 = child.getWidth();		int offset = 10;
 					relationshipEndPoint = new Point(x2 + width / 2, y2);
 					parentMultiplicityPoint = new Point(connectorStartPoint.x + offset,
 							connectorStartPoint.y + offset * 2);
-					childMultiplicityPoint = new Point(relationshipEndPoint.x + -offset * 2,
+					childMultiplicityPoint = new Point(relationshipEndPoint.x - offset * 2,
 							relationshipEndPoint.y - offset * 2);
 				}
 			}

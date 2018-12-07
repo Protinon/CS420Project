@@ -10,7 +10,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-
+//86.2% Coverage
 public class Comment extends JComponent{
 	private int x, y;
 	private int width = 150, height = 25;
@@ -86,6 +86,14 @@ public class Comment extends JComponent{
 		this.data.setText(dataString);
 	}
 
+	public String getData() {
+		dataString = data.getText();
+		return dataString;
+	}
+	
+	public JTextArea getDataTextBox() {
+		return data;
+	}
 	/**
 	 * Returns this comment object's width.
 	 * 
@@ -116,6 +124,10 @@ public class Comment extends JComponent{
 		return new Point(x, y);
 	}
 
+	public void delete() {
+		data = null;
+		rightPane.remove(j);
+	}
 	/**
 	 * Check to see if this object contains the (x,y) coordinate formed from
 	 * parameters.
