@@ -2,25 +2,30 @@ package object;
 
 import static org.junit.Assert.assertEquals;
 
+import java.awt.AWTException;
 import java.awt.Point;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-//75% Coverage
-
+//73.2% Coverage
 class ClassTest {
 
-	public Class clazz;
+	public Class clazz, clazzz;
+	Canvas r;
+	Controller c;
 
 	@BeforeEach
 	public void setup() {
-		clazz = new Class(50, 50);
+		c = new Controller();
+		r = new Canvas(c);
+		clazz = new Class(50, 50, r);
+		clazzz = new Class(300,300, r);
 	}
 
+	// Set name formality-unused function
 	@Test
 	public void testSetAndGetName() {
-		String defaultName = "Name", normalName = "Name Test", emptyName = "", longName = "This is too long of a name.",
-				veryLongName = "This is a very long name for a class, especially one being represented as a UML Diagram";
+		String defaultName = "Name", normalName = "Name Test", emptyName = "";
 
 		assertEquals(defaultName, clazz.getName());
 
@@ -29,67 +34,48 @@ class ClassTest {
 
 		clazz.setName(emptyName);
 		assertEquals(emptyName, clazz.getName());
-
-		clazz.setName(longName);
-		assertEquals(longName.substring(0, 21), clazz.getName());
-
-		clazz.setName(veryLongName);
-		assertEquals(veryLongName.substring(0, 21), clazz.getName());
 	}
 
+	// Set attributes formality - not used function
 	@Test
 	public void testSetGetAttributes() {
 
-		String defaultAtts = "Attributes", normalAtts = "Attributes Test", emptyAtts = "",
-				longAtts = "This is a sentence with more than 25 characters.",
-				veryLongAtts = "Attributes will probably be long in the future, but right now that is not allowed because the code doesn't support it.";
+		String defaultAtts = "Attributes", normalAtts = "Attributes Test", emptyAtts = "";
 
-		assertEquals(defaultAtts, clazz.getAttributes());
+		assertEquals("+ " + defaultAtts, clazz.getAttributes());
 
 		clazz.setAttributes(normalAtts);
-		assertEquals(normalAtts, clazz.getAttributes());
+		assertEquals("+ " + normalAtts, clazz.getAttributes());
 
 		clazz.setAttributes(emptyAtts);
-		assertEquals(emptyAtts, clazz.getAttributes());
-
-		clazz.setAttributes(longAtts);
-		assertEquals(longAtts, clazz.getAttributes());
-
-		clazz.setAttributes(veryLongAtts);
-		assertEquals(veryLongAtts.substring(0, 63), clazz.getAttributes());
+		assertEquals("+ " + emptyAtts, clazz.getAttributes());
 	}
 
+	// Set operations formality - not used function
 	@Test
 	public void testSetGetOperations() {
 
-		String defaultOps = "Operations", normalOps = "Operations Test", emptyOps = "",
-				longOps = "25 characters is not enough for operations.",
-				veryLongOps = "Operations will probably be long in the future, but right now that is not allowed because the code doesn't support it.";
-
-		assertEquals(defaultOps, clazz.getOperations());
+		String defaultOps = "Operations", normalOps = "Operations Test", emptyOps = "";
+				
+		assertEquals("- " + defaultOps, clazz.getOperations());
 
 		clazz.setOperations(normalOps);
-		assertEquals(normalOps, clazz.getOperations());
+		assertEquals("- " + normalOps, clazz.getOperations());
 
 		clazz.setOperations(emptyOps);
-		assertEquals(emptyOps, clazz.getOperations());
-
-		clazz.setOperations(longOps);
-		assertEquals(longOps, clazz.getOperations());
-
-		clazz.setOperations(veryLongOps);
-		assertEquals(veryLongOps.substring(0, 63), clazz.getOperations());
+		assertEquals("- " + emptyOps, clazz.getOperations());
 	}
 
 	@Test
 	public void testContains() {
 		Point upperLeftCorner = new Point(50, 50), insideObject = new Point(54, 60), aboveObject = new Point(49, 50),
-				notNearObject = new Point(200, 300);
+				negative = new Point(-8, 6);
 
 		assertEquals(true, clazz.contains(upperLeftCorner));
 		assertEquals(true, clazz.contains(insideObject));
 		assertEquals(false, clazz.contains(aboveObject));
-		assertEquals(false, clazz.contains(notNearObject));
+		clazz.setLocation(-10, 5);
+		assertEquals(true, clazz.contains(negative));
 
 	}
 
@@ -112,47 +98,60 @@ class ClassTest {
 	}
 
 	@Test
-	public void testGetHeight() {
-		assertEquals(72, clazz.getHeight());
-
-		clazz.setAttributes("This will use two lines.");
-		assertEquals(96, clazz.getHeight());
-
-		clazz.setOperations("This will use three lines, so let's see if the height updates.");
-		assertEquals(144, clazz.getHeight());
+	public void testGetHeight() throws AWTException {
+		assertEquals(64, clazz.getHeight());
 	}
 
 	@Test
 	public void testGetWidth() {
-		assertEquals(150, clazz.getWidth());
+		assertEquals(130, clazz.getWidth());
 	}
 
 	@Test
-	public void testSetGetRelated() {
-		Class p = new Class(100, 100);
-		clazz.setParent(p);
-		clazz.setChildRelated(true);
+	public void testSetGetRelated() {		
+		clazz.setParent(clazzz);
+		clazz.setChildRelated();
+		clazz.setParentRelated();
+		
+		clazzz.setChild(clazz);
+		clazzz.setParentRelated();
+		clazzz.setChildRelated();
 
-		p.setChild(clazz);
-		p.setParentRelated(true);
+		assertEquals(true, clazz.getParents().contains(clazzz));
+		assertEquals(clazzz.isAChild(), false);
+		assertEquals(clazzz.isAParent(), true);
 
-		assertEquals(p, clazz.getParent());
-		assertEquals(p.isAChild(), false);
-		assertEquals(p.isAParent(), true);
-
-		assertEquals(clazz, p.getChild());
+		assertEquals(true, clazzz.getChildren().contains(clazz));
 		assertEquals(clazz.isAParent(), false);
 		assertEquals(clazz.isAChild(), true);
+	}
+	
+	@Test
+	public void testDelete() {
+		clazz.delete();
+		assertEquals(null, clazz.getNameTextBox());
+		assertEquals(null, clazz.getAttributesTextBox());
+		assertEquals(null, clazz.getOperationsTextBox());
+
 	}
 
 	@Test
 	public void testPaintComponent() {
-		Controller c = new Controller();
 		c.addClass(new Point(0, 0));
-		c.getClasses().get(0).setAttributes("123456789112345678901234567");
-		c.getClasses().get(0).setAttributes("12345678911234567890123456789012345678901234");
-		c.getClasses().get(0).setOperations("123456789112345678901234567");
-		c.getClasses().get(0).setOperations("12345678911234567890123456789012345678901234");
+	}
 
+	@Test
+	public void removeChildParent() {
+		clazz.setParent(clazzz);
+		clazzz.setChild(clazz);
+		
+		assertEquals(true, clazz.getParents().contains(clazzz));
+		assertEquals(true, clazzz.getChildren().contains(clazz));
+		
+		clazz.removeParent(clazzz);
+		clazzz.removeChild(clazz);
+		
+		assertEquals(false, clazz.getParents().contains(clazzz));
+		assertEquals(false, clazzz.getChildren().contains(clazz));
 	}
 }

@@ -58,11 +58,11 @@ public class ConnectorTest {
 	
 	@Test
 	public void testCase6() {
-		c.addClass(new Point(0, 0));
-		c.addClass(new Point(0,200));
+		c.addClass(new Point(100, 0));
+		c.addClass(new Point(0,400));
 		
-		c.addAggregation(new Point(5,5));
-		c.addAggregation(new Point(105, 205));
+		c.addAggregation(new Point(105,5));
+		c.addAggregation(new Point(5, 405));
 
 	}
 }

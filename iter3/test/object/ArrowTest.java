@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.awt.Point;
 
 import org.junit.jupiter.api.Test;
-
+//100% Coverage
 public class ArrowTest {
 	Controller c = new Controller();
 
@@ -17,7 +17,7 @@ public class ArrowTest {
 		c.addAggregation(new Point(5, 5));
 		c.addAggregation(new Point(205, 205));
 		
-		c.getAggregations().removeAll(c.getAggregations());
+		c.deleteObject(c.getAggregations().get(0).getLocation2());
 
 		c.addClass(new Point(0, 0));
 		c.addClass(new Point(200, 200));
@@ -25,7 +25,7 @@ public class ArrowTest {
 		c.addComposition(new Point(5, 5));
 		c.addComposition(new Point(205, 205));
 
-		c.getCompositions().removeAll(c.getCompositions());
+		c.deleteObject(c.getCompositions().get(0).getLocation2());
 
 		c.addClass(new Point(0, 0));
 		c.addClass(new Point(200, 200));
@@ -33,7 +33,7 @@ public class ArrowTest {
 		c.addDependency(new Point(5, 5));
 		c.addDependency(new Point(205, 205));
 
-		c.getDependencies().removeAll(c.getDependencies());
+		c.deleteObject(c.getDependencies().get(0).getLocation2());
 
 		c.addClass(new Point(0, 0));
 		c.addClass(new Point(200, 200));
@@ -41,7 +41,7 @@ public class ArrowTest {
 		c.addGeneralization(new Point(5, 5));
 		c.addGeneralization(new Point(205, 205));
 
-		c.getGeneralizations().removeAll(c.getGeneralizations());
+		c.deleteObject(c.getGeneralizations().get(0).getLocation2());
 
 	}
 
@@ -53,7 +53,7 @@ public class ArrowTest {
 		c.addAggregation(new Point(5, 205));
 		c.addAggregation(new Point(105, 5));
 
-		c.getAggregations().removeAll(c.getAggregations());
+		c.deleteObject(c.getAggregations().get(0).getLocation2());
 
 		c.addClass(new Point(0, 200));
 		c.addClass(new Point(100, 0));
@@ -61,7 +61,7 @@ public class ArrowTest {
 		c.addComposition(new Point(5, 205));
 		c.addComposition(new Point(105, 5));
 
-		c.getCompositions().removeAll(c.getCompositions());
+		c.deleteObject(c.getCompositions().get(0).getLocation2());
 
 		c.addClass(new Point(0, 200));
 		c.addClass(new Point(100, 0));
@@ -69,7 +69,7 @@ public class ArrowTest {
 		c.addDependency(new Point(5, 205));
 		c.addDependency(new Point(105, 5));
 
-		c.getDependencies().removeAll(c.getDependencies());
+		c.deleteObject(c.getDependencies().get(0).getLocation2());
 
 		c.addClass(new Point(0, 200));
 		c.addClass(new Point(100, 0));
@@ -77,7 +77,7 @@ public class ArrowTest {
 		c.addGeneralization(new Point(5, 205));
 		c.addGeneralization(new Point(105, 5));
 
-		c.getGeneralizations().removeAll(c.getGeneralizations());
+		c.deleteObject(c.getGeneralizations().get(0).getLocation2());
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class ArrowTest {
 		c.addAggregation(new Point(5, 5));
 		c.addAggregation(new Point(105, 205));
 
-		c.getAggregations().removeAll(c.getAggregations());
+		c.deleteObject(c.getAggregations().get(0).getLocation2());
 
 		c.addClass(new Point(0, 0));
 		c.addClass(new Point(100, 200));
@@ -96,7 +96,7 @@ public class ArrowTest {
 		c.addComposition(new Point(5, 5));
 		c.addComposition(new Point(105, 205));
 
-		c.getCompositions().removeAll(c.getCompositions());
+		c.deleteObject(c.getCompositions().get(0).getLocation2());
 
 		c.addClass(new Point(0, 0));
 		c.addClass(new Point(100, 200));
@@ -104,7 +104,7 @@ public class ArrowTest {
 		c.addDependency(new Point(5, 5));
 		c.addDependency(new Point(105, 205));
 
-		c.getDependencies().removeAll(c.getDependencies());
+		c.deleteObject(c.getDependencies().get(0).getLocation2());
 
 		c.addClass(new Point(0, 0));
 		c.addClass(new Point(100, 200));
@@ -112,7 +112,7 @@ public class ArrowTest {
 		c.addGeneralization(new Point(5, 5));
 		c.addGeneralization(new Point(105, 205));
 
-		c.getGeneralizations().removeAll(c.getGeneralizations());
+		c.deleteObject(c.getGeneralizations().get(0).getLocation2());
 
 	}
 
@@ -124,7 +124,7 @@ public class ArrowTest {
 		c.addAggregation(new Point(205, 205));
 		c.addAggregation(new Point(5, 5));
 
-		c.getAggregations().removeAll(c.getAggregations());
+		c.deleteObject(c.getAggregations().get(0).getLocation2());
 
 		c.addClass(new Point(200, 200));
 		c.addClass(new Point(0, 0));
@@ -132,7 +132,7 @@ public class ArrowTest {
 		c.addComposition(new Point(205, 205));
 		c.addComposition(new Point(5, 5));
 
-		c.getCompositions().removeAll(c.getCompositions());
+		c.deleteObject(c.getCompositions().get(0).getLocation2());
 
 		c.addClass(new Point(200, 200));
 		c.addClass(new Point(0, 0));
@@ -140,7 +140,7 @@ public class ArrowTest {
 		c.addDependency(new Point(205, 205));
 		c.addDependency(new Point(5, 5));
 
-		c.getDependencies().removeAll(c.getDependencies());
+		c.deleteObject(c.getDependencies().get(0).getLocation2());
 
 		c.addClass(new Point(200, 200));
 		c.addClass(new Point(0, 0));
@@ -148,7 +148,7 @@ public class ArrowTest {
 		c.addGeneralization(new Point(205, 205));
 		c.addGeneralization(new Point(5, 5));
 
-		c.getGeneralizations().removeAll(c.getGeneralizations());
+		c.deleteObject(c.getGeneralizations().get(0).getLocation2());
 	}
 
 	@Test

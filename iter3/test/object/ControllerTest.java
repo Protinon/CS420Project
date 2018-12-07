@@ -18,10 +18,14 @@ import org.mockito.ArgumentCaptor;
 class ControllerTest {
 
 	Controller c;
+	Canvas r;
+	Class clazz;
 
 	@BeforeEach
 	public void setup() {
 		c = new Controller();
+		r = new Canvas(c);
+		clazz = new Class(0,0,r);
 	}
 
 	@Test
@@ -177,13 +181,20 @@ class ControllerTest {
 
 		ActionListener editUndoClicked = mock(ActionListener.class);
 		ActionListener editRedoClicked = mock(ActionListener.class);
-		ActionListener editCutClicked = mock(ActionListener.class);
-		ActionListener editCopyClicked = mock(ActionListener.class);
-		ActionListener editPasteClicked = mock(ActionListener.class);
-		ActionListener editDeleteClicked = mock(ActionListener.class);
-		ActionListener editSelectAllClicked = mock(ActionListener.class);
+		ActionListener editCutClicked1 = mock(ActionListener.class);
+		ActionListener editCutClicked2 = mock(ActionListener.class);
+		ActionListener editCutClicked3 = mock(ActionListener.class);
+		ActionListener editCopyClicked1 = mock(ActionListener.class);
+		ActionListener editCopyClicked2 = mock(ActionListener.class);
+		ActionListener editCopyClicked3 = mock(ActionListener.class);
+		ActionListener editPasteClicked1 = mock(ActionListener.class);
+		ActionListener editPasteClicked2 = mock(ActionListener.class);
+		ActionListener editPasteClicked3 = mock(ActionListener.class);
+		ActionListener editDeleteClicked1 = mock(ActionListener.class);
+		ActionListener editDeleteClicked2 = mock(ActionListener.class);
+		ActionListener editDeleteClicked3 = mock(ActionListener.class);
 
-		c.addAggregation(new Class(50, 50), new Class(30, 30), "", "");
+		c.addAggregation(new Class(50, 50, r), new Class(300, 300, r), "", "");
 
 		c.getView().editUndo.addActionListener(editUndoClicked);
 		c.getView().editUndo.doClick();
@@ -195,30 +206,75 @@ class ControllerTest {
 		verify(editRedoClicked).actionPerformed(captor.capture());
 		assertEquals(captor.getValue().getSource(), c.getView().editRedo.getComponent());
 
-		c.getView().editCut.addActionListener(editCutClicked);
+		c.addClass(new Point(500, 500));
+		c.selectObject(new Point(505, 505));
+		
+		c.getView().editCut.addActionListener(editCutClicked1);
 		c.getView().editCut.doClick();
-		verify(editCutClicked).actionPerformed(captor.capture());
+		verify(editCutClicked1).actionPerformed(captor.capture());
 		assertEquals(captor.getValue().getSource(), c.getView().editCut.getComponent());
-
-		c.getView().editCopy.addActionListener(editCopyClicked);
+		
+		c.getView().editCopy.addActionListener(editCopyClicked1);
 		c.getView().editCopy.doClick();
-		verify(editCopyClicked).actionPerformed(captor.capture());
+		verify(editCopyClicked1).actionPerformed(captor.capture());
 		assertEquals(captor.getValue().getSource(), c.getView().editCopy.getComponent());
-
-		c.getView().editPaste.addActionListener(editPasteClicked);
+		
+		c.getView().editPaste.addActionListener(editPasteClicked1);
 		c.getView().editPaste.doClick();
-		verify(editPasteClicked).actionPerformed(captor.capture());
+		verify(editPasteClicked1).actionPerformed(captor.capture());
 		assertEquals(captor.getValue().getSource(), c.getView().editPaste.getComponent());
-
-		c.getView().editDelete.addActionListener(editDeleteClicked);
+		
+		c.getView().editDelete.addActionListener(editDeleteClicked1);
 		c.getView().editDelete.doClick();
-		verify(editDeleteClicked).actionPerformed(captor.capture());
+		verify(editDeleteClicked1).actionPerformed(captor.capture());
 		assertEquals(captor.getValue().getSource(), c.getView().editDelete.getComponent());
 
-		c.getView().editSelectAll.addActionListener(editSelectAllClicked);
-		c.getView().editSelectAll.doClick();
-		verify(editSelectAllClicked).actionPerformed(captor.capture());
-		assertEquals(captor.getValue().getSource(), c.getView().editSelectAll.getComponent());
+		
+		c.addComment(new Point(650, 650));
+		c.selectObject(new Point(655, 655));
+		
+		c.getView().editCut.addActionListener(editCutClicked2);
+		c.getView().editCut.doClick();
+		verify(editCutClicked2).actionPerformed(captor.capture());
+		assertEquals(captor.getValue().getSource(), c.getView().editCut.getComponent());
+		
+		c.getView().editCopy.addActionListener(editCopyClicked2);
+		c.getView().editCopy.doClick();
+		verify(editCopyClicked2).actionPerformed(captor.capture());
+		assertEquals(captor.getValue().getSource(), c.getView().editCopy.getComponent());
+		
+		c.getView().editPaste.addActionListener(editPasteClicked2);
+		c.getView().editPaste.doClick();
+		verify(editPasteClicked2).actionPerformed(captor.capture());
+		assertEquals(captor.getValue().getSource(), c.getView().editPaste.getComponent());
+
+		c.getView().editDelete.addActionListener(editDeleteClicked2);
+		c.getView().editDelete.doClick();
+		verify(editDeleteClicked2).actionPerformed(captor.capture());
+		assertEquals(captor.getValue().getSource(), c.getView().editDelete.getComponent());
+		
+
+		c.selectObject(new Point(295, 300 + clazz.getHeight() / 2));
+		
+		c.getView().editCut.addActionListener(editCutClicked3);
+		c.getView().editCut.doClick();
+		verify(editCutClicked3).actionPerformed(captor.capture());
+		assertEquals(captor.getValue().getSource(), c.getView().editCut.getComponent());
+
+		c.getView().editCopy.addActionListener(editCopyClicked3);
+		c.getView().editCopy.doClick();
+		verify(editCopyClicked3).actionPerformed(captor.capture());
+		assertEquals(captor.getValue().getSource(), c.getView().editCopy.getComponent());
+		
+		c.getView().editPaste.addActionListener(editPasteClicked3);
+		c.getView().editPaste.doClick();
+		verify(editPasteClicked3).actionPerformed(captor.capture());
+		assertEquals(captor.getValue().getSource(), c.getView().editPaste.getComponent());
+
+		c.getView().editDelete.addActionListener(editDeleteClicked3);
+		c.getView().editDelete.doClick();
+		verify(editDeleteClicked3).actionPerformed(captor.capture());
+		assertEquals(captor.getValue().getSource(), c.getView().editDelete.getComponent());
 	}
 
 	@Test
@@ -311,50 +367,38 @@ class ControllerTest {
 
 	@Test
 	public void testSelectObject() {
-		Class x = new Class(800, 800);
+		Class x = new Class(800, 800, r);
 
-		c.addDependency(new Class(200, 50), new Class(400, 50), "", "");
+		c.addDependency(new Class(200, 50, r), new Class(400, 50, r), "", "");
 		c.selectObject(new Point(395, 50 + x.getHeight() / 2));
 		assertEquals(c.getDependencies().get(0), c.getSelectedRelationship());
 
-		c.selectObject(new Point(355, 50 + x.getHeight() / 2));
-		assertEquals(c.getDependencies().get(0), c.getSelectedRelationship());
-
 		c.selectObject(new Point(800, 800));
 		assertEquals(null, c.getSelectedRelationship());
 
-		c.addGeneralization(new Class(0, 300), new Class(200, 300), "", "");
+		c.addGeneralization(new Class(0, 300, r), new Class(200, 300, r), "", "");
 		c.selectObject(new Point(195, 300 + x.getHeight() / 2));
 		assertEquals(c.getGeneralizations().get(0), c.getSelectedRelationship());
 
-		c.selectObject(new Point(160, 300 + x.getHeight() / 2));
-		assertEquals(c.getGeneralizations().get(0), c.getSelectedRelationship());
-
 		c.selectObject(new Point(800, 800));
 		assertEquals(null, c.getSelectedRelationship());
 
-		c.addAggregation(new Class(0, 0), new Class(200, 0), "", "");
+		c.addAggregation(new Class(0, 0, r), new Class(200, 0, r), "", "");
 		c.selectObject(new Point(195, 0 + x.getHeight() / 2));
 		assertEquals(c.getAggregations().get(0), c.getSelectedRelationship());
 
-		c.selectObject(new Point(160, 0 + x.getHeight() / 2));
-		assertEquals(c.getAggregations().get(0), c.getSelectedRelationship());
-
 		c.selectObject(new Point(800, 800));
 		assertEquals(null, c.getSelectedRelationship());
 
-		c.addAssociation(new Class(200, 0), new Class(400, 0), "", "");
+		c.addAssociation(new Class(200, 0, r), new Class(400, 0, r), "", "");
 		c.selectObject(new Point(395, 0 + x.getHeight() / 2));
 		assertEquals(c.getAssociations().get(0), c.getSelectedRelationship());
 
 		c.selectObject(new Point(800, 800));
 		assertEquals(null, c.getSelectedRelationship());
 
-		c.addComposition(new Class(0, 50), new Class(200, 50), "", "");
-		c.selectObject(new Point(195, 50 + x.getHeight() / 2));
-		assertEquals(c.getCompositions().get(0), c.getSelectedRelationship());
-
-		c.selectObject(new Point(160, 50 + x.getHeight() / 2));
+		c.addComposition(new Class(0, 500, r), new Class(200, 500, r), "", "");
+		c.selectObject(new Point(195, 500 + x.getHeight() / 2));
 		assertEquals(c.getCompositions().get(0), c.getSelectedRelationship());
 
 		c.selectObject(new Point(800, 800));
@@ -374,23 +418,23 @@ class ControllerTest {
 		c.deleteObject(new Point(205, 5));
 		assertEquals(0, c.getComments().size());
 
-		c.addAggregation(new Class(100, 100), new Class(300, 100), "", "");
+		c.addAggregation(new Class(100, 100, r), new Class(300, 100, r), "", "");
 		c.deleteObject(new Point(260, 100 + z.getHeight() / 2));
 		assertEquals(0, c.getAggregations().size());
 
-		c.addAssociation(new Class(100, 300), new Class(300, 300), "", "");
+		c.addAssociation(new Class(100, 300, r), new Class(300, 300, r), "", "");
 		c.deleteObject(new Point(260, 300 + z.getHeight() / 2));
 		assertEquals(0, c.getAssociations().size());
 
-		c.addDependency(new Class(300, 300), new Class(600, 300), "", "");
+		c.addDependency(new Class(300, 300, r), new Class(600, 300, r), "", "");
 		c.deleteObject(new Point(560, 300 + z.getHeight() / 2));
 		assertEquals(0, c.getDependencies().size());
 
-		c.addComposition(new Class(0, 500), new Class(300, 500), "", "");
+		c.addComposition(new Class(0, 500, r), new Class(300, 500, r), "", "");
 		c.deleteObject(new Point(260, 500 + z.getHeight() / 2));
 		assertEquals(0, c.getCompositions().size());
 
-		c.addGeneralization(new Class(600, 700), new Class(800, 700), "", "");
+		c.addGeneralization(new Class(600, 700, r), new Class(800, 700, r), "", "");
 		c.deleteObject(new Point(760, 700 + z.getHeight() / 2));
 		assertEquals(0, c.getGeneralizations().size());
 	}
@@ -492,4 +536,58 @@ class ControllerTest {
 		c.addDependency(new Point(405, 5));
 		c.addDependency(new Point(205, 5));
 	}
+	
+	@Test
+	public void testRelationshipInspectorUpdateButton() {
+		ArgumentCaptor<ActionEvent> captor = forClass(ActionEvent.class);
+
+		ActionListener okayButtonClicked1 = mock(ActionListener.class);
+		ActionListener okayButtonClicked2 = mock(ActionListener.class);
+		ActionListener okayButtonClicked3 = mock(ActionListener.class);
+
+		c.getClasses().removeAll(c.getClasses());
+		c.getAggregations().removeAll(c.getAggregations());
+		
+		c.addClass(new Point(0,0));
+		c.addClass(new Point(200,200));
+		Class z = c.getClasses().get(0);
+		Class y = c.getClasses().get(1);
+		
+		c.addAggregation(new Point(5,5));
+		c.addAggregation(new Point(205,205));
+		c.selectObject(new Point(195, 200 + clazz.getHeight()/2));
+		
+		c.getView().cMultiplicity.setText("5");
+		c.getView().pMultiplicity.setText("1");
+		
+		c.getView().okayButton.addActionListener(okayButtonClicked1);
+		c.getView().okayButton.doClick();
+		verify(okayButtonClicked1).actionPerformed(captor.capture());
+		
+		assertEquals("5", c.getSelectedRelationship().getChildMultiplicity());
+		assertEquals("1", c.getSelectedRelationship().getParentMultiplicity());
+		
+		assertEquals(z, c.getAggregations().get(0).getClass1());
+		assertEquals(y, c.getAggregations().get(0).getClass2());
+		
+		c.getView().directionChange.setSelected(true);
+		
+		c.getView().okayButton.addActionListener(okayButtonClicked2);
+		c.getView().okayButton.doClick();
+		verify(okayButtonClicked2).actionPerformed(captor.capture());
+		
+		assertEquals(y, c.getAggregations().get(0).getClass1());
+		assertEquals(z, c.getAggregations().get(0).getClass2());
+		
+		assertEquals(0, c.getCompositions().size());
+		assertEquals(1, c.getAggregations().size());
+		c.getView().relationshipTypes.setSelectedIndex(2);
+		
+		c.getView().okayButton.addActionListener(okayButtonClicked3);
+		c.getView().okayButton.doClick();
+		verify(okayButtonClicked3).actionPerformed(captor.capture());		
+		
+		assertEquals(0, c.getAggregations().size());
+		assertEquals(1, c.getCompositions().size());
+		}
 }

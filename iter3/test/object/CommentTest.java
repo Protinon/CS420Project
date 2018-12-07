@@ -4,13 +4,22 @@ import static org.junit.Assert.assertEquals;
 
 import java.awt.Point;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 //100% Coverage 
 
 public class CommentTest {
 
-	Comment comment = new Comment(50,50);
+	public Comment comment;
+	Canvas r;
+	Controller c;
 
+	@BeforeEach
+	public void setup() {
+		c = new Controller();
+		r = new Canvas(c);
+		comment = new Comment(50, 50, r);
+	}
 	@Test
 	public void testContains() {
 		Point upperLeftCorner = new Point(50, 50), insideObject = new Point(54, 60), aboveObject = new Point(49, 50),
@@ -41,6 +50,20 @@ public class CommentTest {
 
 	}
 	
+	// Set data formality-unused function
+		@Test
+		public void testSetGetData() {
+			String defaultData = "Comment", normalData = "Comment Test", emptyData = "";
+
+			assertEquals(defaultData, comment.getData());
+		
+			comment.setData(normalData);
+			assertEquals(normalData, comment.getData());
+			
+			comment.setData(emptyData);
+			assertEquals(emptyData, comment.getData());
+		}
+			
 	@Test
 	public void testPaintComponent() {
 		Controller c = new Controller();
@@ -49,11 +72,17 @@ public class CommentTest {
 
 	@Test
 	public void testGetHeight() {
-		assertEquals(50, comment.getHeight());
+		assertEquals(25, comment.getHeight());
 	}
 	
 	@Test
 	public void testGetWidth() {
-		assertEquals(125, comment.getWidth());
+		assertEquals(150, comment.getWidth());
+	}
+	
+	@Test
+	public void testDelete() {
+		comment.delete();
+		assertEquals(null, comment.getDataTextBox());
 	}
 }
